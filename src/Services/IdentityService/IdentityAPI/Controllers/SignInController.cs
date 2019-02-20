@@ -35,7 +35,6 @@ namespace GB_project.Services.IdentityService.IdentityAPI.Controllers
       }
 
       [HttpPost]
-      [Route("authorize")]
       [ProducesResponseType(200)]
       [ProducesResponseType(400)]
       [ProducesResponseType(401)]
@@ -121,7 +120,7 @@ namespace GB_project.Services.IdentityService.IdentityAPI.Controllers
 
         await _userStore.UpdateAsync(user);
 
-        var token = new JwtSecurityToken("http://www.feowu.top:50000", "GB",
+        var token = new JwtSecurityToken("https://localhost:5001", "GB",
                                         claims, notBefore, expireTime, cred);
 
         return new TokenViewModel(){ access_token = new JwtSecurityTokenHandler().WriteToken(token), refresh_token = refresh_token};

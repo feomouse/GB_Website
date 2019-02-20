@@ -15,7 +15,7 @@ namespace GB_project.Services.IdentityService.IdentityInfrastructure.Context
 
       protected override void OnConfiguring ( DbContextOptionsBuilder optionsBuilder)
       {
-      	optionsBuilder.UseSqlServer("Server=db;Database=Identity;Integrated Security=False;User=sa;Password=1074093560cxpsvmSa!;", b => b.MigrationsAssembly("IdentityAPI"));      
+      	optionsBuilder.UseSqlServer("Server=DESKTOP-FF3NFIK\\SQLEXPRESS;Database=Identity;Integrated Security=False;User=sa;Password=107409;", b => b.MigrationsAssembly("IdentityAPI"));      
       }
 
       protected override void OnModelCreating(ModelBuilder builder)

@@ -56,19 +56,14 @@ namespace IdentityAPI
             }).AddJwtBearer(options => {
               options.RequireHttpsMetadata = false;
               options.SaveToken = true;
-              options.ClaimsIssuer = "http://www.feowu.top:50000";
-	     // Configuration["Authentication:JwtIssuer"];
+              options.ClaimsIssuer = Configuration["Authentication:JwtIssuer"];
               options.TokenValidationParameters = new TokenValidationParameters() {
                 ValidateIssuer = true,
-                ValidIssuer = "http://www.feowu.top:50000",
-		//Configuration["Authentication:JwtIssuer"],
+                ValidIssuer = Configuration["Authentication:JwtIssuer"],
                 ValidateAudience = true,
-                ValidAudience = "GB",
-		//Configuration["Authentication:JwtAudience"],
+                ValidAudience = Configuration["Authentication:JwtAudience"],
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Group_Buy_Website_Token_Key"
-					//Configuration["Authentication:JwtKey"]
-					)),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Authentication:JwtKey"])),
                 RequireExpirationTime = true,
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero
@@ -79,7 +74,7 @@ namespace IdentityAPI
             {
               var connectionFactory = new ConnectionFactory();
 
-              connectionFactory.HostName = "rabbitmq";
+              connectionFactory.HostName = "localhost";
               connectionFactory.UserName = "guest";
               connectionFactory.Password = "guest";
               connectionFactory.VirtualHost = "/";

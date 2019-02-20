@@ -5,8 +5,8 @@
       "DownstreamScheme": "http:",
       "DownstreamHostAndPorts": [
         {
-          "Host": "identity",
-          "Port": 80
+          "Host": "localhost",
+          "Port": 50001
         }
       ],
       "UpstreamPathTemplate": "/identity/{everything}",
@@ -17,8 +17,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "merchant",
-          "Port": 80
+          "Host": "localhost",
+          "Port": 50002
         }
       ],
       "UpstreamPathTemplate": "/merchant/{everything}",
@@ -33,8 +33,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "shop",
-          "Port": 80
+          "Host": "localhost",
+          "Port": 50003
         }
       ],
       "UpstreamPathTemplate": "/shop/{everything}",

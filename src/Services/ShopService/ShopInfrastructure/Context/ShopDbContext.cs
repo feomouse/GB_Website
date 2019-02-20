@@ -28,7 +28,7 @@ namespace GB_project.Services.ShopService.ShopInfrastructure.Context
 
       protected override void OnConfiguring ( DbContextOptionsBuilder optionsBuilder)
       {
-        optionsBuilder.UseSqlServer("Server=db;Database=SHOP;Integrated Security=False;User=sa;Password=1074093560cxpsvmSa!;", b => b.MigrationsAssembly("ShopAPI"));
+        optionsBuilder.UseSqlServer("Server=DESKTOP-FF3NFIK\\SQLEXPRESS;Database=SHOP;Integrated Security=False;User=sa;Password=107409;", b => b.MigrationsAssembly("ShopAPI"));
       }
 
       protected override void OnModelCreating (ModelBuilder modelBuilder)

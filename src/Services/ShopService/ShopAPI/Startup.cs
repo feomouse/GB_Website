@@ -45,18 +45,14 @@ namespace ShopAPI
             } */).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => {
               options.RequireHttpsMetadata = false;
               options.SaveToken = true;
-              options.ClaimsIssuer = "http://www.feowu.top:50000"; 
-	      //Configuration["Authentication:JwtIssuer"];
+              options.ClaimsIssuer = Configuration["Authentication:JwtIssuer"];
               options.TokenValidationParameters = new TokenValidationParameters() {
                 ValidateIssuer = true,
-                ValidIssuer = "http://www.feowu.top:50000",
-		//Configuration["Authentication:JwtIssuer"],
+                ValidIssuer = Configuration["Authentication:JwtIssuer"],
                 ValidateAudience = true,
                 ValidAudience = "GB",
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-					//Configuration["Authentication:JwtKey"]
-					"Group_Buy_Website_Token_Key")),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Authentication:JwtKey"])),
                 RequireExpirationTime = true,
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero

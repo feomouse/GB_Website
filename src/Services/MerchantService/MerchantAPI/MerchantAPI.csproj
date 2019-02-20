@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.8.1" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.1" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MerchantInfrastructure\MerchantInfrastructure.csproj" />
+    <ProjectReference Include="..\..\..\EventBus\BasicEventBus\BasicEventBus.csproj" />
+    <ProjectReference Include="..\..\..\EventBus\EventBusMQ\EventBusMQ.csproj" />
+    <ProjectReference Include="..\MerchantDomin\MerchantDomin.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,74 @@
+version: "3"
+
+services:
+  db:
+    image: microsoft/mssql-server-linux
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=1074093560cxpsvmSa!
+    ports:
+      - "1433:1433"
+
+  rabbitmq:
+    image: rabbitmq:3.8.0-beta.2-management
+    hostname: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    expose: 
+      - "5672"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  apigateway:
+    build:
+      context: .
+      dockerfile: src/ApiGateWay/ApiGWBase/Dockerfile
+    expose:
+      - "80"
+    ports:
+      - "50000:80"
+    links:
+      - "identity"
+      - "merchant"
+      - "shop"
+
+
+  identity:
+    build:
+      context: .
+      dockerfile: src/Services/IdentityService/IdentityAPI/Dockerfile
+    depends_on:
+      - db
+      - rabbitmq
+    expose:
+      - "80"
+    links:
+      - "db"
+      - "rabbitmq"
+    restart: "on-failure"
+
+  merchant:
+    build:
+      context: .
+      dockerfile: src/Services/MerchantService/MerchantAPI/Dockerfile
+    depends_on:
+      - db
+      - rabbitmq
+    expose:
+      - "80"
+    links:
+      - "db"
+      - "rabbitmq"
+    restart: "on-failure"
+  
+  shop:
+    build:
+      context: .
+      dockerfile: src/Services/ShopService/ShopAPI/Dockerfile
+    depends_on: 
+      - db  
+    expose:
+      - "80"
+    restart: "on-failure"

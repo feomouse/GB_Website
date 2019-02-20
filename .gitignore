@@ -1,0 +1,5 @@
+.dist/
+.vscode/
+src/.dist/
+[Bb]in/
+[Oo]bj/

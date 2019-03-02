@@ -2,7 +2,7 @@ using System;
 using System.Runtime.Serialization;
 using MediatR;
 
-namespace GB_project.Services.ShopService.ShopAPI.Application.Command
+namespace GB_Project.Services.ShopService.ShopAPI.Application.Command
 {
     [DataContract]
     public class AddGBProductItemCommand : IRequest<int>

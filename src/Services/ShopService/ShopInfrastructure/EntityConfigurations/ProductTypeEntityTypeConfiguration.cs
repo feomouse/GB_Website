@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using GB_project.Services.ShopService.ShopDomin.AggregatesModel;
+using GB_Project.Services.ShopService.ShopDomin.AggregatesModel;
 using System;
 
-namespace GB_project.Services.ShopService.ShopInfrastructure.EntityConfigurations
+namespace GB_Project.Services.ShopService.ShopInfrastructure.EntityConfigurations
 {
     public class ProductTypeEntityTypeConfiguration : IEntityTypeConfiguration<ProductType>
     {
@@ -14,8 +14,6 @@ namespace GB_project.Services.ShopService.ShopInfrastructure.EntityConfiguration
         ptConfiguration.HasKey(b => b.PkId);
 
         ptConfiguration.Property(b => b.TypeName).HasColumnType("nvarchar(20)"); 
-
-        ptConfiguration.Property<Guid>("ShopId").HasColumnType("uniqueidentifier").IsRequired();
       }
     }
 }

@@ -1,4 +1,4 @@
-namespace GB_project.Services.IdentityService.IdentityAPI.ViewModels
+namespace GB_Project.Services.IdentityService.IdentityAPI.ViewModels
 {
     public class TokenViewModel
     {

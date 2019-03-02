@@ -11,7 +11,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using GB_project.Services.ShopService.ShopInfrastructure.Context;
+using GB_Project.Services.ShopService.ShopInfrastructure.Context;
 
 
 namespace ShopAPI

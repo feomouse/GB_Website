@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
-using GB_project.Services.IdentityService.IdentityInfrastructure.Repository;
+using GB_Project.Services.IdentityService.IdentityInfrastructure.Repository;
 using System.Threading.Tasks;
-using GB_project.Services.IdentityService.IdentityAPI.ViewModels;
-using GB_project.Services.IdentityService.IdentityDomin.AggregatesModel;
+using GB_Project.Services.IdentityService.IdentityAPI.ViewModels;
+using GB_Project.Services.IdentityService.IdentityDomin.AggregatesModel;
 using System.Threading;
 using GB_Project.EventBus.BasicEventBus.Abstraction;
 using System;
 using GB_Project.Services.IdentityService.IdentityAPI.IntergrationEvents.Events;
 
-namespace GB_project.Services.IdentityService.IdentityAPI.Controllers
+namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
 {
   [Route("v1/api/[controller]")]
   public class RegisterController : ControllerBase

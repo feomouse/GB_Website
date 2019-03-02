@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace GB_project.Services.ShopService.ShopDomin.SeedWork
+namespace GB_Project.Services.ShopService.ShopDomin.SeedWork
 {
   public abstract class Enumeration
   {

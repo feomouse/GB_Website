@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using GB_project.Services.ShopService.ShopDomin.AggregatesModel;
+using GB_Project.Services.ShopService.ShopDomin.AggregatesModel;
 using System;
 
-namespace GB_project.Services.ShopService.ShopInfrastructure.EntityConfigurations
+namespace GB_Project.Services.ShopService.ShopInfrastructure.EntityConfigurations
 {
     public class ShopEntityTypeConfiguration : IEntityTypeConfiguration<Shop>
     {
@@ -23,27 +23,21 @@ namespace GB_project.Services.ShopService.ShopInfrastructure.EntityConfiguration
 
         shopConfiguration.Property(b => b.Location).HasColumnType("nvarchar(30)");
 
-        shopConfiguration.Property(b => b.Type).HasColumnType("Uniqueidentifier");
+        shopConfiguration.Property(b => b.Type).HasColumnType("smallint");
+
+        shopConfiguration.Property(b => b.RegisterId).HasColumnType("Uniqueidentifier");
 
         shopConfiguration.Property(b => b.Tel).HasColumnType("varchar(11)");
 
         shopConfiguration.Property(b => b.Pic).HasColumnType("varchar(50)");
 
-        var navigationGbProduct = shopConfiguration.Metadata.FindNavigation(nameof(Shop.GbProduct));
-
-        var navigation_product = shopConfiguration.Metadata.FindNavigation(nameof(Shop._product));
+        var navigationGbProduct = shopConfiguration.Metadata.FindNavigation(nameof(Shop._gbProduct));
 
         var navigation_producttype = shopConfiguration.Metadata.FindNavigation(nameof(Shop._producttype));
-
-        var navigation_shopmerchant = shopConfiguration.Metadata.FindNavigation(nameof(Shop._shopmerchant));
             
         navigationGbProduct.SetPropertyAccessMode(PropertyAccessMode.Field);
 
-        navigation_product.SetPropertyAccessMode(PropertyAccessMode.Field);
-
         navigation_producttype.SetPropertyAccessMode(PropertyAccessMode.Field);
-
-        navigation_shopmerchant.SetPropertyAccessMode(PropertyAccessMode.Field);
       }
     }
 }

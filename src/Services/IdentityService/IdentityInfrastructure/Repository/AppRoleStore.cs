@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
-using GB_project.Services.IdentityService.IdentityInfrastructure.Context;
+using GB_Project.Services.IdentityService.IdentityInfrastructure.Context;
 using System.Threading.Tasks;
-using GB_project.Services.IdentityService.IdentityDomin.AggregatesModel;
+using GB_Project.Services.IdentityService.IdentityDomin.AggregatesModel;
 using System.Threading;
 using System;
 
-namespace GB_project.Services.IdentityService.IdentityInfrastructure.Repository
+namespace GB_Project.Services.IdentityService.IdentityInfrastructure.Repository
 {
     public class AppRoleStore : IRoleStore<AppRole>
     {

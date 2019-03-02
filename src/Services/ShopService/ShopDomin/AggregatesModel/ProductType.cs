@@ -1,30 +1,30 @@
-using GB_project.Services.ShopService.ShopDomin.SeedWork;
+using GB_Project.Services.ShopService.ShopDomin.SeedWork;
 using System;
+using System.Collections.Generic;
 
-namespace GB_project.Services.ShopService.ShopDomin.AggregatesModel
+namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 {
     public class ProductType : Entity {
       public Guid PkId { get; private set; }
 
       public Guid ShopId { get; private set; }
+      public Shop _Shop { get; private set; }
 
       public string TypeName { get; private set; }
+
+      public List<Product> Products { get; private set; }
 
       public ProductType () {
         
       }
 
-      public ProductType (Guid shopId, string typeName)
+      public ProductType (Shop shop, string typeName)
       {
         PkId = new Guid();
 
-        ShopId = shopId;
+        _Shop = shop;
         
         TypeName = typeName;
-      }
-
-      public void AddProductType(ProductType productType)
-      {
       }
     }
 }

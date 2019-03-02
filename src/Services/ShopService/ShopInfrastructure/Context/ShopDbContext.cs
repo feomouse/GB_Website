@@ -1,19 +1,19 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using GB_project.Services.ShopService.ShopDomin.AggregatesModel;
-using GB_project.Services.ShopService.ShopInfrastructure.EntityConfigurations;
+using GB_Project.Services.ShopService.ShopDomin.AggregatesModel;
+using GB_Project.Services.ShopService.ShopInfrastructure.EntityConfigurations;
 
-namespace GB_project.Services.ShopService.ShopInfrastructure.Context
+namespace GB_Project.Services.ShopService.ShopInfrastructure.Context
 {
     public class ShopDbContext : DbContext
     {
-      public DbSet<Shop> shop { get; set; }
+      public DbSet<Shop> shops { get; set; }
 
-      public DbSet<ShopMerchant> shopmerchant { get; set; }
+      public DbSet<Product> products { get; set; }
 
-      public DbSet<Product> product { get; set; }
+      public DbSet<ProductType> producttypes { get; set; }
 
-      public DbSet<ProductType> producttype { get; set; }
+      //public DbSet<ShopType> shoptypes { get; set; }
 
       public DbSet<GBProduct> gbproduct { get; set; }
 
@@ -28,7 +28,7 @@ namespace GB_project.Services.ShopService.ShopInfrastructure.Context
 
       protected override void OnConfiguring ( DbContextOptionsBuilder optionsBuilder)
       {
-        optionsBuilder.UseSqlServer("Server=DESKTOP-FF3NFIK\\SQLEXPRESS;Database=SHOP;Integrated Security=False;User=sa;Password=107409;", b => b.MigrationsAssembly("ShopAPI"));
+        optionsBuilder.UseSqlServer("Server=DESKTOP-FF3NFIK\\SQLEXPRESS;Database=Shop;User=sa;Password=107409;", b => b.MigrationsAssembly("ShopAPI"));
       }
 
       protected override void OnModelCreating (ModelBuilder modelBuilder)
@@ -38,7 +38,6 @@ namespace GB_project.Services.ShopService.ShopInfrastructure.Context
         modelBuilder.ApplyConfiguration(new ProductTypeEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new GBProductEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new GBRuleEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new ShopMerchantEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new GBProductItemEntityTypeConfiguration());
       }
     }

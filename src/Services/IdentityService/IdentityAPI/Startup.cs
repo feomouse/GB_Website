@@ -13,10 +13,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
-using GB_project.Services.IdentityService.IdentityInfrastructure.Context;
-using GB_project.Services.IdentityService.IdentityDomin.AggregatesModel;
+using GB_Project.Services.IdentityService.IdentityInfrastructure.Context;
+using GB_Project.Services.IdentityService.IdentityDomin.AggregatesModel;
 using Microsoft.AspNetCore.Identity;
-using GB_project.Services.IdentityService.IdentityInfrastructure.Repository;
+using GB_Project.Services.IdentityService.IdentityInfrastructure.Repository;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -46,7 +46,7 @@ namespace IdentityAPI
 
             services.AddDbContext<MyIdentityDbContext>(); 
             
-	    services.AddIdentity<AppUser, AppRole>()
+	          services.AddIdentity<AppUser, AppRole>()
             .AddEntityFrameworkStores<MyIdentityDbContext>()
             .AddDefaultTokenProviders();
 

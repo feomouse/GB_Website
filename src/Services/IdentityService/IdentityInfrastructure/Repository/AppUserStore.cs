@@ -2,12 +2,12 @@ using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using GB_project.Services.IdentityService.IdentityInfrastructure.Context;
-using GB_project.Services.IdentityService.IdentityDomin.AggregatesModel;
+using GB_Project.Services.IdentityService.IdentityInfrastructure.Context;
+using GB_Project.Services.IdentityService.IdentityDomin.AggregatesModel;
 using System;
 using System.Collections.Generic;
 
-namespace GB_project.Services.IdentityService.IdentityInfrastructure.Repository
+namespace GB_Project.Services.IdentityService.IdentityInfrastructure.Repository
 {
     public class AppUserStore : IUserStore<AppUser>, IUserRoleStore<AppUser>, IUserPasswordStore<AppUser>, IUserEmailStore<AppUser> 
     {
@@ -78,6 +78,11 @@ namespace GB_project.Services.IdentityService.IdentityInfrastructure.Repository
       public Task AddToRoleAsync (AppUser user, string roleName, CancellationToken cancellationToken = default(CancellationToken))
       {
         return DbContextExtensions.userManager.AddToRoleAsync(user, roleName);
+      }
+
+      public Task<IdentityResult> MyAddToRoleAsync (AppUser user, string roleName, CancellationToken cancellationToken = default(CancellationToken))
+      {
+         return DbContextExtensions.userManager.AddToRoleAsync(user, roleName);
       }
 
       public Task<IList<String>> GetRolesAsync(AppUser user, CancellationToken cancellationToken = default(CancellationToken))

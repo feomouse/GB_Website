@@ -1,10 +1,10 @@
-using System;
+/* using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using GB_project.Services.ShopService.ShopDomin.AggregatesModel;
+using GB_Project.Services.ShopService.ShopDomin.AggregatesModel;
 
-namespace GB_project.Services.ShopService.ShopAPI.Application.Command
+namespace GB_Project.Services.ShopService.ShopAPI.Application.Command
 {
     public class AddGBProductCommandHandler : IRequestHandler<AddGBProductCommand, int>
     {
@@ -21,7 +21,7 @@ namespace GB_project.Services.ShopService.ShopAPI.Application.Command
 
         _repository.AddGBProduct(gbproduct);      
               
-        return await _repository.Save();
+        return await _repository.Save(); 
       }
     }
-}
+} */

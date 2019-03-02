@@ -1,9 +1,9 @@
 using System;
-using GB_project.Services.MerchantService.MerchantDomin.Aggregateroot;
+using GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace GB_project.Services.MerchantService.MerchantInfrastructure.EntityConfigurations
+namespace GB_Project.Services.MerchantService.MerchantInfrastructure.EntityConfigurations
 {
   public class MerchantIdentityEntityTypeConfiguration : IEntityTypeConfiguration<MerchantIdentity>
   {

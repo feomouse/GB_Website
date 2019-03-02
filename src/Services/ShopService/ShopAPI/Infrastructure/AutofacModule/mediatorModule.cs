@@ -1,10 +1,10 @@
 using Autofac;
 using MediatR;
-using GB_project.Services.ShopService.ShopAPI.Application.Command;
+using GB_Project.Services.ShopService.ShopAPI.Application.Command;
 using System;
 using System.Reflection;
 
-namespace GB_project.Services.ShopService.ShopAPI.Infrastructure
+namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure
 {
     public class mediatorModule : Autofac.Module
     {

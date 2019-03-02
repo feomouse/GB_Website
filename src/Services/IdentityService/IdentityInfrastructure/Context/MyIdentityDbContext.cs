@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
-using GB_project.Services.IdentityService.IdentityDomin.AggregatesModel;
+using GB_Project.Services.IdentityService.IdentityDomin.AggregatesModel;
 
-namespace GB_project.Services.IdentityService.IdentityInfrastructure.Context
+namespace GB_Project.Services.IdentityService.IdentityInfrastructure.Context
 {
     public class MyIdentityDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     {
@@ -22,7 +22,7 @@ namespace GB_project.Services.IdentityService.IdentityInfrastructure.Context
       {
         base.OnModelCreating(builder);
 
-        builder.Entity<AppRole>().HasData(new AppRole{Id = Guid.NewGuid(), Name = "MERCHANT", NormalizedName = "MERCHANT"});
+        builder.Entity<AppRole>().HasData(new AppRole("MERCHANT"));
 
         builder.Entity<AppUser>().HasIndex(b => b.RefreshToken).IsUnique();
       }

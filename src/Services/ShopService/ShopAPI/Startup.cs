@@ -11,13 +11,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
-using GB_project.Services.ShopService.ShopInfrastructure.Context;
 using Autofac.Extensions.DependencyInjection;
 using Autofac;
-using GB_project.Services.ShopService.ShopAPI.Infrastructure;
+using GB_Project.Services.ShopService.ShopAPI.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using GB_Project.Services.ShopService.ShopInfrastructure.Context;
 
 namespace ShopAPI
 {

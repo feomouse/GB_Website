@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
-using GB_project.Services.IdentityService.IdentityInfrastructure.Context;
+using GB_Project.Services.IdentityService.IdentityInfrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdentityAPI

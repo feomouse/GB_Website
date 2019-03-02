@@ -1,17 +1,17 @@
-using GB_project.Services.ShopService.ShopDomin.SeedWork;
+using GB_Project.Services.ShopService.ShopDomin.SeedWork;
 using System;
 
-namespace GB_project.Services.ShopService.ShopDomin.AggregatesModel
+namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 {
     public class Product : Entity
     {
       public Guid PkId { get; private set; }
 
-      public Guid ShopId { get; private set; }
-
       public string ProductName { get; private set; }
 
-      public Guid ProductType { get; private set; }
+      public Guid ProductTypeId { get; private set; }
+
+      public ProductType _ProductType { get; private set; }
 
       public string ProductImg { get; private set; }
 
@@ -27,21 +27,16 @@ namespace GB_project.Services.ShopService.ShopDomin.AggregatesModel
 
       }
 
-      public Product ( Guid shopId, string productName, Guid productType, string productImg, int productPrice, int mSellNum, int praiseNum, bool isDisplay) 
+      public Product ( string productName, ProductType productType, string productImg, int productPrice, int mSellNum, int praiseNum, bool isDisplay) 
       {
         PkId = new Guid();
-        ShopId = shopId;
         ProductName = productName;
-        ProductType = productType;
+        _ProductType = productType;
         ProductImg = productImg;
         ProductPrice = productPrice;
         MSellNum = mSellNum;
         PraiseNum = praiseNum;
         IsDisplay = isDisplay;
-      }
-
-      public void CreateProduct ( Product product )
-      {
       }
     } 
 }

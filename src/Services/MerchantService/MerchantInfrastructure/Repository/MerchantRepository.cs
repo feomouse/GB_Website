@@ -1,6 +1,8 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
-using GB_project.Services.MerchantService.MerchantDomin.Aggregateroot;
-using GB_project.Services.MerchantService.MerchantInfrastructure.Context;
+using GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel;
+using GB_Project.Services.MerchantService.MerchantInfrastructure.Context;
 
 namespace GB_Project.Services.MerchantService.MerchantInfrastructure.Repository
 {
@@ -20,9 +22,23 @@ namespace GB_Project.Services.MerchantService.MerchantInfrastructure.Repository
         return _context.SaveChangesAsync();
       }
 
-      public int AddIdentity ( MerchantIdentity merchantIdentity )
+      public Task<int> AddIdentity ( MerchantIdentity merchantIdentity )
       {
-        return 0;
+        _context.merchantIdentitys.Add(merchantIdentity);
+
+        return _context.SaveChangesAsync();
+      }
+
+      public Task<int> AddShopIdToMerchant (MerchantBasic merchantBasic,  Guid shopId)
+      {
+         _context.merchantBasics.Where(m => m == merchantBasic).First().SetShopId(shopId);
+
+         return _context.SaveChangesAsync();
+      }
+
+      public MerchantBasic GetMerhcntBasicByMerchantId (Guid merchantId)
+      {
+        return _context.merchantBasics.Where(m => m.AuthPkId == merchantId).FirstOrDefault();
       }
     }
 }

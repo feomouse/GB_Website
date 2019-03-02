@@ -1,11 +1,11 @@
 using Dapper;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using GB_project.Services.ShopService.ShopDomin.AggregatesModel;
+using GB_Project.Services.ShopService.ShopDomin.AggregatesModel;
 using System.Linq;
 using System;
 
-namespace GB_project.Services.ShopService.ShopAPI.Infrastructure.Queries
+namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
 {
   public class readQuery : IQuery
   {
@@ -20,22 +20,6 @@ namespace GB_project.Services.ShopService.ShopAPI.Infrastructure.Queries
           shop.[District] as District, shop.[Location] as Location, shop.[Type] as Type, shop.[Tel] as Tel, 
           shop.[Manager] as Manager, shop.[Pic] as Pic FROM shop.shop WHERE shop.[Name] = @Name;",
           new { Name = name }
-        ).First();
-
-        return result;
-      }
-    }
-
-    public ShopMerchant getShopMerchantByKey( Guid merchantId, Guid shopId )
-    {
-      using (var connection = new SqlConnection("Server=DESKTOP-FF3NFIK\\SQLEXPRESS;Database=SHOP;Trusted_Connection=True;"))
-      {
-        connection.Open();
-
-        var result = connection.Query<ShopMerchant>(
-          @"SELECT shopMerchant.[MerchantId] AS MerchantId, shopMerchant.[ShopId] AS ShopId, shopMerchant.[IsRegister] AS IsRegister 
-          FROM shopMerchant WHERE shopMerchant.[MerchantId] = @Merchant AND shopMerchant.[ShopId] = @ShopId;",
-          new { MerchantId = merchantId, ShopId = shopId }
         ).First();
 
         return result;

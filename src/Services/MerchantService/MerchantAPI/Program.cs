@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using GB_project.Services.MerchantService.MerchantInfrastructure.Context;
+using GB_Project.Services.MerchantService.MerchantInfrastructure.Context;
 
 namespace MerchantAPI
 {

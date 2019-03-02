@@ -1,13 +1,13 @@
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using GB_project.Services.ShopService.ShopAPI.Application.Command;
-using GB_project.Services.ShopService.ShopAPI.Infrastructure.Queries;
-using GB_project.Services.ShopService.ShopDomin.AggregatesModel;
+using GB_Project.Services.ShopService.ShopAPI.Application.Command;
+using GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries;
+using GB_Project.Services.ShopService.ShopDomin.AggregatesModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
-namespace GB_project.Services.ShopService.ShopAPI.Controllers
+namespace GB_Project.Services.ShopService.ShopAPI.Controllers
 {
     [Route("v1/api/[controller]")]
     public class ShopController : ControllerBase

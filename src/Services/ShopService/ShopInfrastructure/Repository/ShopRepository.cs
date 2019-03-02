@@ -1,11 +1,12 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using GB_project.Services.ShopService.ShopDomin.AggregatesModel;
-using GB_project.Services.ShopService.ShopDomin.SeedWork;
-using GB_project.Services.ShopService.ShopInfrastructure.Context;
+using System.Collections.Generic;
+using GB_Project.Services.ShopService.ShopDomin.AggregatesModel;
+using GB_Project.Services.ShopService.ShopDomin.SeedWork;
+using GB_Project.Services.ShopService.ShopInfrastructure.Context;
 
-namespace GB_project.Services.ShopService.ShopInfrastructure.Repository
+namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
 {
     public class ShopRepository : IShopRepository
     {
@@ -23,49 +24,52 @@ namespace GB_project.Services.ShopService.ShopInfrastructure.Repository
         }
       }
 
-      public void CreateShop(Shop newShop)
+      public Dictionary<int, string> GetShopTypeInfo()
       {
-        _context.shop.Add(newShop);
+         var dic = new Dictionary<int, string>();
+
+         dic.Add(ShopType.beauty.Id, ShopType.beauty.Name);
+         dic.Add(ShopType.entertain.Id, ShopType.entertain.Name);
+         dic.Add(ShopType.food.Id, ShopType.food.Name);
+
+         return dic;
       }
 
-      public void AddProduct(Product newProduct)
+      public Guid CreateShop(Shop newShop)
       {
-        _context.product.Add(newProduct);
+        _context.shops.Add(newShop);
+
+        _context.SaveChanges();
+
+        return _context.shops.Where(s => s.Name == newShop.Name).Single().PkId;
       }
 
-      public void AddMerchant(ShopMerchant newMerchant)
+      public Shop GetShopByName(string shopName)
       {
-        _context.shopmerchant.Add(newMerchant);
+        return _context.shops.Where(s => s.Name == shopName).SingleOrDefault();
       }
 
-      public void AddGBProduct(GBProduct newgbProduct)
+      public Guid CreateShopProductType(ProductType type)
       {
-        _context.gbproduct.Add(newgbProduct);
+        _context.producttypes.Add(type);
+
+        _context.SaveChanges();
+
+        return _context.producttypes.Where(t => t.TypeName == type.TypeName).Single().PkId;
       }
 
-      public void AddGBRule(GBRule newgbRule)
+      public List<ProductType> GetShopProductTypesByShopId(Guid shopId)
       {
-        _context.gbrule.Add(newgbRule);
+        return _context.producttypes.Where(t => t.ShopId == shopId).ToList();
       }
 
-      public void AddGBProductItem(GBProductItem newGBProductItem)
+      public Guid AddShopProduct(Product product)
       {
-        _context.gbitems.Add(newGBProductItem);
-      }
+        _context.products.Add(product);
 
-      public void AddProductType(ProductType newproductType)
-      {
-        _context.producttype.Add(newproductType);
-      }
+        _context.SaveChanges();
 
-      public ProductType GetProductTypeById(Guid pkid)
-      {
-        return _context.producttype.Single(i => i.PkId == pkid);
-      }
-
-      public async Task<int> Save()
-      {
-       return await _context.SaveChangesAsync();
+        return _context.products.Where(p => p.PkId == product.PkId).SingleOrDefault().PkId;
       }
     }
 }

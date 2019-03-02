@@ -1,8 +1,8 @@
-using GB_project.Services.ShopService.ShopDomin.SeedWork;
+using GB_Project.Services.ShopService.ShopDomin.SeedWork;
 using System.Collections.Generic;
 using System;
 
-namespace GB_project.Services.ShopService.ShopDomin.AggregatesModel
+namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 {
   public class GBRule : Entity
   {

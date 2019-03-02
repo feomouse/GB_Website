@@ -1,7 +1,7 @@
 using System;
-using GB_project.Services.MerchantService.MerchantDomin.SeedWork;
+using GB_Project.Services.MerchantService.MerchantDomin.SeedWork;
 
-namespace GB_project.Services.MerchantService.MerchantDomin.Aggregateroot
+namespace GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel
 {
   public class MerchantBasic : Entity
   {

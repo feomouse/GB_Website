@@ -1,12 +1,17 @@
 using System.Threading.Tasks;
-using GB_project.Services.MerchantService.MerchantDomin.SeedWork;
+using System;
+using GB_Project.Services.MerchantService.MerchantDomin.SeedWork;
 
-namespace GB_project.Services.MerchantService.MerchantDomin.Aggregateroot
+namespace GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel
 {
   public interface IMerchantRepository : IRepository
   {
     Task<int> CreateMerchantBasic (MerchantBasic merchantBasic);
 
-    int AddIdentity ( MerchantIdentity merchantIdentity );
+    Task<int> AddIdentity (MerchantIdentity merchantIdentity);
+
+    Task<int> AddShopIdToMerchant (MerchantBasic merchantBasic, Guid shopId);
+
+    MerchantBasic GetMerhcntBasicByMerchantId (Guid merchantId);
   }
 }

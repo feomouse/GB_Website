@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using GB_project.Services.MerchantService.MerchantDomin.Aggregateroot;
-using GB_project.Services.MerchantService.MerchantInfrastructure.Context;
+using GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel;
+using GB_Project.Services.MerchantService.MerchantInfrastructure.Context;
 using GB_Project.EventBus.BasicEventBus;
 using GB_Project.EventBus.BasicEventBus.Abstraction;
 using GB_Project.EventBus.EventBusMQ;
@@ -39,7 +39,7 @@ namespace MerchantAPI {
       services.AddMvc ().SetCompatibilityVersion (CompatibilityVersion.Version_2_2);
 
       services.AddDbContext<MerchantDbContext> (options => {
-        options.UseSqlServer (Configuration.GetConnectionString ("SqlServerConnection"), b => b.MigrationsAssembly ("MerchantAPI"));
+        options.UseSqlServer (Configuration.GetSection ("ConnectionStrings")["SqlServerConnection"], b => b.MigrationsAssembly ("MerchantAPI"));
       });
 
       services.AddAuthentication().AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => {

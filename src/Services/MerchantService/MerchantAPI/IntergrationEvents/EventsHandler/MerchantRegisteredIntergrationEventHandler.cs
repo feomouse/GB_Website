@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using GB_project.Services.MerchantService.MerchantDomin.Aggregateroot;
+using GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel;
 using GB_Project.EventBus.BasicEventBus.Abstraction;
 using Microsoft.AspNetCore.Identity;
 

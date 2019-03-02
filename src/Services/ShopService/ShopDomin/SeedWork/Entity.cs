@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using MediatR;
 
-namespace GB_project.Services.ShopService.ShopDomin.SeedWork
+namespace GB_Project.Services.ShopService.ShopDomin.SeedWork
 {
   public abstract class Entity
   {

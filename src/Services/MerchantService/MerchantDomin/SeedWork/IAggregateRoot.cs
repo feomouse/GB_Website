@@ -1,4 +1,4 @@
-namespace GB_project.Services.MerchantService.MerchantDomin.SeedWork
+namespace GB_Project.Services.MerchantService.MerchantDomin.SeedWork
 {
   public interface IAggregateRoot
   {

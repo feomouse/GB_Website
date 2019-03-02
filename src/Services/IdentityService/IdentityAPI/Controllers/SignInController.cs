@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using GB_project.Services.IdentityService.IdentityAPI.ViewModels;
-using GB_project.Services.IdentityService.IdentityDomin.AggregatesModel;
-using GB_project.Services.IdentityService.IdentityInfrastructure.Repository;
+using GB_Project.Services.IdentityService.IdentityAPI.ViewModels;
+using GB_Project.Services.IdentityService.IdentityDomin.AggregatesModel;
+using GB_Project.Services.IdentityService.IdentityInfrastructure.Repository;
 using System.Threading;
 using System.Security.Claims;
 using System;
@@ -12,11 +12,11 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
-using GB_project.Services.IdentityService.IdentityInfrastructure.Context;
+using GB_Project.Services.IdentityService.IdentityInfrastructure.Context;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
-namespace GB_project.Services.IdentityService.IdentityAPI.Controllers
+namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
 {
     [Route("v1/api/{controller}")]
     public class SignInController : ControllerBase

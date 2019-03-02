@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using GB_project.Services.ShopService.ShopDomin.SeedWork;
+using GB_Project.Services.ShopService.ShopDomin.SeedWork;
 using System;
 
-namespace GB_project.Services.ShopService.ShopDomin.AggregatesModel
+namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 {
   public class Shop : Entity, IAggregateRoot {
     public Guid PkId { get; private set; }
@@ -17,27 +17,23 @@ namespace GB_project.Services.ShopService.ShopDomin.AggregatesModel
 
     public string Location { get; private set; }
 
-    public Guid Type { get; private set; }
+    public int Type { get; private set; }
 
     public string Tel { get; private set; }
 
-    public Guid Manager { get; private set; }
+    public Guid RegisterId { get; private set; }
 
     public string Pic { get; private set; }
 
-    public List<GBProduct> GbProduct { get; set; }
-
-    public List<Product> _product { get; set; }
+    public List<GBProduct> _gbProduct { get; set; }
 
     public List<ProductType> _producttype { get; set; }
-
-    public List<ShopMerchant> _shopmerchant { get; set; }
 
     public Shop () {
 
     }
 
-    public Shop(string name, string province, string city, string district, string location, Guid type, string tel, Guid manager, string pic)
+    public Shop(string name, string province, string city, string district, string location, int type, string tel, Guid registerId, string pic)
     {
        PkId = new Guid();
        Name = name;
@@ -47,8 +43,13 @@ namespace GB_project.Services.ShopService.ShopDomin.AggregatesModel
        Location = location;
        Type = type;
        Tel = tel;
-       Manager = manager;
+       RegisterId = registerId;
        Pic = pic;
+    }
+
+    public void SetPkId(Guid pkId)
+    {
+      PkId = pkId;
     }
   }
 }

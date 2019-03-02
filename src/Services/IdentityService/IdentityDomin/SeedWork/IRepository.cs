@@ -1,4 +1,4 @@
-namespace GB_project.Services.IdentityService.IdentityDomin.SeedWork
+namespace GB_Project.Services.IdentityService.IdentityDomin.SeedWork
 {
     public interface IRepository : IUnitOfWork
     {

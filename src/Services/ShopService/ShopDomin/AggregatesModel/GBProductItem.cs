@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using GB_project.Services.ShopService.ShopDomin.SeedWork;
+using GB_Project.Services.ShopService.ShopDomin.SeedWork;
 
-namespace GB_project.Services.ShopService.ShopDomin.AggregatesModel
+namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 {
   public class GBProductItem : Entity {
     public Guid PkId { get; private set; }

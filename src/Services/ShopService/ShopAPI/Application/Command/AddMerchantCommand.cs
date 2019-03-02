@@ -1,9 +1,9 @@
 using System;
 using System.Runtime.Serialization;
 using MediatR;
-using GB_project.Services.ShopService.ShopDomin.AggregatesModel;
+using GB_Project.Services.ShopService.ShopDomin.AggregatesModel;
 
-namespace GB_project.Services.ShopService.ShopAPI.Application.Command
+namespace GB_Project.Services.ShopService.ShopAPI.Application.Command
 {
     [DataContract]
     public class AddMerchantCommand : IRequest<int>

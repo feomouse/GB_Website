@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
-using GB_project.Services.IdentityService.IdentityDomin.AggregatesModel;
+using GB_Project.Services.IdentityService.IdentityDomin.AggregatesModel;
 
-namespace GB_project.Services.IdentityService.IdentityInfrastructure.Context
+namespace GB_Project.Services.IdentityService.IdentityInfrastructure.Context
 {
     public static class DbContextExtensions
     {

@@ -1,27 +1,29 @@
 using System;
 using System.Threading.Tasks;
-using GB_project.Services.ShopService.ShopDomin.SeedWork;
+using System.Collections.Generic;
+using GB_Project.Services.ShopService.ShopDomin.SeedWork;
 
-namespace GB_project.Services.ShopService.ShopDomin.AggregatesModel
+namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 {
     public interface IShopRepository : IRepository
     {
-        void CreateShop(Shop newShop);
+        Dictionary<int, string> GetShopTypeInfo();
 
-        void AddProduct(Product newProduct);
+        Guid CreateShop(Shop newShop);
 
-        void AddMerchant(ShopMerchant newMerchant);
+        Shop GetShopByName(string shopName);
 
+        Guid CreateShopProductType(ProductType type);
+
+        List<ProductType> GetShopProductTypesByShopId(Guid shopId);
+
+        Guid AddShopProduct(Product product);
+/* 
         void AddGBProduct(GBProduct newgbProduct);
 
         void AddGBRule(GBRule newgbRule);
 
         void AddGBProductItem(GBProductItem newGBProductItem);
-
-        void AddProductType(ProductType newproductType);
-
-        ProductType GetProductTypeById(Guid pkid);
-
-        Task<int> Save();
-    }
+*/
+    } 
 }

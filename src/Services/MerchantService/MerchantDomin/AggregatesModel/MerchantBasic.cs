@@ -25,5 +25,10 @@ namespace GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel
     {
       ShopId = shopId;
     }
+
+    public void SetIdentity(MerchantIdentity merchantIdentity)
+    {
+      Identity = merchantIdentity;
+    }
   }   
 }

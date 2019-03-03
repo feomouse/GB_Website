@@ -8,7 +8,7 @@ namespace GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel
   {
     Task<int> CreateMerchantBasic (MerchantBasic merchantBasic);
 
-    Task<int> AddIdentity (MerchantIdentity merchantIdentity);
+    Task<int> AddIdentity (MerchantBasic merchantBasic, MerchantIdentity merchantIdentity);
 
     Task<int> AddShopIdToMerchant (MerchantBasic merchantBasic, Guid shopId);
 

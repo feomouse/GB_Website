@@ -15,47 +15,52 @@ using System.IdentityModel.Tokens.Jwt;
 using GB_Project.Services.IdentityService.IdentityInfrastructure.Context;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using MediatR;
+using GB_Project.Services.IdentityService.IdentityAPI.Application.Commands;
+using GB_Project.Services.IdentityService.IdentityAPI.Query;
+using Microsoft.AspNetCore.Identity;
 
 namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
 {
     [Route("v1/api/{controller}")]
     public class SignInController : ControllerBase
     {
-      private AppUserStore _userStore;
-
-      private IConfiguration _configuration;
-
       private readonly MyIdentityDbContext _db;
 
-      public SignInController(AppUserStore userStore, IConfiguration configuration, MyIdentityDbContext db)
+      private IMediator _mediator;
+
+      private IUserQuery _query;
+
+      public SignInController( IMediator mediator, IUserQuery query)
       {
-        _userStore = userStore;
-        _configuration = configuration;
-        _db = db;
+        _mediator = mediator;
+        _query = query;
       }
 
       [HttpPost]
       [ProducesResponseType(200)]
       [ProducesResponseType(400)]
       [ProducesResponseType(401)]
-      public async Task<IActionResult> Authorize([FromBody]SignInViewModel model)
+      [ProducesResponseType(403)]
+      public async Task<ActionResult> SignIn([FromBody]SignInViewModel model)
       {
         if(!ModelState.IsValid)
         {
-          return BadRequest("Invail state");
+          return StatusCode(400);
         }
 
-        var user = await _userStore.FindByEmailAsync(model.Email);
+        var user = _query.FindUserByEmail(model.Email);
+
         if(user == null)
         {
           return StatusCode(401);
         }
 
-        var result = await _userStore.PasswordSignInAsync(user, model.PassWord, true, false);
+        var signInResult = _mediator.Send(new SignInCommand(user, model.PassWord)).GetAwaiter().GetResult();
 
-        if(!result.Succeeded)
+        if(!signInResult)
         {
-          return BadRequest("Password Wrong");
+          return StatusCode(403);
         }
 
         var token = await GenerateToken(user);
@@ -74,9 +79,9 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
           return BadRequest("Invalid state");
         }
 
-        var user = _db.Users.Single(b => b.RefreshToken == refresh_token.RefreshToken);
+        var user = _query.GetAppUserByRefreshToken(refresh_token.RefreshToken);
 
-        var userCopy = await  _userStore.FindByEmailAsync(user.Email);
+        var userCopy = _query.FindUserByEmail(user.Email);
 
         if(user == null)
         {
@@ -109,7 +114,7 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
 
         var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-        IList<string> roles = _userStore.GetRolesAsync(user).GetAwaiter().GetResult();
+        IList<string> roles = _query.GetRolesAsync(user);
 
         foreach( string role in roles)
         {
@@ -118,7 +123,7 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
 
         user.SetRefreshToken(refresh_token);
 
-        await _userStore.UpdateAsync(user);
+        await _mediator.Send(new UpdateUserCommand(user));
 
         var token = new JwtSecurityToken("https://localhost:5001", "GB",
                                         claims, notBefore, expireTime, cred);

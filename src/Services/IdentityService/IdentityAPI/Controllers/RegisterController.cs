@@ -7,72 +7,66 @@ using System.Threading;
 using GB_Project.EventBus.BasicEventBus.Abstraction;
 using System;
 using GB_Project.Services.IdentityService.IdentityAPI.IntergrationEvents.Events;
+using MediatR;
+using GB_Project.Services.IdentityService.IdentityAPI.Application.Commands;
+using GB_Project.Services.IdentityService.IdentityAPI.Query;
 
 namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
 {
   [Route("v1/api/[controller]")]
   public class RegisterController : ControllerBase
   {
-    private AppUserStore _userStore;
-
+    private IUserQuery _userQuery;
+    
     private IEventBusPublisher _eventBusPublisher;
 
-    public RegisterController(AppUserStore userStore, IEventBusPublisher eventBusPublisher)
+    private IMediator _mediator;
+
+    public RegisterController(IUserQuery userQuery, IEventBusPublisher eventBusPublisher, IMediator mediator)
     {
-      _userStore = userStore;
+      _userQuery = userQuery;
 
       _eventBusPublisher = eventBusPublisher;
+
+      _mediator = mediator;
     }
 
     [HttpPost]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public async Task<IActionResult> Register([FromBody]RegisterViewModel model)
+    public async Task<ObjectResult> Register([FromBody]RegisterViewModel model)
     {
       if(!ModelState.IsValid)
       {
         return BadRequest("Invail state");
       }
 
-      if(_userStore.FindByEmailAsync(model.Email).GetAwaiter().GetResult() != null)
+      // 1.检查用户是否存在
+      if(_userQuery.FindUserByEmail(model.Email) != null)
       {
         return BadRequest("Already exist");
       }
-
+ 
+      // 2.检查两侧输入密码是否相同
       if(model.Password != model.ConfirmedPassword)
       {
         return BadRequest("two different password");
       }
 
-      var user = new AppUser()
-      {
-        UserName = model.Email,
-        Email = model.Email,
-        EmailConfirmed = true
-      };
-  
-      var result = _userStore.CreateWithPasswordAsync(user, model.Password).GetAwaiter().GetResult();
+      var id = _mediator.Send(new RegistryCommand(model.Email, model.Password, model.Role)).Result;
 
-      if(!result.Succeeded)
+      // 3.检查注册用户是否成功
+      if(id == "")
       {
         return BadRequest("Create Error");
       }
 
-      await _userStore.AddToRoleAsync(user, model.Role);
+      Guid gid = Guid.Parse(id);
+      var @event = new MerchantRegisteredIntergrationEvent(gid);
 
-      string id = await _userStore.GetUserIdAsync(user);
+      _eventBusPublisher.Publish(@event);
 
-      if (id != null)
-      {
-        Guid gid = Guid.Parse(id);
-        var @event = new MerchantRegisteredIntergrationEvent(gid);
-
-        _eventBusPublisher.Publish(@event);
-
-        return Ok();
-      }
-
-      else return BadRequest("No send intergrationevent");
+      return Ok("create successed");
     }
   }    
 }

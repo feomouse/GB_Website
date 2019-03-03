@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace GB_Project.Services.IdentityService.IdentityInfrastructure.Repository
 {
-    public class AppUserStore : IUserStore<AppUser>, IUserRoleStore<AppUser>, IUserPasswordStore<AppUser>, IUserEmailStore<AppUser> 
+    public class AppUserStore : IUserStore<AppUser>, IUserRoleStore<AppUser>, IUserPasswordStore<AppUser>, IUserEmailStore<AppUser>, IRepository
     {
       public AppUserStore()
       {
@@ -168,7 +168,7 @@ namespace GB_Project.Services.IdentityService.IdentityInfrastructure.Repository
       }
       #endregion
 
-      #region SignIn
+      #region IRepository
       public Task<SignInResult> PasswordSignInAsync(AppUser user, string password, bool isPersistent, bool lockoutOnFailure)
       {
         return DbContextExtensions.signInManager.PasswordSignInAsync(user, password, isPersistent, lockoutOnFailure);

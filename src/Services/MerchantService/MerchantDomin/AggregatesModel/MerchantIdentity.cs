@@ -38,6 +38,7 @@ namespace GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel
                           string licenseCode, string licenseName, string licenseOwner, DateTime availableSatartTime, 
                           DateTime availableTime, string tel)
     {
+      PkId = Guid.NewGuid();
       IdentityName = identityName;
       IdentityNum = identityNum;
       IdentityImgF = identityImgF;

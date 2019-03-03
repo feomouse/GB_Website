@@ -22,9 +22,9 @@ namespace GB_Project.Services.MerchantService.MerchantInfrastructure.Repository
         return _context.SaveChangesAsync();
       }
 
-      public Task<int> AddIdentity ( MerchantIdentity merchantIdentity )
+      public Task<int> AddIdentity (MerchantBasic merchantBasic, MerchantIdentity merchantIdentity)
       {
-        _context.merchantIdentitys.Add(merchantIdentity);
+        merchantBasic.SetIdentity(merchantIdentity);
 
         return _context.SaveChangesAsync();
       }

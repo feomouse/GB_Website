@@ -39,10 +39,10 @@ namespace GB_Project.Services.IdentityService.UnitTests.IdentityInfrastructureUn
     }
 
     /// <summary>
-    /// 添加用户到角色
+    /// 添加用户到角色, 判断是否添加成功
     /// </summary>
     [TestMethod]
-    public void TestAddUserToRoleAsync()
+    public void TestAddUserToRoleAsyncAndIsInRoleAsync()
     {
       var user = new AppUser("1074393555@qq.com", "125556");
       IdentityResult result = config.UserRepository.CreateAsync(user).GetAwaiter().GetResult();
@@ -52,6 +52,20 @@ namespace GB_Project.Services.IdentityService.UnitTests.IdentityInfrastructureUn
 
       Assert.AreEqual(true, addResult.Succeeded);
       Assert.AreEqual(true, testResult);
+    }
+
+    /// <summary>
+    /// 根据用户实体获取用户主键
+    /// </summary>
+    [TestMethod]
+    public void TestGetUserIdAsync()
+    {
+      var user = new AppUser("1454393555@qq.com", "1255546");
+      IdentityResult result = config.UserRepository.CreateAsync(user).GetAwaiter().GetResult();
+
+      var id = config.UserRepository.GetUserIdAsync(user);
+
+      Assert.IsNotNull(id);
     }
   }
 }

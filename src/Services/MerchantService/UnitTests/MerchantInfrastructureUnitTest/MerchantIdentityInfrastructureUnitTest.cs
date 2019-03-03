@@ -21,11 +21,12 @@ namespace GB_Project.Services.MerchantService.UnitTests.MerchantInfrastructureUn
     [TestMethod]
     public void TestAddIdentity()
     {
+      var merchantBasic = config.Repository.GetMerhcntBasicByMerchantId(new Guid("1691A5D2-0687-403C-9CDC-08D69679A372"));
       var merchantIdentity = new MerchantIdentity("老吴", "440507199607030615", "/d/imgs/f/f.jpg", "/d/imgs/b/b.jpg", "/d/imgs/l/l.jpg", 
                           "1111111111111", "小小食品有限公司", "吴斐", DateTime.Now, 
                           DateTime.Now.AddMonths(10), "13076384872");
 
-      int result = config.Repository.AddIdentity(merchantIdentity).GetAwaiter().GetResult();
+      int result = config.Repository.AddIdentity(merchantBasic, merchantIdentity).GetAwaiter().GetResult();
 
       Assert.AreNotEqual(0, result);
     }

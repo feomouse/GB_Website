@@ -27,6 +27,9 @@ using GB_Project.EventBus.BasicEventBus.Abstraction;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using GB_Project.EventBus.BasicEventBus;
+using MediatR;
+using GB_Project.Services.IdentityService.IdentityAPI.Modules;
+using GB_Project.Services.IdentityService.IdentityAPI.Query;
 
 namespace IdentityAPI
 {
@@ -40,7 +43,7 @@ namespace IdentityAPI
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -97,14 +100,24 @@ namespace IdentityAPI
             DbContextExtensions.roleManager = provider.GetService<RoleManager<AppRole>>();
             DbContextExtensions.signInManager = provider.GetService<SignInManager<AppUser>>();
 
-            services.AddTransient<AppRoleStore>();
-            services.AddTransient<AppUserStore>();
+/*             services.AddTransient<AppRoleStore>();
+            services.AddTransient<AppUserStore>(); */
 
-            // var builder = new ContainerBuilder();
+            services.AddSingleton<IUserStore<AppUser>, AppUserStore>();
+            services.AddSingleton<IUserEmailStore<AppUser>, AppUserStore>();
+            services.AddSingleton<IUserRoleStore<AppUser>, AppUserStore>();
+            services.AddSingleton<IRoleStore<AppRole>, AppRoleStore>();
+            services.AddSingleton<IRepository, AppUserStore>();
 
-            // builder.Populate(services);
+            services.AddSingleton<IUserQuery, UserQuery>();
 
-            // return new AutofacServiceProvider(builder.Build());
+            var builder = new ContainerBuilder();
+
+            builder.Populate(services);
+
+            builder.RegisterModule(new MediatRModule());
+
+            return new AutofacServiceProvider(builder.Build());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

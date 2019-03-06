@@ -35,41 +35,67 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
          return dic;
       }
 
-      public Guid CreateShop(Shop newShop)
+      public int CreateShop(Shop newShop)
       {
         _context.shops.Add(newShop);
 
-        _context.SaveChanges();
-
-        return _context.shops.Where(s => s.Name == newShop.Name).Single().PkId;
+        return _context.SaveChanges();
       }
 
       public Shop GetShopByName(string shopName)
       {
-        return _context.shops.Where(s => s.Name == shopName).SingleOrDefault();
+        return _context.shops.Where(s => s.Name == shopName).First();
       }
 
-      public Guid CreateShopProductType(ProductType type)
+      public List<Shop> GetShops()
+      {
+        return _context.shops.ToList();
+      }
+
+      public Shop GetShopByShopId(string shopId)
+      {
+        return _context.shops.Where(s => s.PkId == new Guid(shopId)).First();
+      }
+
+      public int CreateShopProductType(ProductType type)
       {
         _context.producttypes.Add(type);
 
-        _context.SaveChanges();
-
-        return _context.producttypes.Where(t => t.TypeName == type.TypeName).Single().PkId;
+        return _context.SaveChanges();
       }
 
-      public List<ProductType> GetShopProductTypesByShopId(Guid shopId)
+      public List<ProductType> GetShopProductTypesByShopName(string shopName)
       {
-        return _context.producttypes.Where(t => t.ShopId == shopId).ToList();
+        var shop = _context.shops.Where(s => s.Name == shopName).First();
+        return _context.producttypes.Where(t => t.ShopId == shop.PkId).ToList();
       }
 
-      public Guid AddShopProduct(Product product)
+      public ProductType GetShopProductTypeByShopProductTypeId(Guid productTypeId)
+      {
+        return _context.producttypes.Where(pt => pt.PkId == productTypeId).First();
+      }
+
+      public int AddShopProduct(Product product)
       {
         _context.products.Add(product);
 
-        _context.SaveChanges();
+        return _context.SaveChanges();
+      }
 
-        return _context.products.Where(p => p.PkId == product.PkId).SingleOrDefault().PkId;
+      public List<Product> GetShopProductsByShopName(string name)
+      {
+        List<Product> products = new List<Product>();
+
+        Shop shop = _context.shops.Where(s => s.Name == name).First();
+
+        List<ProductType> types = _context.producttypes.Where(p => p.ShopId == shop.PkId).ToList();
+
+        foreach(var type in types)
+        {
+          products.AddRange(_context.products.Where(p => p._ProductType == type).ToList());
+        }
+
+        return products;
       }
     }
 }

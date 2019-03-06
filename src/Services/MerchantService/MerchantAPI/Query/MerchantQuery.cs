@@ -16,15 +16,9 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Query
       _repo = repo;
     }
 
-    public MerchantBasic GetMerchantBasicByMerchantId(Guid merchantId)
+    public MerchantBasic GetMerchantBasicByMerchantId(string merchantId)
     {
-/*        using(var connection = new SqlConnection(connectionString))
-       {
-         connection.Open();
 
-         return connection.Query<MerchantBasic>(@"SELECT * FROM [merchant].[MerchantBasic] WHERE AuthPkId = @MerId",
-                                         new {MerId = merchantId}).First();
-       } */
        return _repo.GetMerhcntBasicByMerchantId(merchantId);
     }
   }

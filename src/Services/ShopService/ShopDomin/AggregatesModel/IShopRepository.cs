@@ -9,15 +9,23 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
     {
         Dictionary<int, string> GetShopTypeInfo();
 
-        Guid CreateShop(Shop newShop);
+        int CreateShop(Shop newShop);
 
         Shop GetShopByName(string shopName);
 
-        Guid CreateShopProductType(ProductType type);
+        List<Shop> GetShops();
 
-        List<ProductType> GetShopProductTypesByShopId(Guid shopId);
+        Shop GetShopByShopId(string shopId);
 
-        Guid AddShopProduct(Product product);
+        int CreateShopProductType(ProductType type);
+
+        List<ProductType> GetShopProductTypesByShopName(string shopName);
+
+        ProductType GetShopProductTypeByShopProductTypeId(Guid productTypeId);
+
+        int AddShopProduct(Product product);
+
+        List<Product> GetShopProductsByShopName(string name);
 /* 
         void AddGBProduct(GBProduct newgbProduct);
 

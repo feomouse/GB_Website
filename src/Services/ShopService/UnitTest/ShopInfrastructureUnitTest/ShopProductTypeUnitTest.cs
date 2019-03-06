@@ -20,26 +20,23 @@ namespace GB_Project.Services.ShopService.UnitTest.ShopInfrastructureUnitTest
       /// 创建门店产品类型
       /// </summary>
       [TestMethod]
-      public void TestCreateShopProductType()
+      public void TestCreateProductTypeInShop()
       {
-        var shop = config.Repository.GetShopByName("方格面包铺");
+        var shop = config.Repository.GetShopByName("xx面包铺");
         
-        var productType = new ProductType(shop, "面食");
-        var productTypeId = config.Repository.CreateShopProductType(productType);
+        var productType = new ProductType(shop, "凉菜");
+        var result = config.Repository.CreateShopProductType(productType);
 
-        Assert.IsInstanceOfType(productTypeId, typeof(Guid));
-        Assert.IsNotNull(productTypeId);
+        Assert.AreNotEqual(0, result);
+        Assert.IsNotNull(result);
       }
 
-      /// <summary>
-      /// 根据门店主键获取门店全部产品类型
-      /// </summary>
       [TestMethod]
-      public void TestGetShopProductTypesByShopId()
+      public void TestGetShopProductTypesByShopName()
       {
-        List<ProductType> productTypes = config.Repository.GetShopProductTypesByShopId(new Guid("C4CAA33A-BA64-42EC-20DE-08D69CA4202D"));
-
-        Assert.AreEqual("B66E9E8F-C80E-469C-7A62-08D69CA530DE", productTypes[0].PkId.ToString(), true);
+        List<ProductType> types = config.Repository.GetShopProductTypesByShopName("方格面包铺");
+      
+        Assert.AreNotEqual(0, types.Count);
       }
   }
 }

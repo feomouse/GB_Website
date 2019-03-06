@@ -31,7 +31,7 @@ namespace GB_Project.Services.MerchantService.UnitTests.MerchantInfrastructureUn
     [TestMethod]
     public void TestAddShopIdToMerchant()
     {
-      var merchantBasic = config.Repository.GetMerhcntBasicByMerchantId(new Guid("1691A5D2-0687-403C-9CDC-08D69679A372"));
+      var merchantBasic = config.Repository.GetMerhcntBasicByMerchantId("1691A5D2-0687-403C-9CDC-08D69679A372");
 
       int result = config.Repository.AddShopIdToMerchant(merchantBasic, Guid.NewGuid()).GetAwaiter().GetResult();
 
@@ -45,7 +45,7 @@ namespace GB_Project.Services.MerchantService.UnitTests.MerchantInfrastructureUn
     [TestMethod]
     public void TestGetMerhcntBasicByMerchantId()
     {
-      var merchantBasic = config.Repository.GetMerhcntBasicByMerchantId(new Guid("1691A5D2-0687-403C-9CDC-08D69679A372"));
+      var merchantBasic = config.Repository.GetMerhcntBasicByMerchantId("1691A5D2-0687-403C-9CDC-08D69679A372");
 
       Assert.AreEqual("1691A5D2-0687-403C-9CDC-08D69679A372", merchantBasic.AuthPkId.ToString(), true);
     } 

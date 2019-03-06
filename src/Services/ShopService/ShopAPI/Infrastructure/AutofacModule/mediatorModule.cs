@@ -1,6 +1,6 @@
 using Autofac;
 using MediatR;
-using GB_Project.Services.ShopService.ShopAPI.Application.Command;
+using GB_Project.Services.ShopService.ShopAPI.Application.Commands;
 using System;
 using System.Reflection;
 

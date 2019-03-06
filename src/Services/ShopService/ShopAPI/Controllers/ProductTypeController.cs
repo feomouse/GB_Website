@@ -2,46 +2,54 @@ using System;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using GB_Project.Services.ShopService.ShopAPI.Application.Command;
+using GB_Project.Services.ShopService.ShopAPI.Application.Commands;
 using GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries;
 using GB_Project.Services.ShopService.ShopDomin.AggregatesModel;
+using System.Collections.Generic;
+using GB_Project.Services.ShopService.ShopAPI.ViewModels;
 
 namespace GB_Project.Services.ShopService.ShopAPI.Controllers
 {
-    [Route("v1/api/[controller]")]
+    [Route("v1/api/productType")]
     public class ProductTypeController : ControllerBase
     {
       private IMediator _mediator;
-      private IQuery _query;
+      private IShopQuery _query;
 
-      public ProductTypeController ( IMediator mediator, IQuery query)
+      public ProductTypeController ( IMediator mediator, IShopQuery query)
       {
         _mediator = mediator;
         _query = query;
       }
 
       [HttpGet]
-      public ActionResult<ProductType> GetProductTypeByNameAndShopId (string name, Guid shopId)
+      [Route("getProductTypes")]
+      public ActionResult<List<ProductTypesViewModel>> getShopProductTypesByShopName ([FromQuery]string shopName)
       {
-        ProductType productType = _query.getProductTypeByNameAndShopId(name, shopId);
+        List<ProductTypesViewModel> types = new List<ProductTypesViewModel>();
+        List<ProductType> productTypes = _query.getShopProductTypesByShopName(shopName);
 
-        return Ok(productType);
+        foreach(var type in productTypes)
+        {
+          types.Add(new ProductTypesViewModel(type.PkId.ToString(), type.ShopId.ToString(), type.TypeName));
+        }
+        return Ok(types);
       }
 
       [HttpPost]
       [ProducesResponseType(201)]
       [ProducesResponseType(400)]
       [Route("add")]
-      public async Task<ActionResult<ProductType>> AddProductType ([FromBody]AddProductTypeCommand productType )
+      public ActionResult AddProductType ([FromBody]AddProductTypeCommand productType )
       {
-        int num = await _mediator.Send(productType);
+        int num = _mediator.Send(productType).GetAwaiter().GetResult();
 
         if ( num == 0)
         {
-          return BadRequest();
+          return new StatusCodeResult(400);
         }
 
-        return CreatedAtAction(nameof(GetProductTypeByNameAndShopId), new { name = productType.TypeName, shopId = productType.ShopId}, productType);
+        return new StatusCodeResult(201);
       } 
 
     }

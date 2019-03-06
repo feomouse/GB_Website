@@ -38,7 +38,7 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.ViewModels
       IdentityImgB = identityImgB;
       LicenseImg = licenseImg;
       LicenseCode = licenseCode;
-      LicenseOwner = licenseName;
+      LicenseName = licenseName;
       LicenseOwner = licenseOwner;
       AvailableStartTime = availableStartTime;
       AvailableTime = availableTime;

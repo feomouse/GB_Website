@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace GB_Project.Services.MerchantService.MerchantAPI.Application.Commands
 {
-  public class AddIdentityCommandHandler : IRequestHandler<AddIdentityCommand, int>
+  public class AddIdentityCommandHandler : IRequestHandler<AddIdentityCommand, MerchantBasic>
   {
     private IMerchantRepository _repo;
     public AddIdentityCommandHandler(IMerchantRepository repo)
@@ -13,9 +13,14 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Application.Commands
       _repo = repo;
     }
 
-    public Task<int> Handle (AddIdentityCommand command, CancellationToken cancellaitonToken)
+    public Task<MerchantBasic> Handle (AddIdentityCommand command, CancellationToken cancellaitonToken)
     {
-      return _repo.AddIdentity(command.merchantBasic, command.merhcantIdentity);
+      if(_repo.AddIdentity(command.merchantBasic, command.merhcantIdentity).GetAwaiter().GetResult() == 1)
+      {
+        return Task.FromResult(command.merchantBasic);
+      }
+
+      return Task.FromResult((MerchantBasic)null);
     }
   }
 }

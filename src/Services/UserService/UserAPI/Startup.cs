@@ -12,6 +12,18 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using GB_Project.Services.UserService.UserInfrastructure.Context;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using GB_Project.Services.UserService.UserAPI.Query;
+using GB_Project.Services.UserService.UserDomin.UserAggregateModel;
+using GB_Project.Services.UserService.UserInfrastructure.Repository;
+using GB_Project.Services.UserService.UserAPI.Modules;
+using RabbitMQ.Client;
+using GB_Project.Services.UserService.UserAPI.IntergrationEvents.Events;
+using GB_Project.Services.UserService.UserAPI.IntergrationEvents.EventsHandler;
+using GB_Project.EventBus.BasicEventBus.Abstraction;
+using GB_Project.EventBus.BasicEventBus;
+using GB_Project.EventBus.EventBusMQ;
 
 namespace UserAPI
 {
@@ -25,11 +37,44 @@ namespace UserAPI
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddDbContext<UserDbContext>();
+
+            services.AddSingleton<IUserQuery, UserQuery>();
+
+            services.AddSingleton<IUserRepository, UserRepository>();
+
+            services.AddSingleton<IEventSubscriptionsManager, InMemorySubscriptionsManager>();
+
+            services.AddSingleton<IRabbitMqPersistConnection>(sp => {
+                var factory = new ConnectionFactory();
+                factory.UserName = "guest";
+                factory.Password = "guest";
+                factory.VirtualHost = "/";
+                factory.HostName = "localhost";
+
+                return new DefaultRabbitMqPersistConnection(factory);
+            });
+
+            services.AddSingleton<IEventBusSubscriber, RabbitMqEventBusSubscriber>(sp => {
+                var scope = sp.GetRequiredService<ILifetimeScope>();
+                var connection = sp.GetRequiredService<IRabbitMqPersistConnection>();
+                var manager = sp.GetRequiredService<IEventSubscriptionsManager>();
+
+                return new RabbitMqEventBusSubscriber("GB_USER", connection, manager, scope);
+            });
+
+            services.AddTransient<UserRegisteredIntergrationEventHandler>();
+
+            var builder = new ContainerBuilder();
+
+            builder.Populate(services);
+            builder.RegisterModule(new MediatRModule());
+
+            return new AutofacServiceProvider(builder.Build());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +92,9 @@ namespace UserAPI
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            var subscriber = app.ApplicationServices.GetRequiredService<IEventBusSubscriber>();
+            subscriber.Subscribe<UserRegisteredIntergrationEvent, UserRegisteredIntergrationEventHandler>();
         }
     }
 }

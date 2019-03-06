@@ -5,6 +5,6 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Query
 {
   public interface IMerchantQuery
   {
-    MerchantBasic GetMerchantBasicByMerchantId(Guid merchantId);
+    MerchantBasic GetMerchantBasicByMerchantId(string merchantId);
   }
 }

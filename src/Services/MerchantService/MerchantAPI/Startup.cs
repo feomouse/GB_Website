@@ -25,6 +25,8 @@ using RabbitMQ.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using GB_Project.Services.MerchantService.MerchantAPI.Query;
+using GB_Project.Services.MerchantService.MerchantAPI.Modules;
 
 namespace MerchantAPI {
   public class Startup {
@@ -38,11 +40,9 @@ namespace MerchantAPI {
     public IServiceProvider ConfigureServices (IServiceCollection services) {
       services.AddMvc ().SetCompatibilityVersion (CompatibilityVersion.Version_2_2);
 
-      services.AddDbContext<MerchantDbContext> (options => {
-        options.UseSqlServer (Configuration.GetSection ("ConnectionStrings")["SqlServerConnection"], b => b.MigrationsAssembly ("MerchantAPI"));
-      });
+      services.AddDbContext<MerchantDbContext> ();
 
-      services.AddAuthentication().AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => {
+/*       services.AddAuthentication().AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => {
         options.RequireHttpsMetadata = false;
         options.SaveToken = true;
         options.ClaimsIssuer = Configuration["Authentication:JwtIssuer"];
@@ -58,7 +58,7 @@ namespace MerchantAPI {
           ClockSkew = TimeSpan.Zero
         };
       });
-
+ */
 
       services.AddSingleton<IRabbitMqPersistConnection> (sp => {
         var factory = new ConnectionFactory ();
@@ -85,9 +85,13 @@ namespace MerchantAPI {
 
       services.AddTransient<MerchantRegisteredIntergrationEventHandler> ();
 
+      services.AddSingleton<IMerchantQuery, MerchantQuery>();
+      
       var builder = new ContainerBuilder ();
 
       builder.Populate (services);
+
+      builder.RegisterModule(new MediatRModule());
 
       return new AutofacServiceProvider (builder.Build ());
     }

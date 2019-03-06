@@ -39,10 +39,7 @@ namespace ShopAPI
         
             services.AddDbContext<ShopDbContext>();
 
-            services.AddAuthentication(/* options => {
-              options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-              options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            } */).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => {
+/*             services.AddAuthentication().AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => {
               options.RequireHttpsMetadata = false;
               options.SaveToken = true;
               options.ClaimsIssuer = Configuration["Authentication:JwtIssuer"];
@@ -57,7 +54,7 @@ namespace ShopAPI
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero
               };
-            });
+            }); */
 
             var builder = new ContainerBuilder();
 

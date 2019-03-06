@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\MerchantAPI\MerchantAPI.csproj" />
+    <ProjectReference Include="..\..\MerchantDomin\MerchantDomin.csproj" />
   </ItemGroup>
 
 </Project>

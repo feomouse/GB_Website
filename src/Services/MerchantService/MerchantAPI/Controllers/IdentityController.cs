@@ -10,49 +10,59 @@ using System.Threading;
 
 namespace GB_Project.Services.MerchantService.MerchantAPI.Controllers
 {
-  [Route("v1/api/{controller}")]
+  [Route("v1/api/merchant")]
   [ApiController]
   public class IdentityController : ControllerBase
   {
-    private MerchantQuery _query;
+    private IMerchantQuery _query;
 
     private IMediator _mediator;
 
-    public IdentityController(MerchantQuery query, IMediator mediator)
+    public IdentityController(IMerchantQuery query, IMediator mediator)
     {
       _query = query;
       _mediator = mediator;
     }
 
     [HttpPost]
+    [Route("AddIdentity")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public async Task<ActionResult> AddAptitude([FromBody] AptitudeViewModel model)
+    [ProducesResponseType(401)]
+    public StatusCodeResult AddAptitude([FromBody] AptitudeViewModel model)
     {
       if(!ModelState.IsValid)
       {
-        return StatusCode(400);
+        return new StatusCodeResult(400);
       }
 
-      var merchant = _query.GetMerchantBasicByMerchantId(new Guid(model.MerchantId));
+      var merchant = _query.GetMerchantBasicByMerchantId(model.MerchantId);
 
       if(merchant == null)
       {
-        return StatusCode(401);
+        return new StatusCodeResult(401);
       }
 
       var merchantIdentity = new MerchantIdentity(model.IdentityName, model.IdentityNum, model.IdentityImgF, model.IdentityImgB, model.LicenseImg, 
                            model.LicenseCode, model.LicenseName, model.LicenseOwner, model.AvailableStartTime, 
                            model.AvailableTime, model.Tel);
 
-      var result = await _mediator.Send(new AddIdentityCommand(merchant, merchantIdentity), default(CancellationToken));
+      var resultCreate = _mediator.Send(new AddIdentityCommand(merchant, merchantIdentity), default(CancellationToken));
 
-      if(result == 0)
+      if(resultCreate.Result == null)
       {
-        return StatusCode(400);
+        return new StatusCodeResult(400);
       }
 
-      return Ok("Add Aptitude Success");
+      var resultAttach = _mediator.Send(new AttachIdentityIdToMerchantCommand(merchant, merchantIdentity),
+                                              default(CancellationToken));
+
+      if(resultAttach.Result == 0)
+      {
+        return new StatusCodeResult(400);
+      }
+
+      return new StatusCodeResult(200);
     }
   }
 }

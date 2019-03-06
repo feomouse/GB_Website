@@ -13,7 +13,7 @@ using GB_Project.Services.IdentityService.IdentityAPI.Query;
 
 namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
 {
-  [Route("v1/api/[controller]")]
+  [Route("v1/api/identity")]
   public class RegisterController : ControllerBase
   {
     private IUserQuery _userQuery;
@@ -32,6 +32,7 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
     }
 
     [HttpPost]
+    [Route("register")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     public async Task<ObjectResult> Register([FromBody]RegisterViewModel model)
@@ -62,9 +63,17 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
       }
 
       Guid gid = Guid.Parse(id);
-      var @event = new MerchantRegisteredIntergrationEvent(gid);
 
-      _eventBusPublisher.Publish(@event);
+      if(model.Role == "Merchant")
+      {
+        var @event = new MerchantRegisteredIntergrationEvent(gid);
+        _eventBusPublisher.Publish(@event);
+      }
+      else 
+      {
+        var @event = new UserRegisteredIntergrationEvent(gid);
+        _eventBusPublisher.Publish(@event);
+      }
 
       return Ok("create successed");
     }

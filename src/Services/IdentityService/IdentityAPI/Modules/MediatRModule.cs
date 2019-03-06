@@ -12,11 +12,11 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Modules
       modelBuilder.RegisterAssemblyTypes(typeof(IMediator).GetTypeInfo().Assembly).AsImplementedInterfaces();
 
       modelBuilder.RegisterAssemblyTypes(typeof(RegistryCommand).GetTypeInfo().Assembly).AsClosedTypesOf(typeof(IRequestHandler<,>)).AsImplementedInterfaces();
-/* 
+
       modelBuilder.Register<ServiceFactory>(context => {
         var c = context.Resolve<IComponentContext>();
         return t => c.Resolve(t);
-      }); */
+      });
     }
   }
 }

@@ -3,7 +3,7 @@ using MediatR;
 
 namespace GB_Project.Services.MerchantService.MerchantAPI.Application.Commands
 {
-  public class AddIdentityCommand : IRequest<int>
+  public class AddIdentityCommand : IRequest<MerchantBasic>
   {
     public MerchantBasic merchantBasic { get; set; }
 

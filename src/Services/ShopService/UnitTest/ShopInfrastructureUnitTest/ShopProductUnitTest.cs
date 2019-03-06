@@ -21,15 +21,22 @@ namespace GB_Project.Services.ShopService.UnitTest.ShopInfrastructureUnitTest
         [TestMethod]
         public void TestAddShopProduct()
         {
-          var listTypes = config.Repository.GetShopProductTypesByShopId(new Guid("C4CAA33A-BA64-42EC-20DE-08D69CA4202D"));
-          var product = new Product( "牛肉面", listTypes[0],"d/imgs/noodles", 
+          var listTypes = config.Repository.GetShopProductTypesByShopName("方格面包铺");
+          var product = new Product( "牛肉米线", listTypes[0],"d/imgs/ricenood", 
                       13, 0, 0, true);
 
-          var productGuid = config.Repository.AddShopProduct(product);
+          var result = config.Repository.AddShopProduct(product);
 
-          Assert.IsNotNull(productGuid);
-          Assert.IsInstanceOfType(productGuid, typeof(Guid));
-          
+          Assert.IsNotNull(result);
+          Assert.AreNotEqual(0, result);
+        }
+
+        [TestMethod]
+        public void TestGetShopProductsByShopName()
+        {
+            var products = config.Repository.GetShopProductsByShopName("方格面包铺");
+
+            Assert.AreEqual(5, products.Count);
         }
     }
 }

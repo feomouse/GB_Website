@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel;
 using GB_Project.Services.MerchantService.MerchantInfrastructure.Context;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace GB_Project.Services.MerchantService.MerchantInfrastructure.Repository
 {
@@ -36,9 +38,25 @@ namespace GB_Project.Services.MerchantService.MerchantInfrastructure.Repository
          return _context.SaveChangesAsync();
       }
 
-      public MerchantBasic GetMerhcntBasicByMerchantId (Guid merchantId)
+      public Task<int> AddIdentityIdToMerchant (MerchantBasic merchantBasic, MerchantIdentity merchantIdentity)
       {
-        return _context.merchantBasics.Where(m => m.AuthPkId == merchantId).FirstOrDefault();
+        EntityEntry basicEntry = _context.Update(merchantBasic);
+
+        merchantBasic.SetIdentity(merchantIdentity);
+
+        _context.SaveChangesAsync();
+
+        if(basicEntry.State == EntityState.Modified)
+        {
+          return Task.FromResult(1);
+        }
+        return Task.FromResult(0);
+      }
+
+      public MerchantBasic GetMerhcntBasicByMerchantId (string merchantId)
+      {
+        var gid = new Guid(merchantId);
+        return _context.merchantBasics.Where(m => m.AuthPkId == gid).FirstOrDefault();
       }
     }
 }

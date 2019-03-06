@@ -1,6 +1,6 @@
 using Autofac;
 using MediatR;
-using GB_Project.Services.ShopService.ShopAPI.Application.Command;
+using GB_Project.Services.ShopService.ShopAPI.Application.Commands;
 using System;
 using System.Reflection;
 using GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries;
@@ -13,7 +13,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure
     {
       protected override void Load(ContainerBuilder builder)
       {
-        builder.RegisterType<readQuery>().As<IQuery>();
+        builder.RegisterType<ShopQuery>().As<IShopQuery>();
 
         builder.RegisterType<ShopRepository>().As<IShopRepository>();
       }

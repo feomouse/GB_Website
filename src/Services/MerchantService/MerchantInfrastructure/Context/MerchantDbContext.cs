@@ -18,7 +18,7 @@ namespace GB_Project.Services.MerchantService.MerchantInfrastructure.Context
       }
       protected override void OnConfiguring (DbContextOptionsBuilder optionsBuilder)
       {
-        optionsBuilder.UseSqlServer("Server=DESKTOP-FF3NFIK\\SQLEXPRESS;Database=Merchant;Integrated Security=False;User=sa;Password=107409;", m => m.MigrationsAssembly("MerchantAPI"));
+        optionsBuilder.UseSqlServer("Server=DESKTOP-FF3NFIK\\SQLEXPRESS;Database=Merchant;User=sa;Password=107409;", m => m.MigrationsAssembly("MerchantAPI"));
       }
       protected override void OnModelCreating (ModelBuilder modelBuilder)
       {

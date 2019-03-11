@@ -20,7 +20,7 @@ namespace GB_Project.Services.UserService.UnitTests.UserInfrastructureUnitTest
     [TestMethod]
     public void TestCreateUser()
     {
-      User user = new User("/d/imgs/dd.jpge", "广东省广州市天河区新偶像3号");
+      User user = new User(new Guid("EE95ED97-571B-4664-AC6F-08D6A46D4941"), "1074093560@qq.com");
       int result = config.Repository.CreateUser(user);
 
       Assert.AreNotEqual(0, result);

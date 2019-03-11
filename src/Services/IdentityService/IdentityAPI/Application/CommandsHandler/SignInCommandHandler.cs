@@ -18,7 +18,7 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Application.CommandsHa
 
     public async Task<bool> Handle (SignInCommand command, CancellationToken cancellationToken)
     {
-      var signInResult = _userRepo.PasswordSignInAsync(command.User, command.Password, false, false).GetAwaiter().GetResult();
+      var signInResult = _userRepo.PasswordSignInAsync(command.Email, command.Password).GetAwaiter().GetResult();
       
       if(signInResult.Succeeded) return true;
       else return false;

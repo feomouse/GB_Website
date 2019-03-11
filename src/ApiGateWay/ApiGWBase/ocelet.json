@@ -1,7 +1,7 @@
 {
   "ReRoutes":[
     {
-      "DownstreamPathTemplate": "/v1/api/{everything}",
+      "DownstreamPathTemplate": "/v1/api/identity/{everything}",
       "DownstreamScheme": "http:",
       "DownstreamHostAndPorts": [
         {
@@ -13,7 +13,7 @@
       "UpstreamHttpMethod": ["Get", "Post"]
     },
     {
-      "DownstreamPathTemplate": "/v1/api/{everything}",
+      "DownstreamPathTemplate": "/v1/api/merchant/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -24,7 +24,23 @@
       "UpstreamPathTemplate": "/merchant/{everything}",
       "UpstreamHttpMethod": ["Get", "Post"],
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "GateWayKey",
+        "AuthenticationProviderKey": "TokenKey",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/v1/api/user/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 50003
+        }
+      ],
+      "UpstreamPathTemplate": "/user/{everything}",
+      "UpstreamHttpMethod": ["Get", "Post", "Options"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TokenKey",
         "AllowedScopes": []
       }
     },
@@ -38,11 +54,7 @@
         }
       ],
       "UpstreamPathTemplate": "/shop/{everything}",
-      "UpstreamHttpMethod": ["Get", "Post"],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "GateWayKey",
-        "AllowedScopes": []
-      }
+      "UpstreamHttpMethod": ["Get", "Post"]
     }
   ],
   "GlobalConfiguration": {

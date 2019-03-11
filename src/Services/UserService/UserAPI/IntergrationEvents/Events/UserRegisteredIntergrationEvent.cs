@@ -5,9 +5,10 @@ namespace GB_Project.Services.UserService.UserAPI.IntergrationEvents.Events
 {
   public class UserRegisteredIntergrationEvent : IntergrationEvent
   {
-    public UserRegisteredIntergrationEvent(Guid userId) : base(userId, DateTime.Now)
+    public string Email { get; set; } 
+    public UserRegisteredIntergrationEvent(Guid userId, string email) : base(userId, DateTime.Now)
     {
-
+       Email = email;
     }
   }
 }

@@ -24,7 +24,7 @@ using GB_Project.Services.UserService.UserAPI.IntergrationEvents.EventsHandler;
 using GB_Project.EventBus.BasicEventBus.Abstraction;
 using GB_Project.EventBus.BasicEventBus;
 using GB_Project.EventBus.EventBusMQ;
-
+using Swashbuckle.AspNetCore.Swagger;
 namespace UserAPI
 {
     public class Startup
@@ -69,6 +69,11 @@ namespace UserAPI
 
             services.AddTransient<UserRegisteredIntergrationEventHandler>();
 
+            services.AddSwaggerGen(c => 
+            {
+              c.SwaggerDoc("v1", new Info{ Title = "My User api", Version = "v1"});
+            });
+
             var builder = new ContainerBuilder();
 
             builder.Populate(services);
@@ -89,9 +94,17 @@ namespace UserAPI
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseCors();
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c => 
+            {
+              c.SwaggerEndpoint("/swagger/v1/swagger.json", "my api v1");
+            });
 
             var subscriber = app.ApplicationServices.GetRequiredService<IEventBusSubscriber>();
             subscriber.Subscribe<UserRegisteredIntergrationEvent, UserRegisteredIntergrationEventHandler>();

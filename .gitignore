@@ -3,3 +3,4 @@
 src/.dist/
 [Bb]in/
 [Oo]bj/
+node_modules/

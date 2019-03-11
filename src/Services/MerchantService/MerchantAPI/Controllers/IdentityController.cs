@@ -27,9 +27,8 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Controllers
     [HttpPost]
     [Route("AddIdentity")]
     [ProducesResponseType(200)]
-    [ProducesResponseType(400)]
     [ProducesResponseType(401)]
-    public StatusCodeResult AddAptitude([FromBody] AptitudeViewModel model)
+    public async Task<StatusCodeResult> AddAptitude([FromBody] AptitudeViewModel model)
     {
       if(!ModelState.IsValid)
       {
@@ -47,20 +46,10 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Controllers
                            model.LicenseCode, model.LicenseName, model.LicenseOwner, model.AvailableStartTime, 
                            model.AvailableTime, model.Tel);
 
-      var resultCreate = _mediator.Send(new AddIdentityCommand(merchant, merchantIdentity), default(CancellationToken));
-
-      if(resultCreate.Result == null)
-      {
-        return new StatusCodeResult(400);
-      }
+      var resultCreate = _mediator.Send(new AddIdentityCommand(merchant, merchantIdentity), default(CancellationToken)).GetAwaiter().GetResult();
 
       var resultAttach = _mediator.Send(new AttachIdentityIdToMerchantCommand(merchant, merchantIdentity),
-                                              default(CancellationToken));
-
-      if(resultAttach.Result == 0)
-      {
-        return new StatusCodeResult(400);
-      }
+                                              default(CancellationToken)).GetAwaiter().GetResult();
 
       return new StatusCodeResult(200);
     }

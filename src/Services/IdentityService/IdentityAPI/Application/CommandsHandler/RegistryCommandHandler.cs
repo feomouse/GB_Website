@@ -26,10 +26,9 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Application.CommandsHa
     }
     public async Task<string> Handle(RegistryCommand command, CancellationToken cancellation)
     {
-      var user = new AppUser(command.Email, command.Password)
-      {
-        EmailConfirmed = true
-      };
+      var user = new AppUser(command.Email);
+
+      user.SetHashPassword(command.Password);
 
       IdentityResult createResult = await UserRepo.CreateAsync(user, default(CancellationToken));
       

@@ -27,6 +27,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using GB_Project.Services.MerchantService.MerchantAPI.Query;
 using GB_Project.Services.MerchantService.MerchantAPI.Modules;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace MerchantAPI {
   public class Startup {
@@ -57,8 +58,7 @@ namespace MerchantAPI {
           ValidateLifetime = true,
           ClockSkew = TimeSpan.Zero
         };
-      });
- */
+      }); */
 
       services.AddSingleton<IRabbitMqPersistConnection> (sp => {
         var factory = new ConnectionFactory ();
@@ -86,7 +86,12 @@ namespace MerchantAPI {
       services.AddTransient<MerchantRegisteredIntergrationEventHandler> ();
 
       services.AddSingleton<IMerchantQuery, MerchantQuery>();
-      
+
+      services.AddSwaggerGen(c => 
+      {
+        c.SwaggerDoc("v1", new Info {Title = "My Merchnt Api", Version = "v1"});
+      });
+
       var builder = new ContainerBuilder ();
 
       builder.Populate (services);
@@ -107,6 +112,12 @@ namespace MerchantAPI {
 
       app.UseHttpsRedirection ();
       app.UseMvc ();
+
+      app.UseSwagger();
+      app.UseSwaggerUI(c => 
+      {
+        c.SwaggerEndpoint("v1/swagger.json", "My Merchant Api");
+      });
 
       var eventBusSubscriber = app.ApplicationServices.GetRequiredService<IEventBusSubscriber> ();
       eventBusSubscriber.Subscribe<MerchantRegisteredIntergrationEvent, MerchantRegisteredIntergrationEventHandler> ();

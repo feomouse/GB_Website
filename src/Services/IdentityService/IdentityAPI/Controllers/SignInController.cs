@@ -22,7 +22,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
 {
-    [Route("v1/api/{controller}")]
+    [Route("v1/api/identity")]
     public class SignInController : ControllerBase
     {
       private readonly MyIdentityDbContext _db;
@@ -38,11 +38,12 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
       }
 
       [HttpPost]
+      [Route("login")]
       [ProducesResponseType(200)]
       [ProducesResponseType(400)]
       [ProducesResponseType(401)]
       [ProducesResponseType(403)]
-      public async Task<ActionResult> SignIn([FromBody]SignInViewModel model)
+      public async Task<ActionResult> SignIn([FromBody]SignInCommand model)
       {
         if(!ModelState.IsValid)
         {
@@ -56,7 +57,7 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
           return StatusCode(401);
         }
 
-        var signInResult = _mediator.Send(new SignInCommand(user, model.PassWord)).GetAwaiter().GetResult();
+        var signInResult = _mediator.Send(model).GetAwaiter().GetResult();
 
         if(!signInResult)
         {
@@ -65,7 +66,8 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
 
         var token = await GenerateToken(user);
         
-        return Ok(token);
+        var signin = new SignInViewModel(token, user.Id);
+        return Ok(signin);
       }
 
       [HttpPost]
@@ -125,7 +127,7 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
 
         await _mediator.Send(new UpdateUserCommand(user));
 
-        var token = new JwtSecurityToken("https://localhost:5001", "GB",
+        var token = new JwtSecurityToken("https://localhost:5000", "GB",
                                         claims, notBefore, expireTime, cred);
 
         return new TokenViewModel(){ access_token = new JwtSecurityTokenHandler().WriteToken(token), refresh_token = refresh_token};

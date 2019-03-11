@@ -15,7 +15,7 @@ namespace GB_Project.Services.UserService.UserAPI.IntergrationEvents.EventsHandl
     }
     public Task Handle (UserRegisteredIntergrationEvent @event)
     {
-      var user = new User(@event.Id);
+      var user = new User(@event.Id, @event.Email);
       return Task.FromResult(_repo.CreateUser(user));
     }
   }

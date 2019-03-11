@@ -40,17 +40,11 @@ namespace GB_Project.Services.MerchantService.MerchantInfrastructure.Repository
 
       public Task<int> AddIdentityIdToMerchant (MerchantBasic merchantBasic, MerchantIdentity merchantIdentity)
       {
-        EntityEntry basicEntry = _context.Update(merchantBasic);
-
         merchantBasic.SetIdentity(merchantIdentity);
 
         _context.SaveChangesAsync();
 
-        if(basicEntry.State == EntityState.Modified)
-        {
-          return Task.FromResult(1);
-        }
-        return Task.FromResult(0);
+        return Task.FromResult(1);
       }
 
       public MerchantBasic GetMerhcntBasicByMerchantId (string merchantId)

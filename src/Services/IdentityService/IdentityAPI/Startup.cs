@@ -30,6 +30,7 @@ using GB_Project.EventBus.BasicEventBus;
 using MediatR;
 using GB_Project.Services.IdentityService.IdentityAPI.Modules;
 using GB_Project.Services.IdentityService.IdentityAPI.Query;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace IdentityAPI
 {
@@ -53,7 +54,7 @@ namespace IdentityAPI
             .AddEntityFrameworkStores<MyIdentityDbContext>()
             .AddDefaultTokenProviders();
 
-            services.AddAuthentication(options => {
+/*             services.AddAuthentication(options => {
               options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
               options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options => {
@@ -71,7 +72,7 @@ namespace IdentityAPI
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero
               };
-            });
+            }); */
 
             services.AddSingleton<IRabbitMqPersistConnection>(sp =>
             {
@@ -111,6 +112,11 @@ namespace IdentityAPI
 
             services.AddSingleton<IUserQuery, UserQuery>();
 
+            services.AddSwaggerGen(c => 
+            {
+              c.SwaggerDoc("v1", new Info{ Title = "My Identity api", Version = "v1"});
+            });
+
             var builder = new ContainerBuilder();
 
             builder.Populate(services);
@@ -136,6 +142,13 @@ namespace IdentityAPI
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c => 
+            {
+              c.SwaggerEndpoint("/swagger/v1/swagger.json", "my api v1");
+            });
         }
     }
 }

@@ -5,6 +5,6 @@ namespace GB_Project.Services.IdentityService.IdentityDomin.AggregatesModel
 {
   public interface IRepository
   {
-      Task<SignInResult> PasswordSignInAsync(AppUser user, string password, bool isPersistent, bool lockoutOnFailure);
+      Task<SignInResult> PasswordSignInAsync(string user, string password);
   }
 }

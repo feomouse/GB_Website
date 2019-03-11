@@ -169,9 +169,11 @@ namespace GB_Project.Services.IdentityService.IdentityInfrastructure.Repository
       #endregion
 
       #region IRepository
-      public Task<SignInResult> PasswordSignInAsync(AppUser user, string password, bool isPersistent, bool lockoutOnFailure)
+      public Task<SignInResult> PasswordSignInAsync(string user, string password)
       {
-        return DbContextExtensions.signInManager.PasswordSignInAsync(user, password, isPersistent, lockoutOnFailure);
+        Task<SignInResult> result = DbContextExtensions.signInManager.PasswordSignInAsync(user, password, false, false);
+
+        return result;
       }
       #endregion
     }

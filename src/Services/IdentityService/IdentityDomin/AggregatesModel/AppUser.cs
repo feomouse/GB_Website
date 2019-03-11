@@ -12,13 +12,21 @@ namespace GB_Project.Services.IdentityService.IdentityDomin.AggregatesModel
 
       }
 
-      public AppUser (string userName, string password)
+      public AppUser (string userName)
       {
         UserName = userName;
         Email = userName;
-        PasswordHash = password;
         ConcurrencyStamp = DateTime.Now.ToString();
         SecurityStamp = Guid.NewGuid().ToString();
+      }
+
+      public void SetHashPassword (string password)
+      {
+        var hasher = new PasswordHasher<AppUser>();
+
+        string hashPassword = hasher.HashPassword(this, password);
+
+        PasswordHash = hashPassword;
       }
 
       public void SetRefreshToken ( string refreshToken)

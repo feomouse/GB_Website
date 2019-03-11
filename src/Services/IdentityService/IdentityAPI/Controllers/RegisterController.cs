@@ -71,7 +71,7 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
       }
       else 
       {
-        var @event = new UserRegisteredIntergrationEvent(gid);
+        var @event = new UserRegisteredIntergrationEvent(gid, model.Email);
         _eventBusPublisher.Publish(@event);
       }
 

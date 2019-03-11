@@ -30,14 +30,10 @@ namespace ApiGWBase
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddAuthentication(
-			    //options => {
-              //options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-              //options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //}
-	    ).AddJwtBearer("GateWayKey", options => {
+            services.AddAuthentication().AddJwtBearer("TokenKey", options => {
               options.RequireHttpsMetadata = false;
               options.SaveToken = true;
               options.ClaimsIssuer = Configuration["Authentication:JwtIssuer"];
@@ -52,7 +48,7 @@ namespace ApiGWBase
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero
               };
-            });
+            }); 
 
             services.AddOcelot();
         }

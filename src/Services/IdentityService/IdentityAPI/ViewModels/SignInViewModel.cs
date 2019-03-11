@@ -1,16 +1,18 @@
+using System;
+
 namespace GB_Project.Services.IdentityService.IdentityAPI.ViewModels
 {
     public class SignInViewModel
     {
-      public string Email { get; set; }
+      public TokenViewModel Token { get; set; }
 
-      public string PassWord { get; set; }
+      public Guid PkId { get; set; }
 
       
-      public SignInViewModel(string email, string passWord)
+      public SignInViewModel(TokenViewModel token, Guid pkId)
       {
-        Email = email;
-        PassWord = passWord; 
+        Token = token;
+        PkId = pkId; 
       }
     }
 }

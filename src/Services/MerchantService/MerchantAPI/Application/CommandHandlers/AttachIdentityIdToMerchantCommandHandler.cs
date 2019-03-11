@@ -15,7 +15,9 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Application.Commands
 
     public Task<int> Handle (AttachIdentityIdToMerchantCommand command, CancellationToken cancellaitonToken)
     {
-      return  _repo.AddIdentityIdToMerchant(command.merchantBasic, command.merhcantIdentity);
+      _repo.AddIdentityIdToMerchant(command.merchantBasic, command.merhcantIdentity);
+
+      return Task.FromResult(1);
     }
   }
 }

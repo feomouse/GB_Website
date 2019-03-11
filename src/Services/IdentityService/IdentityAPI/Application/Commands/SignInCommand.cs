@@ -6,13 +6,13 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Application.Commands
 {
   public class SignInCommand : IRequest<bool>
   {
-    public AppUser User { get; set; }
+    public string Email { get; set; }
 
     public string Password { get; set; }
 
-    public SignInCommand (AppUser user, string password)
+    public SignInCommand (string email, string password)
     {
-      User = user;
+      Email = email;
       Password = password;
     }
   }

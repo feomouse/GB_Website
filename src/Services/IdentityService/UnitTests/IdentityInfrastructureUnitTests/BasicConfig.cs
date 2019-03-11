@@ -56,6 +56,8 @@ namespace GB_Project.Services.IdentityService.UnitTests.IdentityInfrastructureUn
 
       DbContextExtensions.roleManager = provider.GetRequiredService<RoleManager<AppRole>>();
 
+      DbContextExtensions.signInManager = provider.GetRequiredService<SignInManager<AppUser>>();
+
       userRepository = provider.GetRequiredService<AppUserStore>();
 
       roleRepository = provider.GetRequiredService<AppRoleStore>();

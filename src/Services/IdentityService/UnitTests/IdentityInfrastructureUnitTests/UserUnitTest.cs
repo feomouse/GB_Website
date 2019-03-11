@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using GB_Project.Services.IdentityService.IdentityInfrastructure.Repository;
 using Microsoft.AspNetCore.Identity;
 using GB_Project.Services.IdentityService.IdentityDomin.AggregatesModel;
+using System.Threading.Tasks;
 
 namespace GB_Project.Services.IdentityService.UnitTests.IdentityInfrastructureUnitTests
 { 
@@ -32,7 +33,9 @@ namespace GB_Project.Services.IdentityService.UnitTests.IdentityInfrastructureUn
     [TestMethod]
     public void TestCreateUserAsync()
     {
-      var user = new AppUser("1074393541@qq.com", "125256");
+      var user = new AppUser("1074393541@qq.com");
+      user.SetHashPassword("125256");
+
       IdentityResult result = config.UserRepository.CreateAsync(user).GetAwaiter().GetResult();
 
       Assert.AreEqual(true, result.Succeeded);
@@ -44,7 +47,9 @@ namespace GB_Project.Services.IdentityService.UnitTests.IdentityInfrastructureUn
     [TestMethod]
     public void TestAddUserToRoleAsyncAndIsInRoleAsync()
     {
-      var user = new AppUser("1074393555@qq.com", "125556");
+      var user = new AppUser("1074393555@qq.com");
+      user.SetHashPassword("125556");
+
       IdentityResult result = config.UserRepository.CreateAsync(user).GetAwaiter().GetResult();
       
       IdentityResult addResult = config.UserRepository.MyAddToRoleAsync(user, "customer").GetAwaiter().GetResult();
@@ -60,12 +65,24 @@ namespace GB_Project.Services.IdentityService.UnitTests.IdentityInfrastructureUn
     [TestMethod]
     public void TestGetUserIdAsync()
     {
-      var user = new AppUser("1454393555@qq.com", "1255546");
+      var user = new AppUser("1454393555@qq.com");
+      user.SetHashPassword("1255546");
+
       IdentityResult result = config.UserRepository.CreateAsync(user).GetAwaiter().GetResult();
 
       var id = config.UserRepository.GetUserIdAsync(user);
 
       Assert.IsNotNull(id);
+    }
+
+    [TestMethod]
+    public void TestPasswordSignInAsync()
+    {
+      var result = config.UserRepository.PasswordSignInAsync("111141221@qq.com", "123123123");
+    
+      var ress = result.GetAwaiter().GetResult();
+
+      Assert.AreEqual(true, ress.Succeeded);
     }
   }
 }

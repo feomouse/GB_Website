@@ -15,6 +15,10 @@ namespace GB_Project.Services.UserService.UserInfrastructure.EntityTypeConfigura
       builder.Property(b => b.LookingImg).HasColumnType("varchar(50)");
 
       builder.Property(b => b.Address).HasColumnType("varchar(50)");
+
+      builder.Property(b => b.Email).HasColumnType("varchar(25)").IsRequired();
+
+      builder.Property(b => b.UserName).HasColumnType("nvarchar(10)");
     } 
   }
 }

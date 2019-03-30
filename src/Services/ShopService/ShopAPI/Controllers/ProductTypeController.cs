@@ -10,7 +10,7 @@ using GB_Project.Services.ShopService.ShopAPI.ViewModels;
 
 namespace GB_Project.Services.ShopService.ShopAPI.Controllers
 {
-    [Route("v1/api/productType")]
+    [Route("v1/api/shop/productType")]
     public class ProductTypeController : ControllerBase
     {
       private IMediator _mediator;
@@ -21,7 +21,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         _mediator = mediator;
         _query = query;
       }
-
+/* 
       [HttpGet]
       [Route("getProductTypes")]
       public ActionResult<List<ProductTypesViewModel>> getShopProductTypesByShopName ([FromQuery]string shopName)
@@ -34,7 +34,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
           types.Add(new ProductTypesViewModel(type.PkId.ToString(), type.ShopId.ToString(), type.TypeName));
         }
         return Ok(types);
-      }
+      } */
 
       [HttpPost]
       [ProducesResponseType(201)]

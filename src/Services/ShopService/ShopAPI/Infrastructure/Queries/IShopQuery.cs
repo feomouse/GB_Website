@@ -6,19 +6,23 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
 {
     public interface IShopQuery
     {
-      List<Shop> getShops();
+      //List<Shop> getShops();
       Shop getShopByName( string name );  
 
-      Product getProductByName(string name);
+      Shop getShopByMerchantId( string merchantId);
 
-      List<Product> GetShopProductsByShopName(string shopName);
+      List<GBProduct> getGBProductsByShopName( string shopName);
 
-      GBProduct getGBProductByName( string name );
+      //Product getProductByName(string name);
 
-      GBProductItem getGBProductItemByGbIdAndName( Guid gbid, string name);
+      //List<Product> GetShopProductsByShopName(string shopName);
 
-      List<ProductType> getShopProductTypesByShopName(string shopName);
+      //GBProduct getGBProductByName( string name );
 
-      GBRule getGBRuleByContentAndGBProductId(string content, Guid gbProId);
+      //GBProductItem getGBProductItemByGbIdAndName( Guid gbid, string name);
+
+      //List<ProductType> getShopProductTypesByShopName(string shopName);
+
+      //GBRule getGBRuleByContentAndGBProductId(string content, Guid gbProId);
     } 
 }

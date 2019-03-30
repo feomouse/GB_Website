@@ -20,9 +20,9 @@ namespace GB_Project.Services.ShopService.UnitTest.ShopInfrastructureUnitTest
       /// 创建门店产品类型
       /// </summary>
       [TestMethod]
-      public void TestCreateProductTypeInShop()
+      public void TestCreateShopProductType()
       {
-        var shop = config.Repository.GetShopByName("xx面包铺");
+        var shop = config.Repository.GetShopByName("花园行车铺");
         
         var productType = new ProductType(shop, "凉菜");
         var result = config.Repository.CreateShopProductType(productType);
@@ -32,11 +32,19 @@ namespace GB_Project.Services.ShopService.UnitTest.ShopInfrastructureUnitTest
       }
 
       [TestMethod]
+      public void TestGetProductTypeByProductTypeId()
+      {
+        var type = config.Repository.GetProductTypeByProductTypeId("67C6CC2F-043F-4C51-437B-08D6B469234C");
+
+        Assert.IsNotNull(type);
+      }
+
+/*       [TestMethod]
       public void TestGetShopProductTypesByShopName()
       {
         List<ProductType> types = config.Repository.GetShopProductTypesByShopName("方格面包铺");
       
         Assert.AreNotEqual(0, types.Count);
-      }
+      } */
   }
 }

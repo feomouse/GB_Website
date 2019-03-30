@@ -25,21 +25,16 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Controllers
 
      [HttpPost]
      [Route("AttachShop")]
-     public async Task<StatusCodeResult> AttachShopToMerchant([FromBody] ShopViewModel model)
+     [ProducesResponseType(400)]
+     [ProducesResponseType(200)]
+     public async Task<StatusCodeResult> AttachShopToMerchant([FromBody] AddShopCommand model)
      {
        if(!ModelState.IsValid)
        {
          return new StatusCodeResult(400);
        }
 
-       MerchantBasic merchantBasic = _query.GetMerchantBasicByMerchantId(model.MerchantId);
- 
-       if(merchantBasic == null)
-       {
-         return new StatusCodeResult(401);
-       } 
-
-       var result = await _mediator.Send(new AddShopCommand(merchantBasic, model.ShopId), default(CancellationToken));
+       var result = await _mediator.Send(model, default(CancellationToken));
      
        if(result == 0)
        {

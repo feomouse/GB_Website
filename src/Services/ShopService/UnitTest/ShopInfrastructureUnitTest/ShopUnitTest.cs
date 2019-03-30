@@ -3,6 +3,7 @@ using GB_Project.Services.ShopService.ShopInfrastructure.Repository;
 using System;
 using GB_Project.Services.ShopService.ShopDomin.AggregatesModel;
 using System.Collections.Generic;
+using System.Text;
 
 namespace GB_Project.Services.ShopService.UnitTest.ShopInfrastructureUnitTest
 {
@@ -36,11 +37,61 @@ namespace GB_Project.Services.ShopService.UnitTest.ShopInfrastructureUnitTest
         [TestMethod]
         public void TestGetShopByName()
         {
-            var shop = config.Repository.GetShopByName("方格面包铺");
+            var shop = config.Repository.GetShopByName("jkk面包铺");
             Assert.IsNotNull(shop);
-            Assert.AreEqual("方格面包铺", shop.Name);
+            Assert.AreEqual("jkk面包铺", shop.Name);
         }
 
+        [TestMethod]
+        public void TestCheckIfIdentitied()
+        {
+            var result = config.Repository.CheckIfIdentitied("BBA600CA-71C7-4DAD-3AD5-08D6A783F614");
+
+            Assert.AreEqual(false, result);
+        }
+
+        [TestMethod]
+        public void TestGetShopByMerchantId()
+        {
+            var shop = config.Repository.GetShopByMerchantId("E6DC7A9D-2873-45C5-8A78-E47ACBB0CE8E");
+
+            Assert.IsNotNull(shop);
+            Assert.AreEqual("E6DC7A9D-2873-45C5-8A78-E47ACBB0CE8E", shop.RegisterId.ToString(), true);
+        }
+
+        [TestMethod]
+        public void TestIdentityMerchantOfShop()
+        {
+            var result = config.Repository.IdentityMerchantOfShop("81C58897-173B-4B66-6CF0-08D6A91AA29F", false);
+        
+            Assert.AreNotEqual(0 ,result);
+        }
+
+        [TestMethod]
+        public void TestUploadShopImg()
+        {
+            var shop = config.Repository.GetShopByName("DDD");
+            var result = config.Repository.UploadShopImg(shop, "testimg.test", Encoding.Default.GetBytes("efrre"));
+
+            Assert.AreNotEqual("", result);
+        }
+
+        [TestMethod]
+        public void TestSetGB()
+        {
+            int result = config.Repository.SetGB("B94EC18C-B604-4966-EFD7-08D6B3E894DA");
+
+            Assert.AreNotEqual(0, result);
+        }
+
+        [TestMethod]
+        public void TestGetShopByShopId()
+        {
+            var shop = config.Repository.GetShopByShopId("B94EC18C-B604-4966-EFD7-08D6B3E894DA");
+
+            Assert.IsNotNull(shop);
+        }
+/* 
         [TestMethod]
         public void TestGetShopByShopId()
         {
@@ -48,15 +99,15 @@ namespace GB_Project.Services.ShopService.UnitTest.ShopInfrastructureUnitTest
 
             Assert.IsNotNull(shop);
             Assert.AreEqual("C4CAA33A-BA64-42EC-20DE-08D69CA4202D", shop.PkId.ToString(), true);
-        }
+        } */
 
-        [TestMethod]
+/*         [TestMethod]
         public void TestGetShops()
         {
             List<Shop> shops = config.Repository.GetShops();
         
             Assert.AreNotEqual(0, shops.Count);
             Assert.AreEqual("xx面包铺", shops[3].Name);
-        }
+        } */
     }
 }

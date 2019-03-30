@@ -17,28 +17,21 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
       _repo = repo;
     }
 
-    public List<Shop> getShops()
-    {
-      return _repo.GetShops();
-    }
-    
     public Shop getShopByName(string name)
     {
-      using (var connection = new SqlConnection("Server=DESKTOP-FF3NFIK\\SQLEXPRESS;Database=Shop;User=sa;Password=107409;"))
-      {
-        connection.Open();
-
-        var result = connection.Query<Shop>(
-          @"SELECT [shop].[shop].[PkId] as PkId, [shop].[shop].[Name] as Name, [shop].[shop].[Province] as Province, [shop].[shop].[City] as City, 
-          [shop].[shop].[District] as District, [shop].[shop].[Location] as Location, [shop].[shop].[Type] as Type, [shop].[shop].[Tel] as Tel, 
-          [shop].[shop].[RegisterId] as RegisterId, [shop].[shop].[Pic] as Pic FROM [shop].[shop] WHERE [shop].[shop].[Name] = @Name;",
-          new { Name = name }
-        ).First();
-
-        return result;
-      }
+      return _repo.GetShopByName(name);
     }
 
+    public Shop getShopByMerchantId( string merchantId)
+    {
+      return _repo.GetShopByMerchantId(merchantId);
+    }
+
+    public List<GBProduct> getGBProductsByShopName( string shopName)
+    {
+      return _repo.GetGBProductsByShopName(shopName);
+    }
+/* 
     public Product getProductByName(string name) 
     {
       using(var connection = new SqlConnection("Server=DESKTOP-FF3NFIK\\SQLEXPRESS;Database=Shop;User=sa;Password=107409;"))
@@ -51,9 +44,9 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
         ).First();
         return result;
       }
-    }
+    } */
 
-    public List<Product> GetShopProductsByShopName(string shopName)
+/*     public List<Product> GetShopProductsByShopName(string shopName)
     {
        return _repo.GetShopProductsByShopName(shopName);
     }
@@ -61,8 +54,8 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
     public List<ProductType> getShopProductTypesByShopName(string shopName)
     {
       return _repo.GetShopProductTypesByShopName(shopName);
-    }
-
+    } */
+/* 
     public GBProduct getGBProductByName( string name )
     {
       using(var connection = new SqlConnection("Server=DESKTOP-FF3NFIK\\SQLEXPRESS;Database=Shop;User=sa;Password=107409;"))
@@ -100,6 +93,6 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
         ).First();
         return result;
       }
-    }
+    } */
   }
 }

@@ -25,9 +25,11 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
     public string Pic { get; private set; }
 
-    public List<GBProduct> _gbProduct { get; set; }
+    public bool IsIdentitied { get; private set; }
 
-    public List<ProductType> _producttype { get; set; }
+    public bool GroupBuying { get; private set; }
+
+/*     public List<ProductType> _producttype { get; set; } */
 
     public Shop () {
 
@@ -45,11 +47,28 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
        Tel = tel;
        RegisterId = registerId;
        Pic = pic;
+       IsIdentitied = false;
+       GroupBuying = false;
     }
 
     public void SetPkId(Guid pkId)
     {
       PkId = pkId;
+    }
+
+    public void SetIsIdentitied(bool isIdentitied)
+    {
+      IsIdentitied = isIdentitied;
+    }
+
+    public void SetPic(string img)
+    {
+      Pic = img;
+    }
+
+    public void SetGroupBuying(bool result)
+    {
+      GroupBuying = result;
     }
   }
 }

@@ -8,30 +8,29 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.Commands
     public class AddGBProductCommand : IRequest<int>
     {
       [DataMember]
-      public Guid ShopId { get; private set; }
+      public string ProductTypeId { get; set; }
+      [DataMember]
+      public string ProductName { get; set; }
+      [DataMember]
+      public string OrinPrice { get; set; }
+      [DataMember]
+      public string Price { get; set; }
+      [DataMember]
+      public string Quantity { get; set; }
+      [DataMember]
+      public string VailSDate { get; set; }
+      [DataMember]
+      public string VailEDate { get; set; }
+      [DataMember]
+      public string VailTime { get; set; }
+      [DataMember]
+      public string Img { get; set; }
+      [DataMember]
+      public string Remark { get; set; }
 
-      [DataMember]
-      public string ProductName { get; private set; }
-      [DataMember]
-      public int OrinPrice { get; private set; }
-      [DataMember]
-      public int Price { get; private set; }
-      [DataMember]
-      public string Quantity { get; private set; }
-      [DataMember]
-      public DateTime VailSDate { get; private set; }
-      [DataMember]
-      public DateTime VailEDate { get; private set; }
-      [DataMember]
-      public string VailTime { get; private set; }
-      [DataMember]
-      public string Img { get; private set; }
-      [DataMember]
-      public string Remark { get; private set; }
-
-      public AddGBProductCommand ( Guid shopId, string productName, int orinPrice, int price, string quantity, DateTime vailSDate, DateTime vailEDate, string vailTime, string img, string remark)
+      public AddGBProductCommand ( string productTypeId, string productName, string orinPrice, string price, string quantity, string vailSDate, string vailEDate, string vailTime, string img, string remark)
       {
-        ShopId = shopId;
+        ProductTypeId = productTypeId;
         ProductName = productName;
         OrinPrice = orinPrice;
         Price = price;
@@ -41,6 +40,6 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.Commands
         VailTime = vailTime;
         Img = img;
         Remark = remark;
-      }
+      } 
     }
 }

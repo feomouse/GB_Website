@@ -7,6 +7,8 @@ using System;
 using MediatR;
 using GB_Project.Services.MerchantService.MerchantAPI.Application.Commands;
 using System.Threading;
+using GB_Project.EventBus.BasicEventBus.Abstraction;
+using GB_Project.Services.MerchantService.MerchantAPI.IntergrationEvents.Events;
 
 namespace GB_Project.Services.MerchantService.MerchantAPI.Controllers
 {
@@ -18,40 +20,58 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Controllers
 
     private IMediator _mediator;
 
-    public IdentityController(IMerchantQuery query, IMediator mediator)
+    private IEventBusPublisher _publisher;
+
+    public IdentityController(IMerchantQuery query, IMediator mediator, IEventBusPublisher publisher)
     {
       _query = query;
       _mediator = mediator;
+      _publisher = publisher;
     }
 
     [HttpPost]
     [Route("AddIdentity")]
     [ProducesResponseType(200)]
-    [ProducesResponseType(401)]
-    public async Task<StatusCodeResult> AddAptitude([FromBody] AptitudeViewModel model)
+    [ProducesResponseType(400)]
+    public ActionResult AddAptitude([FromBody] AddIdentityCommand command)
     {
       if(!ModelState.IsValid)
       {
         return new StatusCodeResult(400);
       }
 
-      var merchant = _query.GetMerchantBasicByMerchantId(model.MerchantId);
+      var resultCreate = _mediator.Send(command, default(CancellationToken)).GetAwaiter().GetResult();
 
-      if(merchant == null)
+      if(resultCreate != null)
       {
-        return new StatusCodeResult(401);
+        return Ok(resultCreate);
+      } 
+
+      return BadRequest("create error");
+    }
+
+    [HttpPost]
+    [Route("CheckIdentity")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    public ActionResult CheckIdentity([FromBody] CheckIdentityCommand command)
+    {
+      if(!ModelState.IsValid)
+      {
+        return new StatusCodeResult(400);
       }
 
-      var merchantIdentity = new MerchantIdentity(model.IdentityName, model.IdentityNum, model.IdentityImgF, model.IdentityImgB, model.LicenseImg, 
-                           model.LicenseCode, model.LicenseName, model.LicenseOwner, model.AvailableStartTime, 
-                           model.AvailableTime, model.Tel);
+      var result = _mediator.Send(command, default(CancellationToken)).GetAwaiter().GetResult();
 
-      var resultCreate = _mediator.Send(new AddIdentityCommand(merchant, merchantIdentity), default(CancellationToken)).GetAwaiter().GetResult();
+      if(result != 0)
+      {
+        var @event = new MerchantIsIdentitiedIntergrationEvent(new Guid(command.MerchantId), command.CheckResult);
+        _publisher.Publish(@event);
 
-      var resultAttach = _mediator.Send(new AttachIdentityIdToMerchantCommand(merchant, merchantIdentity),
-                                              default(CancellationToken)).GetAwaiter().GetResult();
+        return new StatusCodeResult(200);
+      }
 
-      return new StatusCodeResult(200);
+      else return new BadRequestObjectResult("check fail");
     }
   }
 }

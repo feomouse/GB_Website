@@ -15,7 +15,7 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.EntityConfiguration
 
         gbConfiguration.Property(b => b.Content).HasColumnType("nvarchar(30)"); 
 
-        gbConfiguration.Property<Guid>("GBProductId").HasColumnType("uniqueidentifier").IsRequired();
+        gbConfiguration.HasOne(b => b._GBProduct);
       }
     }
 }

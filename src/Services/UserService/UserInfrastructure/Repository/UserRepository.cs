@@ -2,6 +2,7 @@ using GB_Project.Services.UserService.UserDomin.UserAggregateModel;
 using GB_Project.Services.UserService.UserInfrastructure.Context;
 using System.Linq;
 using System;
+using System.IO;
 
 namespace GB_Project.Services.UserService.UserInfrastructure.Repository
 {
@@ -20,6 +21,13 @@ namespace GB_Project.Services.UserService.UserInfrastructure.Repository
       return _context.SaveChanges();
     }
 
+    public int SetUserName(User user, string userName)
+    {
+      user.SetUserName(userName);
+
+      return _context.SaveChanges();
+    }
+
     
     public int SetUserLocation(User user, string location)
     {
@@ -28,16 +36,25 @@ namespace GB_Project.Services.UserService.UserInfrastructure.Repository
       return _context.SaveChanges();
     }
 
-    public int SetUserImg(User user, string img)
+    public string SetUserImg(User user, string filename, byte[] img)
     {
-      user.SetLookingImg(img);
+      System.IO.File.WriteAllBytes("D:\\nginx-1.12.2\\nginx-1.12.2\\IMGS\\" + filename, img);
 
-      return _context.SaveChanges();
+      string imgUrl = "http://localhost:50020/CustomerImgs/" + filename;
+
+      user.SetLookingImg(imgUrl);
+
+      if(_context.SaveChanges() != 0)
+      {
+        return imgUrl;
+      }
+
+      return "";
     }
 
     public User GetUserByUserId(string userId)
     {
-      return _context.user.Where(u => u.PkId == new Guid(userId)).Single();
+      return _context.user.Where(u => u.PkId == new Guid(userId)).FirstOrDefault();
     }
   } 
 }

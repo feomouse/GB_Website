@@ -13,6 +13,8 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.EntityConfiguration
 
         ptConfiguration.HasKey(b => b.PkId);
 
+        ptConfiguration.HasOne<Shop>(b => b._Shop);
+
         ptConfiguration.Property(b => b.TypeName).HasColumnType("nvarchar(20)"); 
       }
     }

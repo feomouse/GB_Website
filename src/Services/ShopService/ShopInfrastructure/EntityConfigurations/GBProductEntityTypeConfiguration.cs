@@ -31,15 +31,11 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.EntityConfiguration
 
         gbConfiguration.Property(b => b.Remark).HasColumnType("nvarchar(50)"); 
 
-        gbConfiguration.Property<Guid>("ShopId").HasColumnType("uniqueidentifier").IsRequired();
+        gbConfiguration.Property(b => b.IsDisplay).HasColumnType("bit");
 
-        var navigationRule = gbConfiguration.Metadata.FindNavigation(nameof(GBProduct.GbRule));
-      
-        navigationRule.SetPropertyAccessMode(PropertyAccessMode.Field);
+        gbConfiguration.Property(b => b.PraiseNum).HasColumnType("int");
 
-        var navigationProducts = gbConfiguration.Metadata.FindNavigation(nameof(GBProduct.Items));
-      
-        navigationProducts.SetPropertyAccessMode(PropertyAccessMode.Field);
+        gbConfiguration.Property(b => b.MSellNum).HasColumnType("int");
       }
     }
 }

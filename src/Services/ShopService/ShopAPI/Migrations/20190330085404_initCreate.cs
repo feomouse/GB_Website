@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ShopAPI.Migrations
 {
-    public partial class initcreate : Migration
+    public partial class initCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,40 +24,13 @@ namespace ShopAPI.Migrations
                     Type = table.Column<short>(type: "smallint", nullable: false),
                     Tel = table.Column<string>(type: "varchar(11)", nullable: true),
                     RegisterId = table.Column<Guid>(type: "Uniqueidentifier", nullable: false),
-                    Pic = table.Column<string>(type: "varchar(50)", nullable: true)
+                    Pic = table.Column<string>(type: "varchar(50)", nullable: true),
+                    IsIdentitied = table.Column<bool>(type: "bit", nullable: false),
+                    GroupBuying = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_shop", x => x.PkId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GBProduct",
-                schema: "shop",
-                columns: table => new
-                {
-                    PkId = table.Column<Guid>(nullable: false),
-                    ShopId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductName = table.Column<string>(type: "nvarchar(20)", nullable: true),
-                    OrinPrice = table.Column<decimal>(type: "smallmoney", nullable: false),
-                    Price = table.Column<decimal>(type: "smallmoney", nullable: false),
-                    Quantity = table.Column<string>(type: "nvarchar(20)", nullable: true),
-                    VailSDate = table.Column<DateTime>(type: "date", nullable: false),
-                    VailEDate = table.Column<DateTime>(type: "date", nullable: false),
-                    VailTime = table.Column<string>(type: "nvarchar(30)", nullable: true),
-                    Img = table.Column<string>(type: "varchar(50)", nullable: true),
-                    Remark = table.Column<string>(type: "nvarchar(50)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GBProduct", x => x.PkId);
-                    table.ForeignKey(
-                        name: "FK_GBProduct_shop_ShopId",
-                        column: x => x.ShopId,
-                        principalSchema: "shop",
-                        principalTable: "shop",
-                        principalColumn: "PkId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -82,12 +55,44 @@ namespace ShopAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GBProduct",
+                schema: "shop",
+                columns: table => new
+                {
+                    PkId = table.Column<Guid>(nullable: false),
+                    ProductName = table.Column<string>(type: "nvarchar(20)", nullable: true),
+                    OrinPrice = table.Column<decimal>(type: "smallmoney", nullable: false),
+                    Price = table.Column<decimal>(type: "smallmoney", nullable: false),
+                    Quantity = table.Column<string>(type: "nvarchar(20)", nullable: true),
+                    VailSDate = table.Column<DateTime>(type: "date", nullable: false),
+                    VailEDate = table.Column<DateTime>(type: "date", nullable: false),
+                    VailTime = table.Column<string>(type: "nvarchar(30)", nullable: true),
+                    Img = table.Column<string>(type: "varchar(50)", nullable: true),
+                    Remark = table.Column<string>(type: "nvarchar(50)", nullable: true),
+                    IsDisplay = table.Column<bool>(type: "bit", nullable: false),
+                    PraiseNum = table.Column<int>(type: "int", nullable: false),
+                    MSellNum = table.Column<int>(type: "int", nullable: false),
+                    ProductTypeId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GBProduct", x => x.PkId);
+                    table.ForeignKey(
+                        name: "FK_GBProduct_ProductType_ProductTypeId",
+                        column: x => x.ProductTypeId,
+                        principalSchema: "shop",
+                        principalTable: "ProductType",
+                        principalColumn: "PkId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "GBProductItem",
                 schema: "shop",
                 columns: table => new
                 {
                     PkId = table.Column<Guid>(nullable: false),
-                    GbProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GbProductId = table.Column<Guid>(nullable: false),
                     GbItemName = table.Column<string>(nullable: true),
                     GbItemImg = table.Column<string>(nullable: true),
                     GbItemPrice = table.Column<int>(nullable: false)
@@ -110,7 +115,7 @@ namespace ShopAPI.Migrations
                 columns: table => new
                 {
                     PkId = table.Column<Guid>(nullable: false),
-                    GBProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GBProductId = table.Column<Guid>(nullable: false),
                     Content = table.Column<string>(type: "nvarchar(30)", nullable: true)
                 },
                 constraints: table =>
@@ -125,38 +130,11 @@ namespace ShopAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Product",
-                schema: "shop",
-                columns: table => new
-                {
-                    PkId = table.Column<Guid>(nullable: false),
-                    ProductName = table.Column<string>(type: "nvarchar(20)", nullable: true),
-                    ProductTypeId = table.Column<Guid>(nullable: false),
-                    ProductImg = table.Column<string>(type: "varchar(50)", nullable: true),
-                    ProductPrice = table.Column<decimal>(type: "smallmoney", nullable: false),
-                    MSellNum = table.Column<short>(type: "smallint", nullable: false),
-                    PraiseNum = table.Column<short>(type: "smallint", nullable: false),
-                    IsDisplay = table.Column<bool>(type: "bit", nullable: false),
-                    ShopId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Product", x => x.PkId);
-                    table.ForeignKey(
-                        name: "FK_Product_ProductType_ProductTypeId",
-                        column: x => x.ProductTypeId,
-                        principalSchema: "shop",
-                        principalTable: "ProductType",
-                        principalColumn: "PkId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
-                name: "IX_GBProduct_ShopId",
+                name: "IX_GBProduct_ProductTypeId",
                 schema: "shop",
                 table: "GBProduct",
-                column: "ShopId");
+                column: "ProductTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GBProductItem_GbProductId",
@@ -169,12 +147,6 @@ namespace ShopAPI.Migrations
                 schema: "shop",
                 table: "GBRule",
                 column: "GBProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Product_ProductTypeId",
-                schema: "shop",
-                table: "Product",
-                column: "ProductTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductType_ShopId",
@@ -191,10 +163,6 @@ namespace ShopAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "GBRule",
-                schema: "shop");
-
-            migrationBuilder.DropTable(
-                name: "Product",
                 schema: "shop");
 
             migrationBuilder.DropTable(

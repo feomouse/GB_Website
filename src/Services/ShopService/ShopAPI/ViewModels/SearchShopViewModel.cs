@@ -1,6 +1,6 @@
 namespace GB_Project.Services.ShopService.ShopAPI.ViewModels
 {
-  public class ShopsViewModel
+  public class SearchShopViewModel
   {
     public string PkId { get; set; }
 
@@ -16,13 +16,10 @@ namespace GB_Project.Services.ShopService.ShopAPI.ViewModels
 
     public int Type { get; set; }
 
-    public string Tel { get; set; }
-
     public string RegisterId { get; set; }
 
-    public string Pic { get; set; }
-    public ShopsViewModel(string pkId, string name, string province, string city, string district, string location,
-                          int type, string tel, string registerId, string pic)
+    public SearchShopViewModel(string pkId, string name, string province, string city, string district, string location,
+                          int type, string registerId)
     {
       PkId = pkId;
       Name = name;
@@ -31,9 +28,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.ViewModels
       District = district;
       Location = location;
       Type = type;
-      Tel = tel;
       RegisterId = registerId;
-      Pic = pic;
     }
   }
 }

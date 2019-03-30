@@ -64,7 +64,7 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
 
       Guid gid = Guid.Parse(id);
 
-      if(model.Role == "Merchant")
+      if(model.Role == "Merchant" || model.Role == "merchant")
       {
         var @event = new MerchantRegisteredIntergrationEvent(gid);
         _eventBusPublisher.Publish(@event);

@@ -35,8 +35,6 @@ namespace GB_Project.Services.MerchantService.MerchantInfrastructure.EntityConfi
       builder.Property(b => b.AvailableTime).HasColumnType("date");
 
       builder.Property(b => b.Tel).HasColumnType("varchar(11)");
-
-      builder.Property<Guid>("MerchantId").IsRequired();
     }
 
   }   

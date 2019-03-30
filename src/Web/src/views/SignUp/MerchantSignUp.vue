@@ -80,7 +80,10 @@
 
   @eight_height : 40rem;
   @top_distance : 15rem;
-
+  @left_eight_height : auto;
+  @right_two_height : auto;
+  @left_five_height : auto;
+  
   #holderMSignUp__place {
     height: auto;
   }

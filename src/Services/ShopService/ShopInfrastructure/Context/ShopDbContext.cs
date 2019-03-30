@@ -9,8 +9,6 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Context
     {
       public DbSet<Shop> shops { get; set; }
 
-      public DbSet<Product> products { get; set; }
-
       public DbSet<ProductType> producttypes { get; set; }
 
       //public DbSet<ShopType> shoptypes { get; set; }
@@ -34,7 +32,6 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Context
       protected override void OnModelCreating (ModelBuilder modelBuilder)
       {
         modelBuilder.ApplyConfiguration(new ShopEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new ProductEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new ProductTypeEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new GBProductEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new GBRuleEntityTypeConfiguration());

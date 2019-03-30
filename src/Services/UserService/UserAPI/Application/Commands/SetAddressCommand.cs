@@ -5,13 +5,13 @@ namespace GB_Project.Services.UserService.UserAPI.Application.Commands
 {
   public class SetAddressCommand :IRequest<int>
   {
-    public User _user { get; set; }
+    public string UserId { get; set; }
 
     public string Address { get; set; }
 
-    public SetAddressCommand(User user, string address)
+    public SetAddressCommand(string userId, string address)
     {
-      _user = user;
+      UserId = userId;
       Address = address;
     }
   }

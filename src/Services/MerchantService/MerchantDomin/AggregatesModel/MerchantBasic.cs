@@ -10,15 +10,18 @@ namespace GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel
     public Guid ShopId { get; private set; }
 
     public MerchantIdentity Identity { get; private set; }
+    
+    public bool IsChecked { get; private set; }
 
     public MerchantBasic ()
     {
-
+      IsChecked = false;
     }
 
     public MerchantBasic( Guid id )
     {
       AuthPkId = id;
+      IsChecked = false;
     }
 
     public void SetShopId( Guid shopId )
@@ -29,6 +32,11 @@ namespace GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel
     public void SetIdentity(MerchantIdentity merchantIdentity)
     {
       Identity = merchantIdentity;
+    }
+
+    public void SetIsChecked(bool isChecked)
+    {
+      IsChecked = isChecked;
     }
   }   
 }

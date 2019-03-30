@@ -31,13 +31,10 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.EntityConfiguration
 
         shopConfiguration.Property(b => b.Pic).HasColumnType("varchar(50)");
 
-        var navigationGbProduct = shopConfiguration.Metadata.FindNavigation(nameof(Shop._gbProduct));
+        shopConfiguration.Property(b => b.IsIdentitied).HasColumnType("bit");
 
-        var navigation_producttype = shopConfiguration.Metadata.FindNavigation(nameof(Shop._producttype));
-            
-        navigationGbProduct.SetPropertyAccessMode(PropertyAccessMode.Field);
+        shopConfiguration.Property(b => b.GroupBuying).HasColumnType("bit");
 
-        navigation_producttype.SetPropertyAccessMode(PropertyAccessMode.Field);
       }
     }
 }

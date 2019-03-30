@@ -28,6 +28,7 @@ using System.Text;
 using GB_Project.Services.MerchantService.MerchantAPI.Query;
 using GB_Project.Services.MerchantService.MerchantAPI.Modules;
 using Swashbuckle.AspNetCore.Swagger;
+using GB_Project.Services.MerchantService.MerchantAPI.IntergrationEvents.Events;
 
 namespace MerchantAPI {
   public class Startup {
@@ -76,6 +77,12 @@ namespace MerchantAPI {
 
       services.AddSingleton<IMerchantRepository, MerchantRepository> ();
 
+      services.AddSingleton<IEventBusPublisher, RabbitMqEventBusPublisher> (sp => {
+        var connectionFactory = sp.GetRequiredService<IRabbitMqPersistConnection> ();
+        var manager = sp.GetRequiredService<IEventSubscriptionsManager>();
+        return new RabbitMqEventBusPublisher(connectionFactory, manager);
+      });
+
       services.AddSingleton<IEventBusSubscriber, RabbitMqEventBusSubscriber> (sp => {
         var connectionFactory = sp.GetRequiredService<IRabbitMqPersistConnection> ();
         var subscriptionManager = sp.GetRequiredService<IEventSubscriptionsManager> ();
@@ -84,6 +91,8 @@ namespace MerchantAPI {
       });
 
       services.AddTransient<MerchantRegisteredIntergrationEventHandler> ();
+
+      services.AddTransient<ShopIsCreatedIntergrationEventHandler> ();
 
       services.AddSingleton<IMerchantQuery, MerchantQuery>();
 
@@ -121,6 +130,7 @@ namespace MerchantAPI {
 
       var eventBusSubscriber = app.ApplicationServices.GetRequiredService<IEventBusSubscriber> ();
       eventBusSubscriber.Subscribe<MerchantRegisteredIntergrationEvent, MerchantRegisteredIntergrationEventHandler> ();
+      eventBusSubscriber.Subscribe<ShopIsCreatedIntergrationEvent, ShopIsCreatedIntergrationEventHandler>();
     }
   }
 }

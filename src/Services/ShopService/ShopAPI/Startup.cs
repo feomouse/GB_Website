@@ -18,6 +18,15 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using GB_Project.Services.ShopService.ShopInfrastructure.Context;
+using RabbitMQ.Client;
+using GB_Project.EventBus.EventBusMQ;
+using GB_Project.EventBus.BasicEventBus.Abstraction;
+using GB_Project.EventBus.BasicEventBus;
+using GB_Project.Services.ShopService.ShopAPI.IntergrationEvents.EventHandlers;
+using GB_Project.Services.ShopService.ShopAPI.IntergrationEvents.Events;
+using GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries;
+using GB_Project.Services.ShopService.ShopDomin.AggregatesModel;
+using GB_Project.Services.ShopService.ShopInfrastructure.Repository;
 
 namespace ShopAPI
 {
@@ -56,6 +65,38 @@ namespace ShopAPI
               };
             }); */
 
+            services.AddSingleton<IRabbitMqPersistConnection>(op => {
+                var factory = new ConnectionFactory ();
+
+                factory.HostName = "localhost";
+                factory.UserName = "guest";
+                factory.Password = "guest";
+                factory.VirtualHost = "/";
+
+                //factory.Uri = "amqp://guest:guest@rabbitmq:5672/";
+                return new DefaultRabbitMqPersistConnection (factory);
+            });
+
+            services.AddSingleton<IEventSubscriptionsManager, InMemorySubscriptionsManager>();
+
+            services.AddSingleton<IEventBusPublisher, RabbitMqEventBusPublisher>(op => {
+              var connection = op.GetRequiredService<IRabbitMqPersistConnection>();
+              var manager = op.GetRequiredService<IEventSubscriptionsManager>();
+              return new RabbitMqEventBusPublisher(connection, manager);
+            });
+
+            services.AddSingleton<IEventBusSubscriber, RabbitMqEventBusSubscriber>(op => {
+                var factory = op.GetRequiredService<IRabbitMqPersistConnection>();
+                var manager = op.GetRequiredService<IEventSubscriptionsManager>();
+                var scope = op.GetRequiredService<ILifetimeScope> ();
+                return new RabbitMqEventBusSubscriber("GB_Shop", factory, manager, scope);
+            });
+
+            services.AddTransient<MerchantIsIdentitiedIntergrationEventHandler>();
+
+            services.AddSingleton<IShopQuery, ShopQuery>();
+            services.AddSingleton<IShopRepository, ShopRepository>();
+
             var builder = new ContainerBuilder();
 
             builder.Populate(services);
@@ -84,6 +125,9 @@ namespace ShopAPI
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            var sub = app.ApplicationServices.GetRequiredService<IEventBusSubscriber>();
+            sub.Subscribe<MerchantIsIdentitiedIntergrationEvent, MerchantIsIdentitiedIntergrationEventHandler>();
         }
     }
 }

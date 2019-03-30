@@ -38,13 +38,13 @@ namespace GB_Project.Services.MerchantService.MerchantInfrastructure.Repository
          return _context.SaveChangesAsync();
       }
 
-      public Task<int> AddIdentityIdToMerchant (MerchantBasic merchantBasic, MerchantIdentity merchantIdentity)
+      public Task<int> CheckMerchantIdentity (string merchantAuthId, bool result)
       {
-        merchantBasic.SetIdentity(merchantIdentity);
+        var merchantBasic = _context.merchantBasics.Where(b => b.AuthPkId.ToString() == merchantAuthId).FirstOrDefault();
+      
+        merchantBasic.SetIsChecked(result);
 
-        _context.SaveChangesAsync();
-
-        return Task.FromResult(1);
+        return _context.SaveChangesAsync();
       }
 
       public MerchantBasic GetMerhcntBasicByMerchantId (string merchantId)

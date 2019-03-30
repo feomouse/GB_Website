@@ -13,9 +13,9 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure
     {
       protected override void Load(ContainerBuilder builder)
       {
-        builder.RegisterType<ShopQuery>().As<IShopQuery>();
+/*         builder.RegisterType<ShopQuery>().As<IShopQuery>();
 
-        builder.RegisterType<ShopRepository>().As<IShopRepository>();
+        builder.RegisterType<ShopRepository>().As<IShopRepository>(); */
       }
     } 
 }

@@ -9,15 +9,34 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
     {
         Dictionary<int, string> GetShopTypeInfo();
 
-        int CreateShop(Shop newShop);
-
         Shop GetShopByName(string shopName);
-
-        List<Shop> GetShops();
 
         Shop GetShopByShopId(string shopId);
 
+        bool CheckIfIdentitied(string shopId);
+
+        int CreateShop(Shop newShop);
+
+        Shop GetShopByMerchantId(string merchantId);
+
+        int IdentityMerchantOfShop(string merchantId, bool isChecked);
+
+        int SetGB(string shopId);
+
+        string UploadShopImg(Shop shop, string imgName, byte[] imgData);
+        
         int CreateShopProductType(ProductType type);
+
+        ProductType GetProductTypeByProductTypeId(string productTypeId);
+
+        int AddGBProduct(GBProduct newgbProduct);
+
+        List<GBProduct> GetGBProductsByShopName(string shopName);
+
+        GBProduct UpdateGBProducts(GBProduct newgbProduct);
+/*         List<Shop> GetShops();
+
+        Shop GetShopByShopId(string shopId);
 
         List<ProductType> GetShopProductTypesByShopName(string shopName);
 
@@ -25,10 +44,8 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
         int AddShopProduct(Product product);
 
-        List<Product> GetShopProductsByShopName(string name);
-/* 
-        void AddGBProduct(GBProduct newgbProduct);
-
+        List<Product> GetShopProductsByShopName(string name); */
+/*
         void AddGBRule(GBRule newgbRule);
 
         void AddGBProductItem(GBProductItem newGBProductItem);

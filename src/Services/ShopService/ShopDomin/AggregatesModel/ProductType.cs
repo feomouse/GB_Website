@@ -12,7 +12,7 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
       public string TypeName { get; private set; }
 
-      public List<Product> Products { get; private set; }
+      //public List<GBProduct> GBProducts { get; private set; }
 
       public ProductType () {
         

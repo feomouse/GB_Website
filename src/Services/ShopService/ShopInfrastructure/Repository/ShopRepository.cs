@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using GB_Project.Services.ShopService.ShopDomin.AggregatesModel;
 using GB_Project.Services.ShopService.ShopDomin.SeedWork;
 using GB_Project.Services.ShopService.ShopInfrastructure.Context;
+using System.IO;
 
 namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
 {
@@ -44,10 +45,115 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
 
       public Shop GetShopByName(string shopName)
       {
-        return _context.shops.Where(s => s.Name == shopName).First();
+        return _context.shops.Where(s => s.Name == shopName).FirstOrDefault();
       }
 
-      public List<Shop> GetShops()
+      public Shop GetShopByShopId(string shopId)
+      {
+        return _context.shops.Where(s => s.PkId.ToString() == shopId).FirstOrDefault();
+      }
+      
+      public bool CheckIfIdentitied(string shopId)
+      {
+        return _context.shops.Where(b => b.PkId.ToString() == shopId).FirstOrDefault().IsIdentitied;
+      }
+
+      public Shop GetShopByMerchantId(string merchantId)
+      {
+        return _context.shops.Where(b => b.RegisterId.ToString() == merchantId).FirstOrDefault();
+      }
+
+      public int IdentityMerchantOfShop(string merchantId, bool isChecked)
+      {
+        var shop = GetShopByMerchantId(merchantId);
+      
+        if(shop == null) throw new Exception();
+        shop.SetIsIdentitied(isChecked);
+
+        return _context.SaveChanges();
+      }
+
+      public int SetGB(string shopId)
+      {
+        Shop shop = _context.shops.Where(b => b.PkId.ToString() == shopId).FirstOrDefault();
+
+        shop.SetGroupBuying(true);
+
+        return _context.SaveChanges();
+      }
+
+      public int CreateShopProductType(ProductType type)
+      {
+        _context.producttypes.Add(type);
+
+        return _context.SaveChanges();
+      }
+
+      public ProductType GetProductTypeByProductTypeId(string productTypeId)
+      {
+        return _context.producttypes.Where(b => b.PkId.ToString() == productTypeId).FirstOrDefault();
+      }
+
+      public int AddGBProduct(GBProduct newgbProduct)
+      {
+        _context.gbproduct.Add(newgbProduct);
+
+        return _context.SaveChanges();
+      }
+
+      public List<GBProduct> GetGBProductsByShopName(string shopName)
+      {
+        Shop shop = _context.shops.Where(b => b.Name == shopName).FirstOrDefault();
+
+        ProductType[] types = _context.producttypes.Where(b => b._Shop == shop).ToArray();
+
+        List<GBProduct> gbProducts = new List<GBProduct>();
+
+        foreach(var t in types)
+        {
+          gbProducts.AddRange(_context.gbproduct.Where(b => b.ProductType == t).ToList());
+        }
+
+        return gbProducts;
+      }
+
+      public GBProduct UpdateGBProducts(GBProduct newgbProduct)
+      {
+        GBProduct gbProduct = _context.gbproduct.Where(b => b.PkId == newgbProduct.PkId).FirstOrDefault();
+      
+        gbProduct.SetProductName(newgbProduct.ProductName);
+        gbProduct.SetProductType(newgbProduct.ProductType);
+        gbProduct.SetOrinPrice(newgbProduct.OrinPrice);
+        gbProduct.SetPrice(newgbProduct.Price);
+        gbProduct.SetQuantity(newgbProduct.Quantity);
+        gbProduct.SetRemark(newgbProduct.Remark);
+        gbProduct.SetVailSDate(newgbProduct.VailSDate);
+        gbProduct.SetVailEDate(newgbProduct.VailEDate);
+        gbProduct.SetVailTime(newgbProduct.VailTime);
+        gbProduct.SetIsDisplay(newgbProduct.IsDisplay);
+        gbProduct.SetImg(newgbProduct.Img);
+      
+        _context.SaveChanges();
+
+        return _context.gbproduct.Where(b => b.PkId == newgbProduct.PkId).FirstOrDefault();
+      }
+
+      public string UploadShopImg(Shop shop, string imgName, byte[] imgData)
+      {
+          File.WriteAllBytes("D:\\nginx-1.12.2\\nginx-1.12.2\\IMGS\\shops\\" + imgName, imgData);
+
+          string imgLocation = "http://localhost:50020/ShopImgs/" + imgName;
+
+          shop.SetPic(imgLocation);
+
+          if(_context.SaveChanges() == 0)
+          {
+            return "";
+          }
+
+          return imgLocation;
+      }
+/*       public List<Shop> GetShops()
       {
         return _context.shops.ToList();
       }
@@ -96,6 +202,6 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         }
 
         return products;
-      }
+      } */
     }
 }

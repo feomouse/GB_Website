@@ -12,10 +12,13 @@
     <PackageReference Include="MediatR" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.0.0-pre3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ShopInfrastructure\ShopInfrastructure.csproj" />
+    <ProjectReference Include="..\..\..\EventBus\EventBusMQ\EventBusMQ.csproj" />
+    <ProjectReference Include="..\..\..\EventBus\BasicEventBus\BasicEventBus.csproj" />
   </ItemGroup>
 
 </Project>

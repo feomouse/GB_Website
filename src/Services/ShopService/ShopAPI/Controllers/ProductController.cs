@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+/* using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries;
@@ -62,4 +62,4 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         return  new StatusCodeResult(201);
       }
     }
-}
+} */

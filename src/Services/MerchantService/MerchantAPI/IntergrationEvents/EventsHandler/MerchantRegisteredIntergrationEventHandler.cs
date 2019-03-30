@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel;
 using GB_Project.EventBus.BasicEventBus.Abstraction;
 using Microsoft.AspNetCore.Identity;
+using GB_Project.Services.MerchantService.MerchantAPI.IntergrationEvents.Events;
 
 namespace GB_Project.Services.MerchantService.MerchantAPI.IntergrationEvents.EventHandler
 {

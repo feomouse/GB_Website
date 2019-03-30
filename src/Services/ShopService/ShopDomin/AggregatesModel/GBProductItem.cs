@@ -9,6 +9,8 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
     public Guid GbProductId { get; private set; }
 
+    public GBProduct GBProduct { get; private set; }
+
     public string GbItemName { get; private set; }
 
     public string GbItemImg { get; private set; }
@@ -19,10 +21,10 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
     }
 
-    public GBProductItem (Guid gbProductId, string gbItemName, string gbItemImg, int gbItemPrice)
+    public GBProductItem (GBProduct gbProduct, string gbItemName, string gbItemImg, int gbItemPrice)
     {
       PkId = new Guid();
-      GbProductId = gbProductId;
+      GBProduct = gbProduct;
       GbItemName = gbItemName;
       GbItemImg = gbItemImg;
       GbItemPrice = gbItemPrice;

@@ -8,6 +8,8 @@ using GB_Project.Services.UserService.UserAPI.Query;
 using GB_Project.Services.UserService.UserAPI.Application.Commands;
 using System.Collections.Generic;
 using System.IO;
+using GB_Project.Services.UserService.UserAPI.GetCommands;
+
 namespace GB_Project.Services.UserService.UserAPI.Controllers
 {
   [ApiController]
@@ -25,28 +27,36 @@ namespace GB_Project.Services.UserService.UserAPI.Controllers
       _mediator = mediator;
     }
 
-    [HttpPost]
-    [Route("SetImg")]
+    [HttpGet()]
+    [Route("userMessage")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    [ProducesResponseType(401)]
-    public async Task<StatusCodeResult> SetImg([FromBody] SetImgViewModel model)
+    public ActionResult GetUserBasicMessage([FromHeader]string UserId )
+    {
+      var user = _query.GetUserByUserId(UserId);
+
+      if (user == null)
+      {
+        return BadRequest("NO USER");
+      }
+      
+      return Ok(user);
+    }
+
+    [HttpPost]
+    [Route("SetUserName")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    public StatusCodeResult SetUserName([FromBody]SetUserNameCommand command)
     {
       if(!ModelState.IsValid)
       {
         return new StatusCodeResult(400);
       }
 
-      var user = _query.GetUserByUserId(model.PkId);
+      var result = _mediator.Send(command).GetAwaiter().GetResult();
 
-      if(user == null)
-      {
-        return new StatusCodeResult(401);
-      }
-    
-      var result = await _mediator.Send(new SetImgCommand(user, model.ImgLocation));
-
-      if(result == 0)
+      if (result == 0)
       {
         return new StatusCodeResult(400);
       }
@@ -58,22 +68,14 @@ namespace GB_Project.Services.UserService.UserAPI.Controllers
     [Route("SetAddress")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    [ProducesResponseType(401)]
-    public async Task<StatusCodeResult> SetUserLocation([FromBody] SetAddressViewModel model)
+    public StatusCodeResult SetUserLocation([FromBody] SetAddressCommand command)
     {
       if(!ModelState.IsValid)
       {
         return new StatusCodeResult(400);
       }
 
-      User user = _query.GetUserByUserId(model.PkId);
-
-      if(user == null)
-      {
-        return new StatusCodeResult(401);
-      }
-
-      var result = await _mediator.Send(new SetAddressCommand(user, model.Address));
+      var result = _mediator.Send(command).GetAwaiter().GetResult();
 
       if (result == 0)
       {
@@ -85,7 +87,7 @@ namespace GB_Project.Services.UserService.UserAPI.Controllers
 
     [HttpPost]
     [Route("uploadImg")]
-    public ActionResult UpLoadImg()
+    public async Task<ActionResult> UpLoadImg()
     {
       if(Request.Form.Files.Count != 0) 
       {
@@ -93,13 +95,27 @@ namespace GB_Project.Services.UserService.UserAPI.Controllers
 
         byte[] bytes = new byte[stream.Length]; 
 
-        int readNum = stream.Read(bytes, 0, bytes.Length); 
+        int readNum = stream.Read(bytes, 0, bytes.Length);
 
-        System.IO.File.WriteAllBytes("D:\\IMG\\" + Request.Form.Files[0].FileName, bytes);
+        var streamUserId = Request.Form["userId"];
+
+        var user = _query.GetUserByUserId(streamUserId);
+
+        if(user == null)
+        {
+          return new StatusCodeResult(401);
+        }
+      
+        var result = await _mediator.Send(new SetImgCommand(user, Request.Form.Files[0].FileName, bytes));
+
+        if(result == "")
+        {
+          return new StatusCodeResult(400);
+        }
         
-        return Ok(Request.Form.Files[0].FileName);
+        return Ok(result);
       }
-      else return Ok();
+      else return Ok("Something miss");
     }
   }
 }

@@ -9,6 +9,8 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
     public Guid PkId { get; private set; }
 
     public Guid GBProductId { get; private set; }
+
+    public GBProduct _GBProduct { get; private set; }
  
     public string Content { get; private set; } 
 
@@ -17,17 +19,13 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
     }
     
-    public GBRule (Guid gBProductId, string content)
+    public GBRule (GBProduct gBProduct, string content)
     {
       PkId = new Guid();
 
-      GBProductId = gBProductId;
+      _GBProduct = gBProduct;
       
       Content = content;
-    }
-
-    public void AddGBAddRules (List<GBRule> rules)
-    {
     }
   }   
 }

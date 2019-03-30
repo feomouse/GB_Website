@@ -1,11 +1,12 @@
 using System.Runtime.Serialization;
 using MediatR;
 using System;
+using GB_Project.Services.ShopService.ShopDomin.AggregatesModel;
 
 namespace GB_Project.Services.ShopService.ShopAPI.Application.Commands
 {
   [DataContract]
-  public class CreateShopCommand : IRequest<int>
+  public class CreateShopCommand : IRequest<Shop>
   {
     [DataMember]
     public string Name { get; private set; }
@@ -29,7 +30,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.Commands
     public string Tel { get; private set; }
 
     [DataMember]
-    public Guid Manager { get; private set; }
+    public string Manager { get; private set; }
 
     [DataMember]
     public string Pic { get; private set; }
@@ -38,7 +39,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.Commands
     {
 
     }
-    public CreateShopCommand (string name, string province, string city, string district, string location, int type, string tel, Guid manager, string pic)
+    public CreateShopCommand (string name, string province, string city, string district, string location, int type, string tel, string manager, string pic)
     {
       Name = name;
       Province = province;

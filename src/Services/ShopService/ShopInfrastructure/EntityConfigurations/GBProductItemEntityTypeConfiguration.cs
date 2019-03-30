@@ -13,7 +13,7 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.EntityConfiguration
 
         gbConfiguration.HasKey(b => b.PkId);
 
-        gbConfiguration.Property<Guid>("GbProductId").HasColumnType("uniqueidentifier").IsRequired();
+        gbConfiguration.HasOne(b => b.GBProduct);
       }
     }
 }

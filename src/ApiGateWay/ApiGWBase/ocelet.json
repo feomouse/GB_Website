@@ -45,16 +45,48 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/v1/api/{everything}",
+      "DownstreamPathTemplate": "/v1/api/shop/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 50003
+          "Port": 50004
         }
       ],
       "UpstreamPathTemplate": "/shop/{everything}",
-      "UpstreamHttpMethod": ["Get", "Post"]
+      "UpstreamHttpMethod": ["Get", "Post"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TokenKey",
+        "AllowedScopes": []
+      }
+    },
+    {   
+      "DownstreamPathTemplate": "/v1/api/city/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{
+        "Host": "localhost",
+        "Port": 50005
+      }],
+      "UpstreamPathTemplate": "/city/{everything}",
+      "UpstreamHttpMethod": ["Get"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TokenKey",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/v1/api/imgUpload",
+      "DownStreamScheme": "http",
+      "DownstreamHostAndPorts": [{
+        "Host": "localhost",
+        "Port": 50006
+      }],
+      "UpstreamPathTemplate": "/imgUpload",
+      "UpstreamHttpMethod": ["Post"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TokenKey",
+        "AllowedScopes": []
+      }
     }
   ],
   "GlobalConfiguration": {

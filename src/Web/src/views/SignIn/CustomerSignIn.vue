@@ -27,6 +27,8 @@
 </template>
 <script>
 import * as SignInReq from '../../api/Identity';
+import * as UserReq from '../../api/User';
+
 export default {
   data() {
     return {
@@ -42,6 +44,8 @@ export default {
   },
   methods: {
     LoginRequest() {
+      var _this = this;
+
       if(this.SignIn.Email == "") {
         this.ShowEmailError = true;
         return;
@@ -53,12 +57,40 @@ export default {
       
       SignInReq.SignInRequest(this.SignIn).then(res => {
         console.log(res.status);
-        if(res.status != 200) this.ShowSignInError = true;
+        if(res.status != 200) 
+        {
+          this.ShowSignInError = true;
+
+          return 400;
+          
+        }
         else if(res.status == 200) 
         { 
           this.$store.dispatch('commitToken',res.body.token.access_token);
-          this.$store.dispatch('commitSetName', res.body.pkId);
+          this.$store.dispatch('commitSetUserId', res.body.pkId);
+          console.log(this.$store.getters.token);
           this.ShopSignInSuccess = true;
+
+          return 200;
+        }
+      }).then(status => {
+        if(status == 200) {
+          UserReq.getUserBasicMessage(this.$store.getters.userId).then(res => {
+            if(res.status != 200)
+            {
+              this.$message.error('请求用户数据失败');
+            }
+            else if(res.status == 200)
+            {
+              this.$store.dispatch('commitSetUser', res.body);
+   
+              this.$router.push({path: "/Customer/Basic"});
+            }
+          })
+        }
+        else if(status == 400)
+        {
+          this.$message.error('登陆失败');
         }
       })
     }
@@ -72,6 +104,9 @@ export default {
 
   @eight_height : 40rem;
   @top_distance : 15rem;
+  @left_eight_height : auto;
+  @right_two_height : auto;
+  @left_five_height : auto;
 
   #cholder__SignIn {
     height: auto;

@@ -5,13 +5,13 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Application.Commands
 {
   public class AddShopCommand : IRequest<int>
   {
-    public MerchantBasic Basic;
+    public string MerchantId { get; set; }
 
-    public string ShopId;
+    public string ShopId { get; set; }
 
-    public AddShopCommand(MerchantBasic basic, string shopId)
+    public AddShopCommand(string merchantId, string shopId)
     {
-      Basic = basic;
+      MerchantId = merchantId;
       ShopId = shopId;
     }
   }

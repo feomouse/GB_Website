@@ -17,7 +17,9 @@ namespace GB_Project.Services.UserService.UserAPI.Application.CommandHandlers
 
     public Task<int> Handle (SetAddressCommand command,  CancellationToken cannellationToken)
     {
-      return Task.FromResult(_repo.SetUserLocation(command._user, command.Address));
+      var user = _repo.GetUserByUserId(command.UserId);
+      var result = _repo.SetUserLocation(user, command.Address);
+      return Task.FromResult(result);
     }
   }
 }

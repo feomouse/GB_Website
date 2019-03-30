@@ -57,7 +57,7 @@ export default {
         else if(res.status == 200)
         { 
           this.$store.dispatch('commitToken',res.body.token.access_token);
-          this.$store.dispatch('commitSetName', res.body.pkId);
+          this.$store.dispatch('commitSetMerchantName', res.body.pkId);
           this.ShopSignInSuccess = true;
         }
       })
@@ -72,7 +72,10 @@ export default {
 
   @eight_height : 40rem;
   @top_distance : 15rem;
-
+  @left_eight_height : auto;
+  @right_two_height : auto;
+  @left_five_height : auto;
+  
   #mholder__SignIn {
     height: auto;
   }

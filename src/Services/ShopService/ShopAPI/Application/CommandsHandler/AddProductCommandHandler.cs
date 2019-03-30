@@ -1,4 +1,4 @@
-using System;
+/* using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -24,4 +24,4 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.CommandsHandler
         return Task.FromResult(_repository.AddShopProduct(product));      
       }
     }
-}
+} */

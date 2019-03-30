@@ -1,8 +1,9 @@
-/* using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using GB_Project.Services.ShopService.ShopDomin.AggregatesModel;
+using GB_Project.Services.ShopService.ShopAPI.Application.Commands;
 
 namespace GB_Project.Services.ShopService.ShopAPI.Application.CommandsHandler
 {
@@ -15,13 +16,14 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.CommandsHandler
         _repository = repository;
       }
 
-      public async Task<int> Handle(AddGBProductCommand request, CancellationToken cancellationToken)
+      public Task<int> Handle(AddGBProductCommand request, CancellationToken cancellationToken)
       {
-        GBProduct gbproduct = new GBProduct(request.ShopId, request.ProductName, request.OrinPrice, request.Price, request.Quantity, request.VailSDate, request.VailEDate, request.VailTime, request.Img, request.Remark);
+        ProductType productType = _repository.GetProductTypeByProductTypeId(request.ProductTypeId);
 
-        _repository.AddGBProduct(gbproduct);      
-              
-        return await _repository.Save(); 
+        GBProduct gbproduct = new GBProduct(request.ProductName, double.Parse(request.OrinPrice), double.Parse(request.Price), request.Quantity, Convert.ToDateTime(request.VailSDate), Convert.ToDateTime(request.VailEDate), request.VailTime, request.Img, request.Remark, productType);
+    
+        var result = _repository.AddGBProduct(gbproduct);
+        return Task.FromResult(result);               
       }
     }
-} */
+}

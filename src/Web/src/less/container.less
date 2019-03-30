@@ -1,3 +1,11 @@
+@eight_height : 100%;
+@seven_height : 100%;
+@left_eight_height : 0;
+@left_five_height : 0;
+@left_three_height : 0;
+@right_two_height : 0;
+@top_distance : 0;
+
 .auto_eight {
   margin: 0 auto;
   width: 80%;
@@ -9,17 +17,44 @@
   width: 100%;
 }
 
+.auto_seven {
+  margin: 0 auto;
+  width: 70%;
+  height: @seven_height;
+}
+
 .left-eight {
-  width: 80%;
-  float: left;
+  width: 75%;
+  height: @left_eight_height;
+  display: inline-block;
+}
+
+.left-five {
+  width: 45%;
+  height: @left_five_height;
+  display: inline-block;
+}
+
+.left-three {
+  width: 30%;
+  height: @left_three_height;
+  display: inline-block;
 }
 
 .right-two {
   width: 20%;
-  float: right;
+  height: @right_two_height;
+  display: inline-block;
 }
 
 .formEle_container {
   margin: 0 auto;
   margin-top: @top_distance;
+}
+
+.leftMenu_container {
+  display: inline-block;
+  width: 18%;
+  height: 100rem;
+  background: blueviolet;
 }

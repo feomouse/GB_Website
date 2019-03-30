@@ -7,7 +7,7 @@ using GB_Project.Services.ShopService.ShopAPI.Application.Commands;
 
 namespace GB_Project.Services.ShopService.ShopAPI.Application.CommandsHandler
 {
-    public class CreateShopCommandHandler : IRequestHandler<CreateShopCommand, int>
+    public class CreateShopCommandHandler : IRequestHandler<CreateShopCommand, Shop>
     {
       private IShopRepository _repository;
 
@@ -19,11 +19,16 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.CommandsHandler
       {
         _repository = repository;
       }
-      public Task<int> Handle(CreateShopCommand request, CancellationToken cancellationToken)
+      public Task<Shop> Handle(CreateShopCommand request, CancellationToken cancellationToken)
       {
-        Shop shop = new Shop(request.Name, request.Province, request.City, request.District, request.Location, request.Type, request.Tel, request.Manager, request.Pic);
+        Shop shop = new Shop(request.Name, request.Province, request.City, request.District, request.Location, request.Type, request.Tel, new Guid(request.Manager), request.Pic);
 
-        return Task.FromResult(_repository.CreateShop(shop));
+        if(_repository.CreateShop(shop) != 0)
+        {
+          return Task.FromResult(shop);
+        }
+
+        return Task.FromResult((Shop)null);
       }
     }
 }

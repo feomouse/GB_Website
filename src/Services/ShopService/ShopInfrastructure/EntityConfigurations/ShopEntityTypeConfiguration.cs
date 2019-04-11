@@ -29,7 +29,7 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.EntityConfiguration
 
         shopConfiguration.Property(b => b.Tel).HasColumnType("varchar(11)");
 
-        shopConfiguration.Property(b => b.Pic).HasColumnType("varchar(50)");
+        shopConfiguration.Property(b => b.Pic).HasColumnType("varchar(100)");
 
         shopConfiguration.Property(b => b.IsIdentitied).HasColumnType("bit");
 

@@ -3,7 +3,7 @@ import MerchantSignIn from '../views/SignIn/MerchantSignIn';
 
 export default [{
   path: '/',
-  redirect: 'clogin'
+  redirect: '/Customer/SignIn'
 }, {
   path: "/Customer/SignIn", name: 'clogin', component: CustomerSignIn
 }, {

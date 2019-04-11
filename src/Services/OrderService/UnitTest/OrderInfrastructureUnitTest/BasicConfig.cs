@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using GB_Project.Services.OrderService.OrderDomin.OrderAggregate;
+using GB_Project.Services.OrderService.OrderDomin.GroupOrderAggregate;
 using GB_Project.Services.OrderService.OrderInfrastructure.Context;
 using GB_Project.Services.OrderService.OrderInfrastructure.OrderRepository;
 
@@ -31,13 +31,7 @@ namespace GB_Project.Services.OrderService.UnitTest.OrderInfrastructureUnitTest
 
         context = serviceProvider.GetRequiredService<OrderDbContext>();
 
-        context.ordersBasic = context.Set<OrderBasic>();
-
-        context.customerOrders = context.Set<CustomerOrder>();
-
-        context.shopOrders = context.Set<ShopOrder>();
-
-        context.ordersProducts = context.Set<OrderProduct>();
+        context.GroupBuyingOrders = context.Set<GroupBuyingOrder>();
 
         repository = new OrderRepository(context);
       }

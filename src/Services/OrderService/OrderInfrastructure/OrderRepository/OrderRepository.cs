@@ -1,4 +1,4 @@
-using GB_Project.Services.OrderService.OrderDomin.OrderAggregate;
+using GB_Project.Services.OrderService.OrderDomin.GroupOrderAggregate;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System;
@@ -7,7 +7,7 @@ using GB_Project.Services.OrderService.OrderInfrastructure.Context;
 
 namespace GB_Project.Services.OrderService.OrderInfrastructure.OrderRepository
 {
-    public class OrderRepository : IOrderRepository
+    public class OrderRepository : IGBOrderRepository
     {
         OrderDbContext _context;
 
@@ -16,92 +16,52 @@ namespace GB_Project.Services.OrderService.OrderInfrastructure.OrderRepository
            _context = context;
         }
 
-        public int AddBasicOrder (OrderBasic order)
+        public int AddGBOrder (GroupBuyingOrder order)
         {
-          var mid = _context.ordersBasic;
- 
-          if(mid != null)
+          _context.GroupBuyingOrders.Add(order);
+
+          return _context.SaveChanges();
+        }
+
+        public List<GroupBuyingOrder> GetGBOrders (string UserId)
+        {
+          return _context.GroupBuyingOrders.Where(b => b.CpkId.ToString() == UserId).ToList();
+        }
+
+        public int SetGBOrderPayed (string orderId)
+        {
+          var order = _context.GroupBuyingOrders.Where(b => b.PkId.ToString() == orderId).FirstOrDefault();
+
+          order.SetIsPayed();
+
+          return _context.SaveChanges();
+        }
+
+        public int SetGBOrderUsed (string shopName, string orderCode)
+        {
+          var orders = _context.GroupBuyingOrders.Where(b => b.SName == shopName).ToList();
+
+          if(orders.Count == 0) return 0;
+
+          foreach(var i in orders)
           {
-            mid.Add(order);
-            
-            return _context.SaveChanges();
+            if(i.OrderCode.ToString() == orderCode.ToLower())
+            {
+              i.SetIsUsed();
+              return _context.SaveChanges();
+            }
           }
 
-          else return 0;
+          return 0;
         }
 
-        public int AddCustomerOrder (CustomerOrder order)
+        public int SetGBOrderComment (string orderId, string commentId)
         {
-          _context.customerOrders.Add(order);
+          var order = _context.GroupBuyingOrders.Where(b => b.PkId.ToString() == orderId).FirstOrDefault();
 
-          return _context.SaveChanges();
-        }
+          if(order == null) return 0;
 
-        public int AddShopOrder (ShopOrder order)
-        {
-          _context.shopOrders.Add(order);
-
-          return _context.SaveChanges();
-        }
-
-        public int AddOrderProducts (List<OrderProduct> products)
-        {
-           _context.ordersProducts.AddRange(products);
-
-          return _context.SaveChanges();
-        }
-
-        public List<CustomerOrder> GetCustomerOrdersByCustomerId (Guid customerPkId)
-        {
-          return _context.customerOrders.
-                          Where(o => o.CpkId == customerPkId).
-                          ToList();
-        }
-
-        public CustomerOrder GetCustomerOrderByCustomerOrderId (Guid customerOrderId)
-        {
-          return _context.customerOrders.
-                          Where(o => o.PkId == customerOrderId).
-                          First();
-        }
-
-        public OrderBasic GetOrderBasicByCustomerOrder (CustomerOrder customerOrder)
-        {
-          return _context.ordersBasic.
-                          Where(o => o.PkId == customerOrder.BasicOrderId).
-                          First<OrderBasic>();
-        }
-
-        public List<ShopOrder> GetShopOrdersByShopId (Guid shopPkId)
-        {
-          return _context.shopOrders.
-                          Where(o => o.SpkId == shopPkId).
-                          ToList();
-        }
-
-        public ShopOrder GetShopOrderByShopOrderId (Guid shopOrderId)
-        {
-          return _context.shopOrders.
-                          Where(o => o.PkId == shopOrderId).
-                          First();
-        }
-
-        public OrderBasic GetOrderBasicByShopOrder (ShopOrder shopOrder)
-        {  
-          return _context.ordersBasic.
-                          Where(o => o.PkId == shopOrder.BasicOrderId).
-                          First<OrderBasic>();
-        }
-
-        public List<OrderBasic> GetOrderBasicByAddress (string address)
-        {
-          return _context.ordersBasic.Where(o => o.Address == address).ToList();
-        }
-
-        public int SetShopOrderDecision (ShopOrder shopOrder, bool isAccept )
-        {
-          shopOrder.SetIsProcessed(true);
-          shopOrder.SetIsAccepted(isAccept);
+          order.SetCommentId(commentId);
 
           return _context.SaveChanges();
         }

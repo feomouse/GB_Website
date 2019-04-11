@@ -13,6 +13,10 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
 
       List<GBProduct> getGBProductsByShopName( string shopName);
 
+      List<Shop> getShopListByShopType(int shopType);
+
+      string getGBProductByName(string name);
+
       //Product getProductByName(string name);
 
       //List<Product> GetShopProductsByShopName(string shopName);
@@ -21,7 +25,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
 
       //GBProductItem getGBProductItemByGbIdAndName( Guid gbid, string name);
 
-      //List<ProductType> getShopProductTypesByShopName(string shopName);
+      List<ProductType> getShopProductTypesByShopName(string shopName);
 
       //GBRule getGBRuleByContentAndGBProductId(string content, Guid gbProId);
     } 

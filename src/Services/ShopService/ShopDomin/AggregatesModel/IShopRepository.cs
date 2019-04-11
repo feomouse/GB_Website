@@ -13,6 +13,8 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
         Shop GetShopByShopId(string shopId);
 
+        List<Shop> GetShopListByShopType(int shopType);
+
         bool CheckIfIdentitied(string shopId);
 
         int CreateShop(Shop newShop);
@@ -34,21 +36,15 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
         List<GBProduct> GetGBProductsByShopName(string shopName);
 
         GBProduct UpdateGBProducts(GBProduct newgbProduct);
-/*         List<Shop> GetShops();
 
-        Shop GetShopByShopId(string shopId);
+        int DeleteGBProduct(string gbProductName);
 
         List<ProductType> GetShopProductTypesByShopName(string shopName);
 
-        ProductType GetShopProductTypeByShopProductTypeId(Guid productTypeId);
+        int DeleteProductType(string productTypePkId);
 
-        int AddShopProduct(Product product);
+        Shop UpdateShop (Shop shop);
 
-        List<Product> GetShopProductsByShopName(string name); */
-/*
-        void AddGBRule(GBRule newgbRule);
-
-        void AddGBProductItem(GBProductItem newGBProductItem);
-*/
+        string GetGBProductKeyByName (string gbProductName);
     } 
 }

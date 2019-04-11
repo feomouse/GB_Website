@@ -6,12 +6,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.9.2" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.4.0" />
+    <PackageReference Include="MediatR" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="RestSharp" Version="106.6.9" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\OrderInfrastructure\OrderInfrastructure.csproj" />
+    <ProjectReference Include="..\..\..\EventBus\BasicEventBus\BasicEventBus.csproj" />
+    <ProjectReference Include="..\..\..\EventBus\EventBusMQ\EventBusMQ.csproj" />
   </ItemGroup>
 
 </Project>

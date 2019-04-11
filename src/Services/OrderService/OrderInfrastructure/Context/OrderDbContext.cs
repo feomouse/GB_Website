@@ -1,18 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using GB_Project.Services.OrderService.OrderInfrastructure.EntityTypeConfiguration;
-using GB_Project.Services.OrderService.OrderDomin.OrderAggregate;
+using GB_Project.Services.OrderService.OrderDomin.GroupOrderAggregate;
 
 namespace GB_Project.Services.OrderService.OrderInfrastructure.Context
 {
     public class OrderDbContext : DbContext
     {
-      public DbSet<CustomerOrder> customerOrders;
-
-      public DbSet<OrderBasic> ordersBasic;
-
-      public DbSet<OrderProduct> ordersProducts;
-
-      public DbSet<ShopOrder> shopOrders;
+      public DbSet<GroupBuyingOrder> GroupBuyingOrders { get; set; }
 
       public OrderDbContext(DbContextOptions<OrderDbContext> options) : base(options)
       {
@@ -27,10 +21,7 @@ namespace GB_Project.Services.OrderService.OrderInfrastructure.Context
 
       protected override void OnModelCreating(ModelBuilder builder)
       {
-        builder.ApplyConfiguration(new OrderBasicEntityTypeConfiguration());
-        builder.ApplyConfiguration(new CustomerOrderEntityTypeConfiguration());
-        builder.ApplyConfiguration(new ShopOrderEntityTypeConfiguration());
-        builder.ApplyConfiguration(new OrderProductVOTypeConfiguration());
+        builder.ApplyConfiguration(new GBOrderEntityTypeConfiguration());
       }
     }
 }

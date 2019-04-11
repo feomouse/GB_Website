@@ -1,6 +1,7 @@
 <template>
   <div class="leftMenu_container">
-    <div v-for="(i,index) in menuTranslateList" v-bind:key="index" @click="clickUp(i.label, index)">{{i.label}}</div>
+    <div class="logo_container">logo容器</div>
+    <div class="menu-item1" v-for="(i,index) in menuTranslateList" v-bind:key="index" @click="clickUp(i.label, index)">{{i.label}}</div>
   </div>
 </template>
 <script>
@@ -9,13 +10,10 @@ export default {
 
   data() {
     return {
-      menu: {"团购": {
-        "团购2" : "qqq",
-        "团购3" : "qqq2"
-      }, "门店": {
-        "团购2" : "qqq",
-        "团购3" : "qqq2"
-      }},
+      menu: {
+        "门店编辑": "/Merchant/Operation/EditShop", 
+        "团购服务": "/Merchant/Operation/GBProductOperations"
+      },
       control: {
       },
       menuTranslateList: []
@@ -35,9 +33,13 @@ export default {
       console.log(this.menuTranslateList);
     },
     clickUp: function(label, index){
-      let indexMove = index + 1;
+      let indexMove = index;
 
-      if( indexMove === this.menuTranslateList.length  || this.menuTranslateList[indexMove].level === 1) {
+      if(this.menuTranslateList[indexMove].level === 1 && this.menuTranslateList[indexMove].link != "") {
+        this.$router.push(this.menuTranslateList[indexMove].link);
+      }
+
+      else if( indexMove === this.menuTranslateList.length  || this.menuTranslateList[indexMove].level === 1) {
         for(let i in this.menu[label]) {
           this.menuTranslateList.splice(indexMove, 0, {
             "label": i,

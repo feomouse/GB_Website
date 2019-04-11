@@ -22,7 +22,7 @@ namespace GB_Project.Services.ShopService.UnitTest.ShopInfrastructureUnitTest
       [TestMethod]
       public void TestCreateShopProductType()
       {
-        var shop = config.Repository.GetShopByName("花园行车铺");
+        var shop = config.Repository.GetShopByName("vf行车铺");
         
         var productType = new ProductType(shop, "凉菜");
         var result = config.Repository.CreateShopProductType(productType);
@@ -37,6 +37,21 @@ namespace GB_Project.Services.ShopService.UnitTest.ShopInfrastructureUnitTest
         var type = config.Repository.GetProductTypeByProductTypeId("67C6CC2F-043F-4C51-437B-08D6B469234C");
 
         Assert.IsNotNull(type);
+      }
+
+      [TestMethod]
+      public void TestGetShopProductTypesByShopName()
+      {
+        var types = config.Repository.GetShopProductTypesByShopName("vf行车铺");
+
+        Assert.AreNotEqual(0, types.Count);
+      }
+
+      [TestMethod]
+      public void TestDeleteProductType()
+      {
+        var result = config.Repository.DeleteProductType("903F81D3-C01F-4F0D-0738-08D6B4ED9D70");
+        Assert.AreNotEqual(0, result);
       }
 
 /*       [TestMethod]

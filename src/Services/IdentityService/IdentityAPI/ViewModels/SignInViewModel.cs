@@ -8,11 +8,10 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.ViewModels
 
       public Guid PkId { get; set; }
 
-      
       public SignInViewModel(TokenViewModel token, Guid pkId)
       {
         Token = token;
-        PkId = pkId; 
+        PkId = pkId;
       }
     }
 }

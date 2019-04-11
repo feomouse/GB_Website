@@ -35,9 +35,9 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
       public ActionResult<List<ShopTypesViewModel>> GetShopTypies ()
       {
         var shopTypes = new List<ShopTypesViewModel>();
-        shopTypes.Add(new ShopTypesViewModel(ShopType.beauty.Id, ShopType.beauty.Name));
-        shopTypes.Add(new ShopTypesViewModel(ShopType.entertain.Id, ShopType.entertain.Name));
-        shopTypes.Add(new ShopTypesViewModel(ShopType.food.Id, ShopType.food.Name));
+        shopTypes.Add(new ShopTypesViewModel(ShopType.beauty.Id, ShopType.beauty.Name, ShopType.beauty.Img));
+        shopTypes.Add(new ShopTypesViewModel(ShopType.entertain.Id, ShopType.entertain.Name, ShopType.entertain.Img));
+        shopTypes.Add(new ShopTypesViewModel(ShopType.food.Id, ShopType.food.Name, ShopType.food.Img));
 
         return shopTypes;
       }  
@@ -75,7 +75,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
           return new BadRequestObjectResult("no shop");
         }
 
-        var result = new SearchShopViewModel(shop.PkId.ToString(), shop.Name, shop.Province, shop.City, shop.District, shop.Location, shop.Type, shop.RegisterId.ToString());
+        var result = new SearchShopViewModel(shop.PkId.ToString(), shop.Name, shop.Province, shop.City, shop.District, shop.Location, shop.Pic, shop.Tel , shop.Type, shop.RegisterId.ToString());
         return new OkObjectResult(result);
       }
 
@@ -99,6 +99,34 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
                                   shop.Type, shop.Tel, shop.RegisterId.ToString(), shop.Pic, shop.IsIdentitied);
       
         return new OkObjectResult(merchantShop);
+      }
+
+      [HttpGet]
+      [Route("ShopLists")]
+      public ActionResult GetShopListByShopType([FromQuery] int shopType)
+      {
+        List<Shop> shopList = _query.getShopListByShopType(shopType);
+
+        if(shopList == null) return BadRequest();
+
+        else return Ok(shopList);
+      }
+
+      [HttpGet]
+      [Route("ShopBasicList")]
+      public ActionResult GetShopBasicListByShopType([FromQuery] int shopType)
+      {
+        List<Shop> shopList  = _query.getShopListByShopType(shopType);
+
+        if(shopList == null) return BadRequest();
+
+        List<ShopBasicViewModel> shopBasicList = new List<ShopBasicViewModel>();
+
+        foreach(var i in shopList) {
+          shopBasicList.Add(new ShopBasicViewModel(i.PkId.ToString(), i.Name, i.Province, i.City, i.District, i.Location, i.Pic));
+        }
+
+        return Ok(shopBasicList);
       }
 
       [HttpGet]
@@ -149,6 +177,19 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         }
 
         return new StatusCodeResult(400);
+      }
+
+      [HttpPost]
+      [ProducesResponseType(200)]
+      [ProducesResponseType(400)]
+      [Route("EditShop")]
+      public ActionResult EditShop ([FromBody] EditShopCommand command)
+      {
+        Shop newShop = _mediator.Send(command).GetAwaiter().GetResult();
+
+        if(newShop == null) return BadRequest();
+
+        return Ok(newShop);
       }
 
 /*       [HttpGet]

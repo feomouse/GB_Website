@@ -31,7 +31,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
     } */
 
     [HttpPost]
-    [ProducesResponseType(200)]
+    [ProducesResponseType(201)]
     [ProducesResponseType(400)]
     [Route("add")]
     public ActionResult AddGBProduct ([FromBody]AddGBProductCommand gbProduct )
@@ -43,7 +43,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         return BadRequest("Create error");
       }
 
-      return Ok();
+      return StatusCode(201);
     } 
 
     [HttpGet]
@@ -65,6 +65,19 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
       return Ok(gbProductsViews);
     }
 
+    [HttpGet]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [Route("GBProductKey")]
+    public ActionResult GetGBProductKeyByName ([FromQuery] string productName)
+    {
+       string result = _query.getGBProductByName(productName);
+
+       if(result == null) return BadRequest();
+
+       return Ok(result);
+    }
+
     [HttpPost]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
@@ -78,6 +91,22 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         return BadRequest("err");
       }
       return Ok(gbProduct);
+    }
+
+    [HttpDelete]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(400)]
+    [Route("Delete")]
+    public ActionResult Delete ([FromQuery]string gbProduct)
+    {
+      int result = _mediator.Send(new DeleteGBProductCommand(gbProduct)).GetAwaiter().GetResult();
+
+      if(result == 0)
+      {
+        return BadRequest("Delete err");
+      }
+
+      return StatusCode(204);
     }
   }
 }

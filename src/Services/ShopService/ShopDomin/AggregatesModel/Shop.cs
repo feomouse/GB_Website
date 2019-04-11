@@ -56,6 +56,41 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
       PkId = pkId;
     }
 
+    public void SetName(string name)
+    {
+      Name = name;
+    }
+
+    public void SetProvince(string province)
+    {
+      Province = province;
+    }
+
+    public void SetCity(string city)
+    {
+      City = city;
+    }
+
+    public void SetDistrict(string district)
+    {
+      District = district;
+    }
+
+    public void SetLocation(string location)
+    {
+      Location = location;
+    }
+
+    public void SetType(int type)
+    {
+      Type = type;
+    }
+
+    public void SetTel(string tel)
+    {
+      Tel = tel;
+    }
+
     public void SetIsIdentitied(bool isIdentitied)
     {
       IsIdentitied = isIdentitied;

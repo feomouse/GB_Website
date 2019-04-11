@@ -50,6 +50,22 @@ namespace GB_Project.Services.ShopService.UnitTest.ShopInfrastructureUnitTest
      
             Assert.AreEqual(5, newp.OrinPrice);
         }
+
+        [TestMethod]
+        public void TestDeleteGBProduct()
+        {
+            int result = config.Repository.DeleteGBProduct("苹果");
+        
+            Assert.AreNotEqual(0, result);
+        }
+
+        [TestMethod]
+        public void TestGetGBProductKeyByName()
+        {
+            string result = config.Repository.GetGBProductKeyByName("咖啡");
+
+            Assert.AreNotEqual("", result);
+        }
 /* 
         [TestMethod]
         public void TestGetShopProductsByShopName()

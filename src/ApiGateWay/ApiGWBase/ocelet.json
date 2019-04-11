@@ -54,7 +54,7 @@
         }
       ],
       "UpstreamPathTemplate": "/shop/{everything}",
-      "UpstreamHttpMethod": ["Get", "Post"],
+      "UpstreamHttpMethod": ["Get", "Post", "Delete"],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "TokenKey",
         "AllowedScopes": []
@@ -83,6 +83,34 @@
       }],
       "UpstreamPathTemplate": "/imgUpload",
       "UpstreamHttpMethod": ["Post"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TokenKey",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/v1/api/order/{everything}",
+      "DownStreamScheme": "http",
+      "DownstreamHostAndPorts": [{
+        "Host": "localhost",
+        "Port": 50007
+      }],
+      "UpstreamPathTemplate": "/order/{everything}",
+      "UpstreamHttpMethod": ["Get", "Post", "Delete"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TokenKey",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/v1/api/comment/{everything}",
+      "DownStreamScheme": "http",
+      "DownstreamHostAndPorts": [{
+        "Host": "localhost",
+        "Port": 50008
+      }],
+      "UpstreamPathTemplate": "/comment/{everything}",
+      "UpstreamHttpMethod": ["Get", "Post", "Delete"],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "TokenKey",
         "AllowedScopes": []

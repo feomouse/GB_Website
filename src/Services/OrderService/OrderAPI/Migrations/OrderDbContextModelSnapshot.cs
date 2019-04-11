@@ -19,126 +19,50 @@ namespace OrderAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("GB_Project.Services.OrderService.OrderDomin.OrderAggregate.CustomerOrder", b =>
+            modelBuilder.Entity("GB_Project.Services.OrderService.OrderDomin.GroupOrderAggregate.GroupBuyingOrder", b =>
                 {
                     b.Property<Guid>("PkId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid>("BasicOrderId");
-
                     b.Property<Guid>("CpkId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("Uniqueidentifier");
+
+                    b.Property<string>("Evaluate")
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<string>("GroupProductName")
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("Img")
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("IsPayed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("OrderCode")
+                        .HasColumnType("Uniqueidentifier");
 
                     b.Property<int>("PayWay")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Time")
-                        .HasColumnType("DateTime2");
-
-                    b.HasKey("PkId");
-
-                    b.HasIndex("BasicOrderId")
-                        .IsUnique();
-
-                    b.ToTable("CustomerOrder","order");
-                });
-
-            modelBuilder.Entity("GB_Project.Services.OrderService.OrderDomin.OrderAggregate.OrderBasic", b =>
-                {
-                    b.Property<Guid>("PkId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Address")
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<Guid>("CustomerPkId");
-
-                    b.Property<Guid>("Evaluate")
-                        .HasColumnType("Uniqueidentifier");
-
-                    b.Property<bool>("IsFinished")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Remark")
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("Sender")
-                        .HasColumnType("varchar(10)");
-
-                    b.Property<Guid>("ShopPkId");
-
-                    b.Property<short>("TotalCost")
-                        .HasColumnType("smallint");
-
-                    b.HasKey("PkId");
-
-                    b.ToTable("OrderBasic","order");
-                });
-
-            modelBuilder.Entity("GB_Project.Services.OrderService.OrderDomin.OrderAggregate.OrderProduct", b =>
-                {
-                    b.Property<Guid>("PpkId");
-
-                    b.Property<Guid>("SpkId");
-
-                    b.Property<Guid>("OpkId");
-
-                    b.HasKey("PpkId", "SpkId", "OpkId");
-
-                    b.HasIndex("OpkId");
-
-                    b.ToTable("OrderProduct","order");
-                });
-
-            modelBuilder.Entity("GB_Project.Services.OrderService.OrderDomin.OrderAggregate.ShopOrder", b =>
-                {
-                    b.Property<Guid>("PkId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<Guid>("BasicOrderId");
-
-                    b.Property<bool>("IsAccepted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsProcessed")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("SpkId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("SName")
+                        .HasColumnType("varchar(20)");
 
                     b.Property<DateTime>("Time")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
+
+                    b.Property<int>("TotalCost")
+                        .HasColumnType("int");
 
                     b.HasKey("PkId");
 
-                    b.HasIndex("BasicOrderId")
-                        .IsUnique();
-
-                    b.ToTable("ShopOrder","order");
-                });
-
-            modelBuilder.Entity("GB_Project.Services.OrderService.OrderDomin.OrderAggregate.CustomerOrder", b =>
-                {
-                    b.HasOne("GB_Project.Services.OrderService.OrderDomin.OrderAggregate.OrderBasic", "BasicOrder")
-                        .WithOne("COrder")
-                        .HasForeignKey("GB_Project.Services.OrderService.OrderDomin.OrderAggregate.CustomerOrder", "BasicOrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("GB_Project.Services.OrderService.OrderDomin.OrderAggregate.OrderProduct", b =>
-                {
-                    b.HasOne("GB_Project.Services.OrderService.OrderDomin.OrderAggregate.OrderBasic", "BasicOrder")
-                        .WithMany("OrderItems")
-                        .HasForeignKey("OpkId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("GB_Project.Services.OrderService.OrderDomin.OrderAggregate.ShopOrder", b =>
-                {
-                    b.HasOne("GB_Project.Services.OrderService.OrderDomin.OrderAggregate.OrderBasic", "BasicOrder")
-                        .WithOne("SOrder")
-                        .HasForeignKey("GB_Project.Services.OrderService.OrderDomin.OrderAggregate.ShopOrder", "BasicOrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.ToTable("GroupBuyingOrder","order");
                 });
 #pragma warning restore 612, 618
         }

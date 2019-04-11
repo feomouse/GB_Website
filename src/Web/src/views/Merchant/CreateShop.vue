@@ -141,7 +141,7 @@ export default {
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
   @import "../../less/container.less";
   @import "../../less/ele-ui.less";
 

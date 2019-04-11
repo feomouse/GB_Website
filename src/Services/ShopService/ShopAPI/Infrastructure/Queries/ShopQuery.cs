@@ -27,9 +27,24 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
       return _repo.GetShopByMerchantId(merchantId);
     }
 
+    public List<Shop> getShopListByShopType(int shopType)
+    {
+      return _repo.GetShopListByShopType(shopType);
+    }
+
     public List<GBProduct> getGBProductsByShopName( string shopName)
     {
       return _repo.GetGBProductsByShopName(shopName);
+    }
+
+    public List<ProductType> getShopProductTypesByShopName(string shopName)
+    {
+      return _repo.GetShopProductTypesByShopName(shopName);
+    }
+
+    public string getGBProductByName(string name)
+    {
+      return _repo.GetGBProductKeyByName(name);
     }
 /* 
     public Product getProductByName(string name) 
@@ -51,10 +66,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
        return _repo.GetShopProductsByShopName(shopName);
     }
 
-    public List<ProductType> getShopProductTypesByShopName(string shopName)
-    {
-      return _repo.GetShopProductTypesByShopName(shopName);
-    } */
+ */
 /* 
     public GBProduct getGBProductByName( string name )
     {

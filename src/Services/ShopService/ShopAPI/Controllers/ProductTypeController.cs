@@ -21,7 +21,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         _mediator = mediator;
         _query = query;
       }
-/* 
+
       [HttpGet]
       [Route("getProductTypes")]
       public ActionResult<List<ProductTypesViewModel>> getShopProductTypesByShopName ([FromQuery]string shopName)
@@ -34,7 +34,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
           types.Add(new ProductTypesViewModel(type.PkId.ToString(), type.ShopId.ToString(), type.TypeName));
         }
         return Ok(types);
-      } */
+      }
 
       [HttpPost]
       [ProducesResponseType(201)]
@@ -51,6 +51,21 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
 
         return new StatusCodeResult(201);
       } 
+      
+      [HttpDelete]
+      [ProducesResponseType(200)]
+      [ProducesResponseType(400)]
+      [Route("delete")]
+      public ActionResult DeleteProductType ([FromBody] DeleteProductTypeCommand command)
+      {
+        int result = _mediator.Send(command).GetAwaiter().GetResult();
+      
+        if ( result == 0)
+        {
+          return new StatusCodeResult(400);
+        }
 
+        return new StatusCodeResult(204);
+      }
     }
 }

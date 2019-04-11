@@ -52,6 +52,11 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
       {
         return _context.shops.Where(s => s.PkId.ToString() == shopId).FirstOrDefault();
       }
+
+      public List<Shop> GetShopListByShopType(int shopType)
+      {
+        return _context.shops.Where(s => s.Type == shopType).ToList();
+      }
       
       public bool CheckIfIdentitied(string shopId)
       {
@@ -138,6 +143,14 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         return _context.gbproduct.Where(b => b.PkId == newgbProduct.PkId).FirstOrDefault();
       }
 
+      public int DeleteGBProduct(string gbProductName)
+      {
+        GBProduct gbProduct = _context.gbproduct.Where(b => b.ProductName == gbProductName).FirstOrDefault();
+        _context.gbproduct.Remove(gbProduct);
+
+        return _context.SaveChanges();
+      }
+
       public string UploadShopImg(Shop shop, string imgName, byte[] imgData)
       {
           File.WriteAllBytes("D:\\nginx-1.12.2\\nginx-1.12.2\\IMGS\\shops\\" + imgName, imgData);
@@ -152,6 +165,48 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
           }
 
           return imgLocation;
+      }
+
+      public List<ProductType> GetShopProductTypesByShopName(string shopName)
+      {
+        var shop = _context.shops.Where(s => s.Name == shopName).FirstOrDefault();
+        return shop == null ?  new List<ProductType>() : _context.producttypes.Where(t => t.ShopId == shop.PkId).ToList();
+      }
+
+      public int DeleteProductType(string productTypePkId)
+      {
+        var productType = _context.producttypes.Where(t => t.PkId.ToString() == productTypePkId).FirstOrDefault();
+
+        _context.producttypes.Remove(productType);
+      
+        return _context.SaveChanges();
+      }
+
+      public Shop UpdateShop (Shop shop)
+      {
+        var oldShop = _context.shops.Where(t => t.PkId == shop.PkId).FirstOrDefault();
+
+        oldShop.SetName(shop.Name);
+        oldShop.SetProvince(shop.Province);
+        oldShop.SetCity(shop.City);
+        oldShop.SetDistrict(shop.District);
+        oldShop.SetLocation(shop.Location);
+        oldShop.SetType(shop.Type);
+        oldShop.SetTel(shop.Tel);
+        oldShop.SetPic(shop.Pic);
+
+        _context.SaveChanges();
+
+        return _context.shops.Where(t => t.PkId == shop.PkId).FirstOrDefault();
+      }
+
+      public string GetGBProductKeyByName (string gbProductName)
+      {
+        var product = _context.gbproduct.Where(b => b.ProductName == gbProductName).FirstOrDefault();
+
+        if(product == null) return "";
+
+        return product.PkId.ToString();
       }
 /*       public List<Shop> GetShops()
       {
@@ -168,12 +223,6 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         _context.producttypes.Add(type);
 
         return _context.SaveChanges();
-      }
-
-      public List<ProductType> GetShopProductTypesByShopName(string shopName)
-      {
-        var shop = _context.shops.Where(s => s.Name == shopName).First();
-        return _context.producttypes.Where(t => t.ShopId == shop.PkId).ToList();
       }
 
       public ProductType GetShopProductTypeByShopProductTypeId(Guid productTypeId)

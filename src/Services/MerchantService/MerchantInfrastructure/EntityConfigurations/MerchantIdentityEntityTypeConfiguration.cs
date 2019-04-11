@@ -18,11 +18,11 @@ namespace GB_Project.Services.MerchantService.MerchantInfrastructure.EntityConfi
 
       builder.Property(b => b.IdentityNum).HasColumnType("varchar(18)");
 
-      builder.Property(b => b.IdentityImgF).HasColumnType("varchar(50)");
+      builder.Property(b => b.IdentityImgF).HasColumnType("varchar(100)");
 
-      builder.Property(b => b.IdentityImgB).HasColumnType("varchar(50)");
+      builder.Property(b => b.IdentityImgB).HasColumnType("varchar(100)");
 
-      builder.Property(b => b.LicenseImg).HasColumnType("varchar(50)");
+      builder.Property(b => b.LicenseImg).HasColumnType("varchar(100)");
 
       builder.Property(b => b.LicenseCode).HasColumnType("varchar(15)");
 

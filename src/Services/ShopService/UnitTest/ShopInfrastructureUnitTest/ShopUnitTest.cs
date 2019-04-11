@@ -43,6 +43,15 @@ namespace GB_Project.Services.ShopService.UnitTest.ShopInfrastructureUnitTest
         }
 
         [TestMethod]
+        public void TestGetShopListByShopType()
+        {
+            var shopList = config.Repository.GetShopListByShopType(1);
+
+            Assert.AreNotEqual(0, shopList.Count);
+            Assert.AreEqual(3, shopList.Count);
+        }
+
+        [TestMethod]
         public void TestCheckIfIdentitied()
         {
             var result = config.Repository.CheckIfIdentitied("BBA600CA-71C7-4DAD-3AD5-08D6A783F614");
@@ -90,6 +99,18 @@ namespace GB_Project.Services.ShopService.UnitTest.ShopInfrastructureUnitTest
             var shop = config.Repository.GetShopByShopId("B94EC18C-B604-4966-EFD7-08D6B3E894DA");
 
             Assert.IsNotNull(shop);
+        }
+
+        [TestMethod]
+        public void TestUpdateShop()
+        {
+            Shop newshop = new Shop("vf行车铺", "广东", "汕头", "金平区", "实时花园4栋222", 1, "13076384872", 
+                     new Guid("D32CDB62-9F5C-44CD-1D9A-08D6ADE60FEF"), "/d/pic");
+            newshop.SetPkId(new Guid("5CB54DB9-E4DC-448F-A4F7-08D6B4ED8369"));
+            
+            Shop getNewShop = config.Repository.UpdateShop(newshop);
+
+            Assert.AreEqual("广东", getNewShop.Province);
         }
 /* 
         [TestMethod]

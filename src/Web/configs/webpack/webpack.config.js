@@ -13,6 +13,7 @@ module.exports = {
 
     filename: "[name].js"
   },
+  devtool: 'inline-source-map',
 
   module: {
     rules: [

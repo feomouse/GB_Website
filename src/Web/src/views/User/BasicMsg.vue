@@ -59,6 +59,8 @@
 </template>
 <script>
 import * as userApi from '../../api/User';
+import * as imgApi from '../../api/img';
+import * as identityApi from '../../api/Identity';
 
 export default {
   data() {
@@ -95,16 +97,31 @@ export default {
 
       form.append("file", file);
       form.append("userId", this.$store.getters.userId);
-      console.log(form);
 
       if (!is) {
         this.$message.error('上传Jpg!');
         return
       }
 
-      userApi.upLoadCustomerImg(form).then(data => {
-        console.log(data);
-        this.CustomerInfo.CustomerImg = data;
+      imgApi.ImgUpload(form).then(res => {
+        if(res.status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+              imgApi.ImgUpload(form).then(res => {
+                if (res.status == 400) this.$message.error();
+      
+                this.CustomerInfo.CustomerImg = res.body;
+              })
+            }
+          })
+        }
+        else if (res.status == 400) this.$message.error();
+
+        this.CustomerInfo.CustomerImg = res.body;
       })
 
       return is;

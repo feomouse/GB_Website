@@ -8,11 +8,14 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Application.Commands
   {
     public string Email { get; set; }
 
+    public string PhoneNumber { get; set; }
+
     public string Password { get; set; }
 
-    public SignInCommand (string email, string password)
+    public SignInCommand (string email, string phoneNumber, string password)
     {
       Email = email;
+      PhoneNumber = phoneNumber;
       Password = password;
     }
   }

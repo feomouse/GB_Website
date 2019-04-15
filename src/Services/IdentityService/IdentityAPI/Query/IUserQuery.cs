@@ -8,6 +8,8 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Query
   {
     AppUser FindUserByEmail(string email);
 
+    AppUser FindUserByName(string userName);
+
     IList<String> GetRolesAsync(AppUser user);
 
     AppUser GetAppUserByRefreshToken(string refreshToken);

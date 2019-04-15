@@ -123,7 +123,7 @@ export const updateGBProduct = (gbProduct) => {
 }
 
 export const deleteGBProduct = (gbProductName) => {
-  return Vue.http.delete('shop/GBProduct/Delete', {
+  return Vue.http.delete('/shop/GBProduct/Delete', {
     params: {
       gbProduct: gbProductName
     }
@@ -132,4 +132,16 @@ export const deleteGBProduct = (gbProductName) => {
   }, resFail => {
     return resFail;
   });
+}
+
+export const getMerchantBasicByMerchantId = (merchantId) => {
+  return Vue.http.get('/merchant/GetMerchantBasic', {
+    headers: {
+      'merchantId': merchantId
+    }
+  }).then(resSuccess => {
+    return resSuccess;
+  }, resFail => {
+    return resFail;
+  })
 }

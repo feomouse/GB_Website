@@ -50,7 +50,14 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
           return StatusCode(400);
         }
 
-        var user = _query.FindUserByEmail(model.Email);
+        AppUser user = null;
+        if(model.Email == "")
+        {
+          user = _query.FindUserByName(model.PhoneNumber);
+        }else if(model.PhoneNumber == "")
+        {
+          user = _query.FindUserByName(model.Email);
+        }
 
         if(user == null)
         {
@@ -83,7 +90,7 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
 
         var user = _query.GetAppUserByRefreshToken(refresh_token.RefreshToken);
 
-        var userCopy = _query.FindUserByEmail(user.Email);
+        var userCopy = _query.FindUserByName(user.UserName);
 
         if(user == null)
         {

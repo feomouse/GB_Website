@@ -33,7 +33,7 @@ namespace GB_Project.Services.IdentityService.UnitTests.IdentityInfrastructureUn
     [TestMethod]
     public void TestCreateUserAsync()
     {
-      var user = new AppUser("1074393541@qq.com");
+      var user = new AppUser("1074393341@qq.com", "");
       user.SetHashPassword("125256");
 
       IdentityResult result = config.UserRepository.CreateAsync(user).GetAwaiter().GetResult();
@@ -47,8 +47,8 @@ namespace GB_Project.Services.IdentityService.UnitTests.IdentityInfrastructureUn
     [TestMethod]
     public void TestAddUserToRoleAsyncAndIsInRoleAsync()
     {
-      var user = new AppUser("1074393555@qq.com");
-      user.SetHashPassword("125556");
+      var user = new AppUser("121@qq.com", "");
+      user.SetHashPassword("121");
 
       IdentityResult result = config.UserRepository.CreateAsync(user).GetAwaiter().GetResult();
       
@@ -65,7 +65,7 @@ namespace GB_Project.Services.IdentityService.UnitTests.IdentityInfrastructureUn
     [TestMethod]
     public void TestGetUserIdAsync()
     {
-      var user = new AppUser("1454393555@qq.com");
+      var user = new AppUser("333@qq.com", "");
       user.SetHashPassword("1255546");
 
       IdentityResult result = config.UserRepository.CreateAsync(user).GetAwaiter().GetResult();
@@ -78,11 +78,9 @@ namespace GB_Project.Services.IdentityService.UnitTests.IdentityInfrastructureUn
     [TestMethod]
     public void TestPasswordSignInAsync()
     {
-      var result = config.UserRepository.PasswordSignInAsync("111141221@qq.com", "123123123");
-    
-      var ress = result.GetAwaiter().GetResult();
+      var result = config.UserRepository.CheckPasswordSignInAsync("121@qq.com", "121").GetAwaiter().GetResult();
 
-      Assert.AreEqual(true, ress.Succeeded);
+      Assert.AreEqual(true, result.Succeeded);
     }
   }
 }

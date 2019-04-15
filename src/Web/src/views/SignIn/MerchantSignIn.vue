@@ -2,13 +2,13 @@
   <div id="mholder__SignIn">
     <div class="auto_eight">
       <div id="mleft__place">
-        <label id="merchant_logo">团购&#968商户登陆</label>
+        <label id="merchant_logo" style="box-shadow: 3px 3px 3px gray; border: 1px solid gray;">团购&#968商户登陆</label>
       </div>
       <div id="mright__place">
-        <div class="formEle_container">
+        <div class="formEle_container" style="box-shadow: 3px 3px 3px gray; border: 1px solid gray; padding-top: 2rem;">
           <div class="a-element-a-line">
-            <input class="rem15-rem2-input" placeholder="邮箱" v-model="SignIn.Email"/>
-            <div class="InputError__Mes" v-if="ShowEmailError">请输入正确的邮箱</div>
+            <input class="rem15-rem2-input" placeholder="邮箱或电话" v-model="UserName"/>
+            <div class="InputError__Mes" v-if="ShowUserNameError">请输入正确的邮箱或电话</div>
           </div>
           <div class="a-element-a-line">
             <input class="rem15-rem2-input" placeholder="密码" v-model="SignIn.Password"/>
@@ -22,50 +22,88 @@
         </div>
       </div>
     </div>
-    <div id="mbottom_place"></div>
   </div>
 </template>
 <script>
 import * as SignInReq from '../../api/Identity';
+import * as MerchantApi from '../../api/Merchant';
+
 export default {
   data() {
     return {
       SignIn: {
         Email: "",
+        PhoneNumber: "",
         Password: ""
       },
-      ShowEmailError: false,
+      ShowUserNameError: false,
       ShowPassError: false,
       ShowSignInError: false,
-      ShopSignInSuccess: false
+      ShopSignInSuccess: false,
+      UserName: ""
     }
   },
   methods: {
     LoginRequest() {
-      if(this.SignIn.Email == "") {
-        this.ShowEmailError = true;
-        return;
-      } 
-      else if (this.SignIn.Password == "") {
+      if(/^[0-9a-zA-Z-_]+@[0-9a-zA-Z-_]+(\.[0-9A-Za-z-_]+)+$/.test(this.UserName))
+      {
+        this.SignIn.Email = this.UserName;
+      }
+
+      else if(/^1[34567]\d{9}$/.test(this.UserName))
+      {
+        this.SignIn.PhoneNumber = this.UserName;
+      }
+
+      else {
+        this.ShowUserNameError = true;
+
+        setTimeout(()=> {
+          this.ShowUserNameError = false;
+        }, 2000);
+        return
+      }
+      if (this.SignIn.Password == "") {
         this.ShowPassError = true;
+
+        setTimeout(()=> {
+          this.ShowPassError = false;
+        }, 2000);
         return;
       }
       
       SignInReq.SignInRequest(this.SignIn).then(res => {
-        console.log(res.status);
-        if(res.status != 200) this.ShowSignInError = true;
+        if(res.status != 200) {
+          this.ShowSignInError = true;
+
+          setTimeout(()=> {
+            this.ShowSignInError = false;
+          }, 2000);
+        }
         else if(res.status == 200)
         { 
           this.$store.dispatch('commitToken',res.body.token.access_token);
+          this.$store.dispatch('commitRefreshToken', res.body.token.refresh_token);
           this.$store.dispatch('commitSetMerchantName', res.body.pkId);
           this.ShopSignInSuccess = true;
+
+          setTimeout(()=> {
+            this.ShopSignInSuccess = false;
+          }, 2000);
+
+          MerchantApi.getMerchantBasicByMerchantId(this.$store.getters.getMerchantId).then(res => {
+            if(res.status != 200) this.$message.error();
+
+            if(res.body.shopId == "00000000-0000-0000-0000-000000000000") this.$router.push('/Merchant/CreateShop');
+            else this.$router.push('/Merchant/Operation');
+          })
         }
       })
     }
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
   @import "../../less/container.less";
   @import "../../less/formEle.less";
   @import "../../less/msg.less";
@@ -82,10 +120,10 @@ export default {
 
   #mleft__place {
     float: left;
-    width: 70%;
+    width: 65%;
     height: 40rem;
-    background: gray;
     line-height: 40rem;
+    border-right: 1px solid lightgray;
   }
 
   #mleft__place #merchant_logo{
@@ -96,13 +134,5 @@ export default {
     float: right;
     width: 30%;
     height: 40rem;
-    background: wheat;
-  }
-
-  #mbottom__place {
-    width: 80%;
-    height: 10rem;
-    background: wheat;
-    margin: 0 auto;
   }
 </style>

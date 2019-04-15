@@ -18,3 +18,13 @@ export const SignInRequest = (body) => {
     return responseFail.status;
   })
 }
+
+export const GetTokenByRefreshToken = (refresh) => {
+  return Vue.http.post('/identity/refresh', {
+    "RefreshToken": refresh
+  }).then(resSuccess => {
+    return resSuccess;
+  }, resFail => {
+    return resFail;
+  })
+}

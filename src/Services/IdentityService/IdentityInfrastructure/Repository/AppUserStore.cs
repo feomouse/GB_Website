@@ -175,6 +175,12 @@ namespace GB_Project.Services.IdentityService.IdentityInfrastructure.Repository
 
         return result;
       }
+
+      public Task<SignInResult> CheckPasswordSignInAsync(string userName, string password)
+      {
+        var user = DbContextExtensions.userManager.FindByNameAsync(userName).GetAwaiter().GetResult();
+        return DbContextExtensions.signInManager.CheckPasswordSignInAsync(user, password, false);
+      }
       #endregion
     }
 }

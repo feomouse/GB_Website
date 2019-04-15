@@ -12,10 +12,19 @@ namespace GB_Project.Services.IdentityService.IdentityDomin.AggregatesModel
 
       }
 
-      public AppUser (string userName)
+      public AppUser (string email, string phoneNumber)
       {
-        UserName = userName;
-        Email = userName;
+        if(email == "")
+        {
+          UserName = phoneNumber;
+          PhoneNumber = phoneNumber;
+        }
+        else if (phoneNumber == "")
+        {
+          UserName = email;
+          Email = email;
+        }
+
         ConcurrencyStamp = DateTime.Now.ToString();
         SecurityStamp = Guid.NewGuid().ToString();
       }

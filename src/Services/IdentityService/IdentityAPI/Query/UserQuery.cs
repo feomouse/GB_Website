@@ -27,6 +27,11 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Query
         return UserRepo.FindByEmailAsync(email, default(CancellationToken)).GetAwaiter().GetResult();
       }
 
+      public AppUser FindUserByName(string userName)
+      {
+        return UserRepo.FindByNameAsync(userName, default(CancellationToken)).GetAwaiter().GetResult();
+      }
+
       public IList<String> GetRolesAsync(AppUser user)
       {
         return UserRoleRepo.GetRolesAsync(user, default(CancellationToken)).GetAwaiter().GetResult();
@@ -38,7 +43,7 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Query
         {
           connection.Open();
 
-          return connection.Query<AppUser>(@"SELECT * FROM [dbo].AspNetUsers WHERE RefreshToken = @ReToken", new {ReToken = refreshToken}).First();
+          return connection.Query<AppUser>(@"SELECT * FROM [dbo].AspNetUsers WHERE RefreshToken = @ReToken", new {ReToken = refreshToken}).FirstOrDefault();
         }
       }
   }

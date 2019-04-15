@@ -2,13 +2,13 @@
   <div id="holderCSignUp__place">
     <div class="auto_eight">
       <div id="cleft__place">
-        <label id="customer_logo">团购&#968用户</label>
+        <label id="customer_logo" style="box-shadow: 3px 3px 3px gray; border: 1px solid gray;">团购&#968用户</label>
       </div>
       <div id="cright__place">
-        <div class="formEle_container">
+        <div class="formEle_container" style="box-shadow: 3px 3px 3px gray; border: 1px solid gray; padding-top: 2rem;">
           <div class="a-element-a-line">
-            <input class="rem15-rem2-input" placeholder="邮箱" v-model="SignUp.Email"/>
-            <div class="InputError__Mes" v-if="ShowEmailError">请输入正确的邮箱</div>
+            <input class="rem15-rem2-input" placeholder="邮箱或电话" v-model="UserName"/>
+            <div class="InputError__Mes" v-if="ShowUserNameError">请输入正确的邮箱或电话</div>
           </div>
           <div class="a-element-a-line">
             <input class="rem15-rem2-input" placeholder="密码" v-model="SignUp.Password"/>
@@ -26,7 +26,6 @@
         </div>
       </div>
     </div>
-    <div id="cbottom__place"></div>
   </div>
 </template>
 <script>
@@ -37,43 +36,89 @@
       return {
         SignUp: {
           Email: "",
+          PhoneNumber: "",
           Password: "",
           ConfirmedPassword: "",
           Role: "customer"
         },
-        ShowEmailError: false,
+        ShowUserNameError: false,
         ShowPassError: false,
         ShowPassComfiredError: false,
         ShowSignUpError: false,
-        ShopSignUpSuccess: false
+        ShopSignUpSuccess: false,
+        UserName: ""
       }
     },
 
     methods: {
       RegisterRequest() {
-        if(this.SignUp.Email == "") {
-          this.ShowEmailError = true;
-          return;
-        } 
-        else if (this.SignUp.Password == "") {
+        if(/^[0-9a-zA-Z-_]+@[0-9a-zA-Z-_]+(\.[0-9A-Za-z-_]+)+$/.test(this.UserName))
+        {
+          this.SignUp.Email = this.UserName;
+        }
+
+        else if(/^1[34567]\d{9}$/.test(this.UserName))
+        {
+          this.SignUp.PhoneNumber = this.UserName;
+        }
+
+        else {
+          this.ShowUserNameError = true;
+
+          setTimeout(()=> {
+            this.ShowUserNameError = false;
+          }, 2000);
+          return
+        }
+
+        if (this.SignUp.Password == "") {
           this.ShowPassError = true;
+
+          setTimeout(()=> {
+            this.ShowPassError = false;
+          }, 2000);
           return;
         }
-        else if (this.SignUp.ConfirmedPassword !==this.SignUp.Password) {
+        if (this.SignUp.ConfirmedPassword !==this.SignUp.Password) {
           this.ShowPassComfiredError = true;
+
+          setTimeout(()=> {
+            this.ShowPassComfiredError = false;
+          }, 2000);
           return;
         }
-        
+
         SignUpReq.SignUpRequest(this.SignUp).then(status => {
-          console.log(status);
-          if(status == 400) this.ShowSignUpError = true;
-          else if(status == 200) this.ShopSignUpSuccess = true;
+          if(status == 400) {
+            this.ShowSignUpError = true;
+            setTimeout(()=> {
+              this.ShowSignUpError = false;
+            }, 2000);
+          }
+
+          else if(status == 200) {
+            this.ShopSignUpSuccess = true;
+            setTimeout(()=> {
+              this.ShopSignUpSuccess = false;
+            }, 2000);
+          }
+          
+          this.SignUp = {
+            Email: "",
+            PhoneNumber: "",
+            Password: "",
+            ConfirmedPassword: "",
+            Role: "customer"
+          }
+
+          this.UserName = "";
+          this.$router.push('/Customer/SignIn');
         })
       }
     }
   }
 </script>
-<style lang="less">
+<style lang="less" scoped>
   @import "../../less/container.less";
   @import "../../less/formEle.less";
   @import "../../less/msg.less";
@@ -90,24 +135,17 @@
 
   #cleft__place {
     float: left;
-    width: 70%;
+    margin-top: 2rem;
+    width: 65%;
     height: 40rem;
-    background: gray;
     line-height: 40rem;
+    border-right: 1px solid lightgray;
   }
 
   #cright__place {
     float: right;
     width: 30%;
     height: 40rem;
-    background: wheat;
-  }
-
-  #cbottom__place {
-    width: 80%;
-    height: 10rem;
-    background: wheat;
-    margin: 0 auto;
   }
 
   #cleft__place #customer_logo{

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using GB_Project.Services.IdentityService.IdentityInfrastructure.Context;
 using GB_Project.Services.IdentityService.IdentityInfrastructure.Repository;
 using GB_Project.Services.IdentityService.IdentityDomin.AggregatesModel;
+using Microsoft.AspNetCore.Http;
 
 namespace GB_Project.Services.IdentityService.UnitTests.IdentityInfrastructureUnitTests
 {
@@ -33,7 +34,6 @@ namespace GB_Project.Services.IdentityService.UnitTests.IdentityInfrastructureUn
 
     public BasicConfig()
     {
-      string connectionString = "";
       var services = new ServiceCollection();
 
       services.

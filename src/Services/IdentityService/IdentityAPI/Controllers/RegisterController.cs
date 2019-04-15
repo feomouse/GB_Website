@@ -35,7 +35,7 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
     [Route("register")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public async Task<ObjectResult> Register([FromBody]RegisterViewModel model)
+    public async Task<ObjectResult> Register([FromBody]RegistryCommand model)
     {
       if(!ModelState.IsValid)
       {
@@ -43,9 +43,13 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
       }
 
       // 1.检查用户是否存在
-      if(_userQuery.FindUserByEmail(model.Email) != null)
+      if(model.Email == "") 
       {
-        return BadRequest("Already exist");
+        if(_userQuery.FindUserByName(model.PhoneNumber) != null) return BadRequest("Already exist");
+
+      } else if (model.PhoneNumber == "")
+      {
+        if(_userQuery.FindUserByName(model.Email) != null) return BadRequest("Already exist");
       }
  
       // 2.检查两侧输入密码是否相同
@@ -54,7 +58,7 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
         return BadRequest("two different password");
       }
 
-      var id = _mediator.Send(new RegistryCommand(model.Email, model.Password, model.Role)).Result;
+      var id = _mediator.Send(new RegistryCommand(model.Email, model.PhoneNumber, model.Password, model.ConfirmedPassword, model.Role)).Result;
 
       // 3.检查注册用户是否成功
       if(id == "")

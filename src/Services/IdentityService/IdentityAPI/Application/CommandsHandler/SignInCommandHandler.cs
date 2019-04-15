@@ -16,12 +16,16 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Application.CommandsHa
       _userRepo = userRepo;  
     }
 
-    public async Task<bool> Handle (SignInCommand command, CancellationToken cancellationToken)
+    public Task<bool> Handle (SignInCommand command, CancellationToken cancellationToken)
     {
-      var signInResult = _userRepo.PasswordSignInAsync(command.Email, command.Password).GetAwaiter().GetResult();
-      
-      if(signInResult.Succeeded) return true;
-      else return false;
+      if(command.Email == "")
+      {
+        return Task.FromResult(_userRepo.CheckPasswordSignInAsync(command.PhoneNumber, command.Password).GetAwaiter().GetResult().Succeeded);
+      } else if(command.PhoneNumber == "") 
+      {
+        return Task.FromResult(_userRepo.CheckPasswordSignInAsync(command.Email, command.Password).GetAwaiter().GetResult().Succeeded);
+      }
+      else return Task.FromResult(false);
     }
   }
 }

@@ -35,10 +35,6 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
     public ProductType ProductType { get; private set; } 
 
-    public List<GBRule> GbRule { get; set; }
-
-    public List<GBProductItem> Items { get; set; }
-
     public GBProduct () {
 
     }

@@ -6,7 +6,7 @@ namespace GB_Project.Services.UserService.UserDomin.UserAggregateModel
 
       int SetUserLocation(User user, string location);
 
-      string SetUserImg(User user, string filename, byte[] img);
+      string SetUserImg(string userId, string filename);
 
       int SetUserName(User user, string userName);
 

@@ -1,59 +1,80 @@
 <template>
   <div id="userBasicHolder__place">
     <div class="auto_eight">
-      <div style="height:15rem" class="auto_ten">
-        <div id="name" class="left-eight">
-          <div class="place__font">
-            邮箱: {{CustomerInfo.CustomerEmail}}
-          </div>
-        </div>
-        <div id="img" class="right-two">
-          <el-upload
-            class="avatar-uploader"
-            action=""
-            :show-file-list="false"
-            :before-upload="boforeUpload">
-            <img v-if="CustomerInfo.CustomerImg" :src="CustomerInfo.CustomerImg" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i> 
-          </el-upload>
-        </div>
+      <div style="text-align: left; 
+                  padding-left: 2rem; 
+                  height: 4rem; line-height: 4rem; background: white; 
+                  sont-size: 3rem; font-weight: bold;">用户基本信息:
       </div>
+      <div style="height:15rem; background: lightgreen; line-height: 15rem; text-align: left;" class="auto_ten">
+        <el-upload
+          class="avatar-uploader"
+          action=""
+          style="display: inline-block; margin-left: 2rem;"
+          :show-file-list="false"
+          :before-upload="boforeUpload">
+          <img v-if="CustomerInfo.CustomerImg" :src="CustomerInfo.CustomerImg" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i> 
+        </el-upload>
+        <h2 style="display: inline-block; margin-left: 5rem;">用户名: {{CustomerInfo.CustomerName}}</h2>
+        <div style="float: right; padding-right: 5rem;"><p style="display: inline-block; cursor:pointer;" @click="ShowNameEditDialog = true">修改用户名></p></div>
+      </div>
+      <el-dialog title="编辑用户名" :visible.sync="ShowNameEditDialog">
+        <el-form :model="CustomerInfo" label-width="80px">
+          <el-form-item label="旧用户名">{{CustomerInfo.CustomerName}}</el-form-item>
+          <el-form-item label="新用户名">
+            <el-input v-model="TempCustomerInfo.CustomerName"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer">
+          <el-button type="primary" @click="insureUserNameChange">确认修改</el-button>
+          <el-button @click="ShowNameEditDialog = false">取消</el-button>
+        </div>
+      </el-dialog>
       <div class="msgItem">
-        <div v-if="!JudgeEditing.isUserNameEditing" class="msgBox">
-          <div class="place__font">
-            用户名: {{CustomerInfo.CustomerName}}
-          </div>
+        <div class="msgItemHeader">邮箱</div>
+        <div style="text-align: left; line-height: 6rem; padding-left: 3rem;">{{CustomerInfo.CustomerEmail}}
+<!--           <div style="text-align: right; float: right; padding-right: 4rem;">
+            <el-button @click="ShowEmailEditDialog = true">修改</el-button>
+          </div> -->
         </div>
-        <div v-if="JudgeEditing.isUserNameEditing" class="msgBox">
-          <div class="place__input">
-            <input 
-            v-model="TempCustomerInfo.CustomerName"
-            class="rem15-rem2-input" 
-            placeholder="请输入用户名" />
-          </div>
-        </div>
-        <div class="editButton" v-on:click="editUserNameItem" v-if="!JudgeEditing.isUserNameEditing">编辑</div>
-        <div class="editButton" v-on:click="insureUserNameChange" v-if="JudgeEditing.isUserNameEditing">确认</div>
-        <div class="editButton" v-on:click="cancelUserNameChange" v-if="JudgeEditing.isUserNameEditing">取消</div>
       </div>
+      <!--<el-dialog title="编辑邮箱" :visible.sync="ShowEmailEditDialog">
+        <el-form :model="CustomerInfo" label-width="80px">
+          <el-form-item label="久邮箱">
+            {{CustomerInfo.CustomerEmail}}
+          </el-form-item>
+          <el-form-item label="新邮箱">
+            <el-input v-model="CustomerInfo.CustomerEmail"></el-input>
+          </el-form-item>
+          <div slot="footer">
+            <el-button type="primary" @click="">确认修改</el-button>
+            <el-button @click="ShowEditDialog = false">取消</el-button>
+          </div>
+        </el-form>
+      </el-dialog>-->
       <div class="msgItem">
-        <div v-if="!JudgeEditing.isUserAddressEditing" class="msgBox">
-          <div class="place__font">
-            用户地址: {{CustomerInfo.CustomerAddress}}
+        <div class="msgItemHeader">地址</div>
+        <div style="text-align: left; line-height: 6rem; padding-left: 3rem;">{{CustomerInfo.CustomerAddress}}
+          <div style="text-align: right; float: right; padding-right: 4rem;">
+            <el-button @click="ShowAddressEditDialog = true">修改</el-button>
           </div>
         </div>
-        <div v-if="JudgeEditing.isUserAddressEditing" class="msgBox">
-          <div class="place__input">
-            <input 
-            v-model="TempCustomerInfo.CustomerAddress"
-            class="rem15-rem2-input" 
-            placeholder="请输入用户地址" />
-          </div>
-        </div>
-        <div class="editButton" v-on:click="editUserAddressItem" v-if="!JudgeEditing.isUserAddressEditing">编辑</div>
-        <div class="editButton" v-on:click="insureUserAddressChange" v-if="JudgeEditing.isUserAddressEditing">确认</div>
-        <div class="editButton" v-on:click="cancelUserAddressChange" v-if="JudgeEditing.isUserAddressEditing">取消</div>
       </div>
+      <el-dialog title="编辑地址" :visible.sync="ShowAddressEditDialog">
+        <el-form :model="CustomerInfo" label-width="80px">
+          <el-form-item label="旧地址">
+            {{CustomerInfo.CustomerAddress}}
+          </el-form-item>
+          <el-form-item label="新地址">
+            <el-input v-model="TempCustomerInfo.CustomerAddress"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer">
+          <el-button type="primary" @click="insureUserAddressChange">确认修改</el-button>
+          <el-button @click="ShowAddressEditDialog = false">取消</el-button>
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -77,10 +98,9 @@ export default {
         CustomerAddress: "",
         CustomerEmail: ""
       },
-      JudgeEditing: {
-        isUserNameEditing: false,
-        isUserAddressEditing: false
-      }
+      ShowNameEditDialog: false,
+      ShowEmailEditDialog: false,
+      ShowAddressEditDialog: false
     }
   },
   beforeMount() {
@@ -126,9 +146,6 @@ export default {
 
       return is;
     },
-    editUserNameItem() {
-      this.JudgeEditing.isUserNameEditing = true;
-    },
     insureUserNameChange() {
       var setUserNameObj = {
         UserId: this.$store.getters.userId,
@@ -147,20 +164,14 @@ export default {
             else if(res.status == 200)
             {
               this.$store.dispatch('commitSetUser', res.body);
+              this.ShowNameEditDialog = false;
             }
           })
         } else if (status != 200)
         {
           this.$message.error("修改用户名失败");
-          this.JudgeEditing.isUserNameEditing = false;
         }
       })
-    },
-    cancelUserNameChange() {
-      this.JudgeEditing.isUserNameEditing = false;
-    },
-    editUserAddressItem() {
-      this.JudgeEditing.isUserAddressEditing = true;
     },
     insureUserAddressChange() {
       var setUserAddressObj = {
@@ -170,7 +181,6 @@ export default {
       userApi.setCustomerAddress(setUserAddressObj).then(status => {
         if (status == 200) {
           this.CustomerInfo.CustomerAddress = this.TempCustomerInfo.CustomerAddress;
-          this.JudgeEditing.isUserAddressEditing = false;
 
           userApi.getUserBasicMessage(this.$store.getters.userId).then(res => {
             if(res.status != 200)
@@ -180,17 +190,14 @@ export default {
             else if(res.status == 200)
             {
               this.$store.dispatch('commitSetUser', res.body);
+              this.ShowAddressEditDialog = false;
             }
           })
         } else if (status != 200) {
           this.$message.error('请求用户数据失败');
-          this.JudgeEditing.isUserAddressEditing = false;
         }
       })
-    },
-    cancelUserAddressChange() {
-      this.JudgeEditing.isUserAddressEditing = false;
-    } 
+    }
   },
 }
 </script>
@@ -209,26 +216,16 @@ export default {
   
   #userBasicHolder__place {
     height: auto;
-    background: lightblue;
   }
 
-  #name {
-    height: @top_distance;
-    background: green;
+  .el-upload {
+    height: 10rem;
+    border-radius: 50%;
+    border: 3px solid black;
   }
 
-  #img {
-    height: @top_distance;
-    background: yellow;
-  }
-
-  .place__font {
-    font-size: 3rem;
-    font-weight: bold;
-    padding-left: 2rem;
-    height: @line_distance;
-    line-height: @line_distance;
-    vertical-align: baseline;
+  .avatar-uploader {
+    border-radius: 50%;
   }
 
   .place__input {
@@ -239,8 +236,16 @@ export default {
 
   .msgItem {
     height: @line_distance;
-    background: gray;
-    border: 3px solid black;
+    box-shadow: 1px 3px 3px gray;
+    margin-top: 2rem;
+  }
+
+  .msgItemHeader {
+    border-left: 6px solid lightgreen;
+    text-align: left;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding-left: 3rem;
   }
   
   .msgBox {

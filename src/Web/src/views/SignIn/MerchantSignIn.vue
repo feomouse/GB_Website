@@ -2,10 +2,11 @@
   <div id="mholder__SignIn">
     <div class="auto_eight">
       <div id="mleft__place">
-        <label id="merchant_logo" style="box-shadow: 3px 3px 3px gray; border: 1px solid gray;">团购&#968商户登陆</label>
+        <img src="../../static/imgs/spring.jpg" alt="春天到了，去踏青吧" style="width: 80%; height: 30rem; margin-top: 5rem;"/>
       </div>
       <div id="mright__place">
-        <div class="formEle_container" style="box-shadow: 3px 3px 3px gray; border: 1px solid gray; padding-top: 2rem;">
+        <div class="formEle_container" style="box-shadow: 3px 3px 3px gray; border: 1px solid gray;">
+          <h2>商户登陆</h2>
           <div class="a-element-a-line">
             <input class="rem15-rem2-input" placeholder="邮箱或电话" v-model="UserName"/>
             <div class="InputError__Mes" v-if="ShowUserNameError">请输入正确的邮箱或电话</div>
@@ -116,6 +117,7 @@ export default {
   
   #mholder__SignIn {
     height: auto;
+    overflow: hidden;
   }
 
   #mleft__place {

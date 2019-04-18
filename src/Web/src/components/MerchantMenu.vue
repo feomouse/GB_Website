@@ -65,9 +65,11 @@ export default {
   @import "../less/container";
 
   .menu-item1 {
-    min-height: 2rem;
+    min-height: 4rem;
     width: 100%;
-    background: palegreen;
+    border-top: 2px solid white;
+    line-height: 4rem;
+    color: white;
   }
 
   .menu-item2 {

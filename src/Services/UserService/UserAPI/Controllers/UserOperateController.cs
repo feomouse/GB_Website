@@ -86,36 +86,24 @@ namespace GB_Project.Services.UserService.UserAPI.Controllers
     }
 
     [HttpPost]
-    [Route("uploadImg")]
-    public async Task<ActionResult> UpLoadImg()
+    [Route("SetImg")]
+    public async Task<ActionResult> UpLoadImg([FromBody]SetImgCommand command)
     {
-      if(Request.Form.Files.Count != 0) 
+      var user = _query.GetUserByUserId(command.UserId);
+
+      if(user == null)
       {
-        var stream = Request.Form.Files[0].OpenReadStream();
-
-        byte[] bytes = new byte[stream.Length]; 
-
-        int readNum = stream.Read(bytes, 0, bytes.Length);
-
-        var streamUserId = Request.Form["userId"];
-
-        var user = _query.GetUserByUserId(streamUserId);
-
-        if(user == null)
-        {
-          return new StatusCodeResult(401);
-        }
-      
-        var result = await _mediator.Send(new SetImgCommand(user, Request.Form.Files[0].FileName, bytes));
-
-        if(result == "")
-        {
-          return new StatusCodeResult(400);
-        }
-        
-        return Ok(result);
+        return new StatusCodeResult(401);
       }
-      else return Ok("Something miss");
+    
+      var result = await _mediator.Send(new SetImgCommand(command.UserId,command.FileName));
+
+      if(result == "")
+      {
+        return new StatusCodeResult(400);
+      }
+      
+      return Ok(result);
     }
   }
 }

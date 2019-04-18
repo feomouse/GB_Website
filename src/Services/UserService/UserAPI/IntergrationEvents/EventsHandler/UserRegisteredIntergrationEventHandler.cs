@@ -16,6 +16,7 @@ namespace GB_Project.Services.UserService.UserAPI.IntergrationEvents.EventsHandl
     public Task Handle (UserRegisteredIntergrationEvent @event)
     {
       var user = new User(@event.Id, @event.Email);
+      user.SetLookingImg("http://localhost:50020/headLook.jpg");
       return Task.FromResult(_repo.CreateUser(user));
     }
   }

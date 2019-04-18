@@ -16,7 +16,7 @@ namespace GB_Project.Services.UserService.UserAPI.Application.CommandHandlers
     }
     public Task<string> Handle (SetImgCommand command, CancellationToken cannellationToken)
     {
-      return Task.FromResult(_repo.SetUserImg(command.User, command.FileName, command.ImgData));
+      return Task.FromResult(_repo.SetUserImg(command.UserId, command.FileName));
     }
   }
 }

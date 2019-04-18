@@ -5,16 +5,14 @@ namespace GB_Project.Services.UserService.UserAPI.Application.Commands
 {
   public class SetImgCommand : IRequest<string>
   {
-    public User User { get; set; }
+    public string UserId { get; set; }
     public string FileName { get; set; }
 
-    public byte[] ImgData { get; set; }
 
-    public SetImgCommand(User user, string fileName, byte[] imgData)
+    public SetImgCommand(string userId, string fileName)
     {
-      User = user;
+      UserId = userId;
       FileName = fileName;
-      ImgData = imgData;
     }
   }
 }

@@ -15,10 +15,6 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Context
 
       public DbSet<GBProduct> gbproduct { get; set; }
 
-      public DbSet<GBRule> gbrule { get; set; }
-
-      public DbSet<GBProductItem> gbitems { get; set;}
-
       public ShopDbContext (DbContextOptions<ShopDbContext> options) : base (options)
       {
 
@@ -34,8 +30,6 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Context
         modelBuilder.ApplyConfiguration(new ShopEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new ProductTypeEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new GBProductEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new GBRuleEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new GBProductItemEntityTypeConfiguration());
       }
     }
 }

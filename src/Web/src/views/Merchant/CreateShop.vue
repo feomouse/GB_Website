@@ -1,45 +1,40 @@
 <template>
-  <div class="auto_eight">
-    <header style="">门店信息</header>
+  <div class="auto_eight" style="background: #eff7f2; padding-bottom: 5rem;">
+    <header style="text-align: left; font-weight: bold; font-size: 3rem; color: gray; padding-left: 3rem; margin-bottom: 4rem;">门店信息</header>
     <div class="left-eight">
-      <div class="left-five">
-        <label>名称:</label>
-        <input v-model="shop.Name" class="form__input" placeholder="请输入门店名称"/>
-      </div>
-      <div class="left-five">
-        <label>类型:</label>
-        <select class="form__input" v-model="shop.Type">
-         <option v-for="i in shopTypies" v-bind:value="i.id" v-bind:key="i.id">{{i.name}}</option>
-        </select>
-      </div>
-      <div class="left-five">
-        <label>省:</label>
-        <select class="form__input" v-model="tempLocation.provinceCode" aria-placeholder="请输入省">
-          <option v-for="(i, k) of mapData['86']" v-bind:value="k" v-bind:key="k">{{i}}</option>
-        </select>
-      </div>
-      <div class="left-five">
-        <label>市:</label>
-        <select class="form__input" v-model="tempLocation.cityCode">
-          <option v-for="(i, k) of mapData[tempLocation.provinceCode]" v-bind:value="k" v-bind:key="k">{{i}}</option>
-        </select>
-      </div>
-      <div class="left-five">
-        <label>区:</label>
-        <select class="form__input" v-model="tempLocation.districtCode">
-          <option v-for="(i, k) of mapData[tempLocation.cityCode]" v-bind:value="k" v-bind:key="k">{{i}}</option>
-        </select>
-      </div>
-      <div class="left-five">
-        <label>具体地点:</label>
-        <input v-model="shop.Location" class="form__input" placeholder="请输入门店具体地点"/>
-      </div>
-      <div class="left-five" style="float: left; padding-left:3rem;">
-        <label>电话:</label>
-        <input v-model="shop.Tel" class="form__input" placeholder="请输入门店电话"/>
-      </div>
+      <el-form label-width="70px" inline="true" style="text-align:left;">
+        <el-form-item label="名称" style="width: 100%;">
+          <el-input v-model="shop.Name" placeholder="请输入门店名称"></el-input>
+        </el-form-item>
+        <el-form-item label="门店类型" style="width: 100%;">
+          <el-select v-model="shop.Type">
+            <el-option v-for="i in shopTypies" v-bind:value="i.id" v-bind:key="i.id" :label="i.name"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="省" style="width: 30%;">
+          <el-select v-model="tempLocation.provinceCode" aria-placeholder="请输入省">
+            <el-option v-for="(i, k) of mapData['86']" v-bind:value="k" v-bind:key="k" :label="i"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="市" style="width: 30%;">
+          <el-select v-model="tempLocation.cityCode">
+            <el-option v-for="(i, k) of mapData[tempLocation.provinceCode]" v-bind:value="k" v-bind:key="k" :label="i"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="区" style="width: 30%;">
+          <el-select v-model="tempLocation.districtCode">
+            <el-option v-for="(i, k) of mapData[tempLocation.cityCode]" v-bind:value="k" v-bind:key="k" :label="i"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="具体地点" style="width: 100%;">
+          <el-input v-model="shop.Location" placeholder="请输入门店具体地点"></el-input>
+        </el-form-item>
+        <el-form-item label="电话" style="width: 30%;">
+          <el-input v-model="shop.Tel" placeholder="请输入门店电话"></el-input>
+        </el-form-item>
+      </el-form>
       <div>
-        <button style="background: lightblue; width:8rem; height: 3rem" @click="createShop">提交</button>
+        <el-button type="primary" @click="createShop">提交</el-button>
       </div>
     </div>
     <div class="right-two">
@@ -51,12 +46,13 @@
         <img v-if="shop.Pic" :src="shop.Pic" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
-      <div style="font-size:0.5rem;">门店图像信息</div>
+      <p style="margin-top: 1rem;">门店图像信息</p>
     </div>
   </div>
 </template>
 <script>
 import * as merchantApi from '../../api/Merchant';
+import * as imageApi from '../../api/img';
 import map from '../../data';
 
 export default {
@@ -113,10 +109,12 @@ export default {
         return
       }
 
-      merchantApi.uploadShopPic(form).then(result => {
+      imageApi.ImgUpload(form).then(result => {
         if(result.status != 200)
         {
           this.$message.error('上传图片失败!');
+        } else {
+          this.shop.Pic = result.body;
         }
       })
     },
@@ -147,8 +145,6 @@ export default {
 
   @eight_height : auto;
   @top_distance : auto;
-  @left_eight_height : 50rem;
-  @right_two_height : 50rem;
   @left_five_height : 4rem;
 
   header {
@@ -158,17 +154,7 @@ export default {
     line-height: 12rem;
   }
 
-  .auto_eight {
-    border: 2px solid black;
-  }
-
-  .form__input {
-    height: 2rem;
-    width: 10rem;
-    border-radius: 10%;
-  }
-
   .right-two {
-    background: lightblue;
+    border-left: 2px solid lightgray;
   }
 </style>

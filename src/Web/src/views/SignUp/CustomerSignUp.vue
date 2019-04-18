@@ -2,10 +2,11 @@
   <div id="holderCSignUp__place">
     <div class="auto_eight">
       <div id="cleft__place">
-        <label id="customer_logo" style="box-shadow: 3px 3px 3px gray; border: 1px solid gray;">团购&#968用户</label>
+        <img src="../../static/imgs/summer.jpeg" alt="夏天到了，去游泳吧" style="width: 80%; height: 30rem; margin-top: 5rem;"/>
       </div>
       <div id="cright__place">
-        <div class="formEle_container" style="box-shadow: 3px 3px 3px gray; border: 1px solid gray; padding-top: 2rem;">
+        <div class="formEle_container" style="box-shadow: 3px 3px 3px gray; border: 1px solid gray;">
+          <h2>用户注册</h2>
           <div class="a-element-a-line">
             <input class="rem15-rem2-input" placeholder="邮箱或电话" v-model="UserName"/>
             <div class="InputError__Mes" v-if="ShowUserNameError">请输入正确的邮箱或电话</div>
@@ -131,6 +132,7 @@
   
   #holderCSignUp__place {
     height: auto;
+    overflow: hidden;
   }
 
   #cleft__place {

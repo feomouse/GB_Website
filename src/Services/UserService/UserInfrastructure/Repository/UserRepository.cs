@@ -36,11 +36,11 @@ namespace GB_Project.Services.UserService.UserInfrastructure.Repository
       return _context.SaveChanges();
     }
 
-    public string SetUserImg(User user, string filename, byte[] img)
+    public string SetUserImg(string userId, string filename)
     {
-      System.IO.File.WriteAllBytes("D:\\nginx-1.12.2\\nginx-1.12.2\\IMGS\\" + filename, img);
+      string imgUrl = "http://localhost:50020/" + filename;
 
-      string imgUrl = "http://localhost:50020/CustomerImgs/" + filename;
+      var user = _context.user.Where(b => b.PkId.ToString() == userId).FirstOrDefault();
 
       user.SetLookingImg(imgUrl);
 

@@ -47,8 +47,7 @@ namespace GB_Project.Services.UserService.UnitTests.UserInfrastructureUnitTest
     [TestMethod]
     public void TestSetUserImg()
     {
-      var user = config.Repository.GetUserByUserId("DA8BB4B6-A0D7-435C-AD9B-08D6A529A661");
-      var result = config.Repository.SetUserImg(user, "me.text", System.Text.Encoding.Default.GetBytes("ferfer"));
+      var result = config.Repository.SetUserImg("EE95ED97-571B-4664-AC6F-08D6A46D4941", "me.text");
 
       Assert.AreNotEqual(0, result);
     }

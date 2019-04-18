@@ -1,11 +1,12 @@
 <template>
-    <div id="cholder__SignIn">
+  <div id="cholder__SignIn">
     <div class="auto_eight">
       <div id="cleft__place">
-        <label id="customer_logo" style="box-shadow: 3px 3px 3px gray; border: 1px solid gray;">团购&#968顾客登陆</label>
+        <img src="../../static/imgs/winter.jpg" alt="冬天到了，点点东西吧" style="width: 80%; height: 30rem; margin-top: 5rem;"/>
       </div>
       <div id="cright__place">
-        <div class="formEle_container" style="box-shadow: 3px 3px 3px gray; border: 1px solid gray; padding-top: 2rem;">
+        <div class="formEle_container" style="box-shadow: 3px 3px 3px gray; border: 1px solid gray;">
+          <h2>顾客登陆</h2>
           <div class="a-element-a-line">
             <input class="rem15-rem2-input" placeholder="邮箱或电话" v-model="UserName"/>
             <div class="InputError__Mes" v-if="ShowEmailError">请输入正确的邮箱或电话</div>
@@ -132,6 +133,7 @@ export default {
 
   #cholder__SignIn {
     height: auto;
+    overflow: hidden;
   }
 
   #cleft__place {

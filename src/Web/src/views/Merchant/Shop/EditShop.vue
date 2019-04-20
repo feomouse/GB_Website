@@ -1,56 +1,63 @@
 <template>
   <div class="auto_ten">
-    <div class="left-eight">
-      <div class="a-element-a-line">
-        <label>名字: </label>
-        <input placeholder="请输入" class="form-5rem__input" v-model="newShop.name"/>
-      </div>
-      <div class="a-element-a-line">
-        <label>省: </label>
-        <select class="form-5rem__input" v-model="newShop.province">
-          <option v-for="(i, k) of dataMap['86']" 
-                  v-bind:key="k" 
-                  v-bind:value="k" 
-                  >{{i}}
-          </option>
-        </select>
-        <label>市: </label>
-        <select class="form-5rem__input" v-model="newShop.city">
-          <option v-for="(i, k) of dataMap[newShop.province]" 
-                  v-bind:key="k" 
-                  v-bind:value="k" 
-                  >{{i}}
-          </option>
-        </select>
-        <label>区: </label>
-        <select class="form-5rem__input" v-model="newShop.district">
-          <option v-for="(i, k) of dataMap[newShop.city]" 
-                  v-bind:key="k" 
-                  v-bind:value="k" 
-                  >{{i}}
-          </option>
-        </select>
-      </div>
-      <div class="a-element-a-line">
-        <label>具体地址: </label><input placeholder="请输入" class="form-15rem__input" v-model="newShop.location"/>
-      </div>
-      <div class="a-element-a-line">
-        <label>类型: </label><input placeholder="请输入" class="form-5rem__input" v-model="newShop.type"/>
-        <label>电话: </label><input placeholder="请输入" class="form-5rem__input" v-model="newShop.tel"/>
-      </div>
-      <div class="a-element-a-line">
-        <button class="rem15-rem2-button" @click="updateShop">更新门店基本信息</button>
+    <div class="left-eight" style="text-align:left;">
+      <el-form label-width="100px">
+        <el-form-item label="名字: " style="width: 40%;">
+          <el-input placeholder="请输入" v-model="newShop.name"></el-input>
+        </el-form-item>
+        <el-form-item label="省: ">
+          <el-select v-model="newShop.province">
+            <el-option v-for="(i, k) of dataMap['86']" 
+                    v-bind:key="k" 
+                    v-bind:value="k" 
+                    >{{i}}
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="市: ">
+          <el-select v-model="newShop.city">
+            <el-option v-for="(i, k) of dataMap[newShop.province]" 
+                    v-bind:key="k" 
+                    v-bind:value="k" 
+                    >{{i}}
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="区: ">
+          <el-select v-model="newShop.district">
+            <el-option v-for="(i, k) of dataMap[newShop.city]" 
+                    v-bind:key="k" 
+                    v-bind:value="k" 
+                    >{{i}}
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="具体地址" style="width: 70%;">
+          <el-input placeholder="请输入" v-model="newShop.location"></el-input>
+        </el-form-item>
+        <el-form-item label="类型: " style="width: 30%;">
+           <el-input placeholder="请输入" v-model="newShop.type"></el-input>
+        </el-form-item>
+        <el-form-item label="电话: " style="width: 40%;">
+          <el-input placeholder="请输入" v-model="newShop.tel"></el-input>
+        </el-form-item>
+      </el-form>
+      <div class="a-element-a-line" style="text-align: center;">
+        <el-button class="rem15-rem3-button" type="success" @click="updateShop">更新门店基本信息</el-button>
       </div>
     </div>
-    <div class="right-two">      
-      <el-upload
-        class="avatar-uploader"
-        action=""
-        :show-file-list="false"
-        :before-upload="beforeAvatarUpload">
-        <img v-if="newShop.pic" :src="newShop.pic" class="avatar">
-        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-      </el-upload>
+    <div style="float: right; width: 20rem; padding-top: 10rem;">      
+      <div style="height: 100%;">
+        <el-upload
+          class="avatar-uploader"
+          action=""
+          :show-file-list="false"
+          :before-upload="beforeAvatarUpload">
+          <img v-if="newShop.pic" :src="newShop.pic" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+      </div>
+      <div>门店图像</div>
     </div>
   </div>
 </template>
@@ -159,7 +166,8 @@ export default {
   .left-eight {
     margin-top: 5rem;
     border: 1px solid lightgray;
-    height: 30rem;
+    height: 40rem;
+    padding-top: 2rem;
   }
 
   .a-element-a-line {

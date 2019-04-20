@@ -1,7 +1,13 @@
 <template>
   <div class="leftMenu_container">
     <div class="logo_container">logo容器</div>
-    <div class="menu-item1" v-for="(i,index) in menuTranslateList" v-bind:key="index" @click="clickUp(i.label, index)">{{i.label}}</div>
+    <div class="menu-item1" 
+         v-for="(i,index) in menuTranslateList" 
+         v-bind:key="index" 
+         @click="clickUp(i.label, index)">
+         <svg-icon :iconClass="i.icon"></svg-icon>
+         {{i.label}}
+    </div>
   </div>
 </template>
 <script>
@@ -10,28 +16,22 @@ export default {
 
   data() {
     return {
-      menu: {
-        "门店编辑": "/Merchant/Operation/EditShop", 
-        "团购服务": "/Merchant/Operation/GBProductOperations"
-      },
       control: {
       },
-      menuTranslateList: []
+      menuTranslateList: [{
+          label: "门店编辑",
+          link: "/Merchant/Operation/EditShop",
+          icon: "shop",
+          level: 1
+        }, {
+          label: "团购服务",
+          link: "/Merchant/Operation/GBProductOperations",
+          icon: "gb",
+          level: 1
+        }]
     }
   },
   methods: {
-    getMenuData: function(){
-      for(let i in this.menu) {
-        let tempObj = {
-          label: i,
-          link: typeof(this.menu[i]) === "object"? "" : this.menu[i],
-          level: 1
-        };
-        console.log(tempObj);
-        this.menuTranslateList.push(tempObj);
-      }
-      console.log(this.menuTranslateList);
-    },
     clickUp: function(label, index){
       let indexMove = index;
 
@@ -56,8 +56,7 @@ export default {
       }
     }
   },
-  beforeMount() {
-    this.getMenuData();
+  beforeCreate() {
   }
 }
 </script>

@@ -28,3 +28,15 @@ export const GetTokenByRefreshToken = (refresh) => {
     return resFail;
   })
 }
+
+export const GetMerchantNameById = (id) => {
+  return Vue.http.get('/identity/merchantInfo', {
+    headers: {
+      "merchantId": id
+    }
+  }).then(resSuccess => {
+    return resSuccess;
+  }, resFail => {
+    return resFail;
+  })
+}

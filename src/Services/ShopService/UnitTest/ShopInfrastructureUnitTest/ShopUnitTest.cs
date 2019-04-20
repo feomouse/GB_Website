@@ -43,12 +43,12 @@ namespace GB_Project.Services.ShopService.UnitTest.ShopInfrastructureUnitTest
         }
 
         [TestMethod]
-        public void TestGetShopListByShopType()
+        public void TestGetShopListByShopTypeAndCity()
         {
-            var shopList = config.Repository.GetShopListByShopType(1);
+            var shopList = config.Repository.GetShopListByShopTypeAndCity("山西省", "太原市", 2);
 
             Assert.AreNotEqual(0, shopList.Count);
-            Assert.AreEqual(3, shopList.Count);
+            Assert.AreEqual(2, shopList.Count);
         }
 
         [TestMethod]
@@ -111,6 +111,14 @@ namespace GB_Project.Services.ShopService.UnitTest.ShopInfrastructureUnitTest
             Shop getNewShop = config.Repository.UpdateShop(newshop);
 
             Assert.AreEqual("广东", getNewShop.Province);
+        }
+
+        [TestMethod]
+        public void TestGetShopListByCity()
+        {
+            var shops = config.Repository.GetShopListByCity("山西省", "太原市");
+
+            Assert.AreEqual(2, shops.Count);
         }
 /* 
         [TestMethod]

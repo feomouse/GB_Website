@@ -101,7 +101,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         return new OkObjectResult(merchantShop);
       }
 
-      [HttpGet]
+/*       [HttpGet]
       [Route("ShopLists")]
       public ActionResult GetShopListByShopType([FromQuery] int shopType)
       {
@@ -110,14 +110,31 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         if(shopList == null) return BadRequest();
 
         else return Ok(shopList);
-      }
+      } */
 
       [HttpGet]
       [Route("ShopBasicList")]
-      public ActionResult GetShopBasicListByShopType([FromQuery] int shopType)
+      public ActionResult GetShopBasicListByShopTypeAndCity([FromQuery]string province, string city, int shopType)
       {
-        List<Shop> shopList  = _query.getShopListByShopType(shopType);
+        List<Shop> shopList  = _query.getShopListByShopTypeAndCity(province, city, shopType);
 
+        if(shopList == null) return BadRequest();
+
+        List<ShopBasicViewModel> shopBasicList = new List<ShopBasicViewModel>();
+
+        foreach(var i in shopList) {
+          shopBasicList.Add(new ShopBasicViewModel(i.PkId.ToString(), i.Name, i.Province, i.City, i.District, i.Location, i.Pic));
+        }
+
+        return Ok(shopBasicList);
+      }
+
+      [HttpGet]
+      [Route("ShopListOfCity")]
+      public ActionResult GetShopListOfCity([FromQuery]string province, string city)
+      {
+        List<Shop> shopList = _query.getShopListByCity(province, city);
+      
         if(shopList == null) return BadRequest();
 
         List<ShopBasicViewModel> shopBasicList = new List<ShopBasicViewModel>();

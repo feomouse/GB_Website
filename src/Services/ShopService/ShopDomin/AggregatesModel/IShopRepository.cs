@@ -13,7 +13,9 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
         Shop GetShopByShopId(string shopId);
 
-        List<Shop> GetShopListByShopType(int shopType);
+        List<Shop> GetShopListByShopTypeAndCity(string province, string city, int shopType);
+
+        List<Shop> GetShopListByCity(string province, string city);
 
         bool CheckIfIdentitied(string shopId);
 
@@ -46,5 +48,7 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
         Shop UpdateShop (Shop shop);
 
         string GetGBProductKeyByName (string gbProductName);
+
+        List<GBProduct> GetGBProductsByProductId (string productTypeId);
     } 
 }

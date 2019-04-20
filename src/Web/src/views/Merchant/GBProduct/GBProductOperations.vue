@@ -36,10 +36,10 @@
     },
     data() {
       return {
-        tabLabels: [{
+        tabLabels: [/* {
           label : "产品类型",
           link : "types"
-        }, {
+        }, */ {
           label : "团购产品",
           link : "list"
         }, {

@@ -68,6 +68,25 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
     [HttpGet]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
+    [Route("ProductType/GBProducts")]
+    public ActionResult GetGBProductsByProductTypeId([FromHeader] string productTypeId)
+    {
+      List<GBProduct> gbProducts = _query.getGBProductByProductTypeId(productTypeId);
+
+      List<GBProductsVIewModel> gbProductsViews = new List<GBProductsVIewModel>();
+
+      foreach(var p in gbProducts)
+      {
+        gbProductsViews.Add(new GBProductsVIewModel(p.PkId, p.ProductName, p.OrinPrice, p.Price, p.Quantity, p.VailSDate, p.VailEDate, p.VailTime
+                                                  , p.Img, p.Remark, p.IsDisplay, p.PraiseNum, p.MSellNum, p.ProductTypeId));
+      }
+
+      return Ok(gbProductsViews);
+    }
+
+    [HttpGet]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
     [Route("GBProductKey")]
     public ActionResult GetGBProductKeyByName ([FromQuery] string productName)
     {

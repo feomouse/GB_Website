@@ -53,9 +53,9 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         return _context.shops.Where(s => s.PkId.ToString() == shopId).FirstOrDefault();
       }
 
-      public List<Shop> GetShopListByShopType(int shopType)
+      public List<Shop> GetShopListByShopTypeAndCity(string province, string city, int shopType)
       {
-        return _context.shops.Where(s => s.Type == shopType).ToList();
+        return _context.shops.Where(s => (s.Type == shopType && s.Province == province && s.City == city)).ToList();
       }
       
       public bool CheckIfIdentitied(string shopId)
@@ -208,6 +208,17 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
 
         return product.PkId.ToString();
       }
+
+      public List<GBProduct> GetGBProductsByProductId (string productTypeId)
+      {
+        return _context.gbproduct.Where(b => b.ProductTypeId.ToString() == productTypeId).ToList();
+      }
+
+      public List<Shop> GetShopListByCity(string province, string city)
+      {
+        return _context.shops.Where(t => (t.Province == province && t.City == city)).ToList();
+      }
+
 /*       public List<Shop> GetShops()
       {
         return _context.shops.ToList();

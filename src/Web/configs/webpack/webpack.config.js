@@ -42,6 +42,12 @@ module.exports = {
             options: {}
           }
         ]
+      }, {
+        test: /\.svg$/,
+        loader: 'svg-sprite-loader',
+        options: {
+          symbolId: 'icon-[name]'
+        }
       }/* , {
         test: /\.js$/,
         enforce: "pre",

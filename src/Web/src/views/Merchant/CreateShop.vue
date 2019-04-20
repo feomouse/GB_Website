@@ -130,9 +130,11 @@ export default {
             message: "创建门店成功",
             type: "success"
           })
+
+          this.$router.push('/Merchant/CreateIdentity');
         } else if (result.status != 201)
         {
-          this.$message.error("创建门店失败")
+          this.$message.error("创建门店失败");
         }
       })
     }

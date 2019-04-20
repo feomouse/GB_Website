@@ -66,16 +66,38 @@
           <el-button type="primary" @click="createGBProduct">确 定</el-button>
         </div>
       </el-dialog>
+      <div style="float:right;">
+        <p style="display: inline;">产品类型: </p>
+        <el-select v-model="selectedProductType" placeholder="请选择产品类型" @change="changeType">
+          <el-option
+            v-for="i in productTypes"
+            :key="i.pkId"
+            :label="i.name"
+            :value="i.pkId"></el-option>
+        </el-select>
+        <i class="el-icon-circle-plus-outline" @click="addProductTypeDialogVisible = true"></i>
+        <el-dialog :visible.sync="addProductTypeDialogVisible">
+          <el-form label-width="80px">
+            <el-form-item label="产品类型" style="width:40%;">
+              <el-input placeholder="请输入" v-model="productTypeForm.TypeName"></el-input>
+            </el-form-item>
+          </el-form>
+          <div slot="footer">
+            <el-button type="primary" @click="addProductType">创建</el-button>
+            <el-button @click="addProductTypeDialogVisible = false">取消</el-button>
+          </div>
+        </el-dialog>
+      </div>
     </div>
     <div v-for="(i,index) in gbProducts" v-bind:key="i.productName" class="list_item">
-      <div style="display:inline-block; line-height: 4rem;">
-        <img :src="i.img" style="display: inline-block; width: 4rem; height: 3rem;"/>
-        <div style="display:inline-block; margin: 0 0 0 2rem; height: 3rem; font-size: 2rem;">
-          <span>{{i.productName}}</span>
+      <div style="float:left; line-height: 4rem;">
+        <img :src="i.img" style="float: left; width: 8rem; height: 8rem; padding: 1rem;"/>
+        <div style="float: left; margin: 0 0 0 2rem;">
+          <h1>{{i.productName}}</h1>
         </div>
       </div>
-      <div style="margin-left: 45rem; display:inline-block; line-height: 4rem; ">
-        <button class="rem5-rem2-button" style="display:inline-block;" @click="showUpdateGBProduct(index)">编辑</button>
+      <div style="margin: 2rem 2rem 0 0; float:right; line-height: 4rem;">
+        <el-button style="display:inline-block;" type="success" @click="showUpdateGBProduct(index)">编辑</el-button>
         <el-dialog title="产品详情" :visible.sync="detailGBDialogVisible">
           <el-form :model="editGBProduct">
             <el-form-item label="产品名称: " label-width="5rem">
@@ -140,9 +162,9 @@
             <el-button type="primary" @click="updateGBProduct">确 定</el-button>
           </div>
         </el-dialog>
-        <button class="rem5-rem2-button" 
-                style="display:inline-block;" 
-                @click="showDeleteGBProduct(index)">删除</button>
+        <el-button style="display:inline-block;"
+                type="success"
+                @click="showDeleteGBProduct(index)">删除</el-button>
         <el-dialog label="删除" :visible.sync="deleteDialogVisible">
           <div>确认删除?</div>
           <div slot="footer">
@@ -194,11 +216,17 @@ export default {
         "mSellNum": 0,
         "productTypeId": ""
       },
+      productTypeForm: {
+        "ShopId": this.$store.getters.getShopId,
+        "TypeName": ""
+      },
       deleteGBProductName: "",
       productTypes:[],
+      selectedProductType: "",
       createGBDialogVisible: false,
       detailGBDialogVisible: false,
-      deleteDialogVisible: false
+      deleteDialogVisible: false,
+      addProductTypeDialogVisible: false
     }
   },
   beforeCreate() {
@@ -225,8 +253,8 @@ export default {
         else {
           this.$message({type: 'success', message: '创建团购产品成功'});
           this.createGBDialogVisible = false;
-          merchantApi.getGBProductByShopName(this.$store.getters.getShopName).then(res => {
-            if(res.status != 200) this.$message.error();
+          merchantApi.getGBProductsByProductTypeId(this.selectedProductType).then(res => {
+            if(res.status != 200) this.$message.error('获取团购产品失败');
             else {
               this.gbProducts = res.body;
             }
@@ -283,6 +311,35 @@ export default {
         }
       })
     },
+    changeType(productTypeId) {
+      merchantApi.getGBProductsByProductTypeId(productTypeId).then(res => {
+        if(res.status != 200) this.$message.error('获取团购产品失败');
+        else {
+          this.gbProducts = res.body;
+        }
+      })
+    },
+    addProductType() {
+      merchantApi.createProductType(this.productTypeForm).then(res => {
+        if(res.status != 201) this.$message.error();
+        else {
+          this.$message({message: '创建成功', type: 'success'});
+          merchantApi.getProductTypeByShopName(this.$store.getters.getShopName).then(res => {
+            if(res.status == 400) this.$message.error();
+            else {
+              this.productTypes = [];
+              for(let i of res.body) {
+                this.productTypes.push({
+                  pkId: i.pkId,
+                  name: i.typeName
+                })
+              }
+            }
+          })
+        }
+        this.addProductTypeDialogVisible = false;
+      })
+    },
     beforeCreateAvatarUpload(file) {
       var is = file.type == 'image/jpeg' || file.type == 'image/png';
     
@@ -324,4 +381,6 @@ export default {
   @import '../../../less/container';
   @import '../../../less/formEle';
   @import '../../../less/ele-ui';
+
+  @list_item_height : 10rem;
 </style>

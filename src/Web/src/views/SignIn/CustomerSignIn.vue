@@ -12,7 +12,7 @@
             <div class="InputError__Mes" v-if="ShowEmailError">请输入正确的邮箱或电话</div>
           </div>
           <div class="a-element-a-line">
-            <input class="rem15-rem2-input" placeholder="密码" v-model="SignIn.Password"/>
+            <input class="rem15-rem2-input" placeholder="密码" v-model="SignIn.Password" type="password"/>
             <div class="InputError__Mes" v-if="ShowPassError">请输入秘密</div>
           </div>
           <div class="a-element-a-line">

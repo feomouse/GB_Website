@@ -15,11 +15,15 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Query
 
       IUserRoleStore<AppUser> UserRoleRepo;
 
-      public UserQuery(IUserEmailStore<AppUser> userRepo, IUserRoleStore<AppUser> userRoleRepo)
+      IUserStore<AppUser> UserpRepo;
+
+      public UserQuery(IUserEmailStore<AppUser> userRepo, IUserRoleStore<AppUser> userRoleRepo, IUserStore<AppUser> userpRepo)
       {
         UserRepo = userRepo;
 
         UserRoleRepo = userRoleRepo;
+
+        UserpRepo = userRepo;
       }
 
       public AppUser FindUserByEmail(string email)
@@ -30,6 +34,16 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Query
       public AppUser FindUserByName(string userName)
       {
         return UserRepo.FindByNameAsync(userName, default(CancellationToken)).GetAwaiter().GetResult();
+      }
+
+      public AppUser FindUserById(string userId, string role)
+      {
+        var user = UserpRepo.FindByIdAsync(userId, default(CancellationToken)).GetAwaiter().GetResult();
+
+        if(UserRoleRepo.IsInRoleAsync(user, role, default(CancellationToken)).GetAwaiter().GetResult()) {
+          return user;
+        } 
+        return new AppUser();
       }
 
       public IList<String> GetRolesAsync(AppUser user)

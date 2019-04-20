@@ -66,6 +66,14 @@ namespace GB_Project.Services.ShopService.UnitTest.ShopInfrastructureUnitTest
 
             Assert.AreNotEqual("", result);
         }
+
+        [TestMethod]
+        public void TestGetGBProductsByProductId()
+        {
+            var result = config.Repository.GetGBProductsByProductId("87813CBD-895D-42F5-E6BC-08D6C0ADD1A4");
+            Assert.AreEqual(2, result.Count);
+
+        }
 /* 
         [TestMethod]
         public void TestGetShopProductsByShopName()

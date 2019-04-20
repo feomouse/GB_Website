@@ -145,3 +145,23 @@ export const getMerchantBasicByMerchantId = (merchantId) => {
     return resFail;
   })
 }
+
+export const getGBProductsByProductTypeId = (productTypeId) => {
+  return Vue.http.get('/shop/GBProduct/ProductType/GBProducts', {
+    headers: {
+      'productTypeId': productTypeId
+    }
+  }).then(resSuccess => {
+    return resSuccess;
+  }, resFail => {
+    return resFail;
+  })
+}
+
+export const checkIdentity = (body) => {
+  return Vue.http.post('/merchant/CheckIdentity', body).then(resSuccess => {
+    return resSuccess;
+  }, resFail => {
+    return resFail;
+  })
+}

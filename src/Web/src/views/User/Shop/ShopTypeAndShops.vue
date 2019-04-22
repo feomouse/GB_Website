@@ -1,51 +1,61 @@
 <template>
   <div class="auto_ten">
-    <div class="banner">
-      <p style="float: left; cursor: pointer;" @click="showSelectCityDialogShow = true">选择城市: {{selectedProvinceName + ' ' + selectedCityName}}</p>
-      <p style="float: right; cursor: pointer;" @click="directToMyMessage">{{userName}} : 我的信息</p>
-    </div>
-    <el-dialog label-width="70px" :visible.sync="showSelectCityDialogShow" inline="true">
-      <el-form>
-        <el-form-item label="省" style="width:40%;">
-          <el-select v-model="selectedProvince" placeholder="请选择省">
-            <el-option 
-              v-for="(i, k) in cityData['86']"
-              :key="k"
-              :label="i"
-              :value="k">
-
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="城市" style="width:40%;">
-          <el-select v-model="selectedCity" placeholder="请选择市">
-            <el-option
-              v-for="(i, k) in cityData[selectedProvince]"
-              :key="k"
-              :label="i"
-              :value="k">
-            
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div slot="footer">
-        <el-button type="primary" @click="getShopsByCity">选择</el-button>
-        <el-button @click="showSelectCityDialogShow = false">取消</el-button>
-      </div>
-    </el-dialog>
+   <myBanner></myBanner>
    <div class="auto_eight" style="text-align: left;">
-     <div v-for="i of shopTypes" 
-          v-bind:key="i.id" 
-          class="left-two" 
-          style="text-align: center; cursor:pointer; margin-top: 3rem;" 
-          @click="selectShopTypes(i)">
-       <img :src="i.img" style="border-radius: 50%; width: 4rem; height: 4rem;"/>
-       <div>{{i.name}}</div>
+     <div style="width: 100%; border-bottom: 2px solid lightgray;">
+       <div style="width: 20%; 
+            height: 5rem; 
+            font-size:2rem;
+            color: white;
+            font-weight: bold;
+            background: #7dcea0;
+            text-align:center;
+            padding-top: 1rem;">
+            门店分类
+        </div>
      </div>
+     <div style="width: 100%; height: auto;">
+      <div class="float-left-two" style="background: #7dcea0; padding-top: 1rem; color: white;">
+        <div v-for="i of shopTypes"
+            v-bind:key="i.id" 
+            @click="selectShopTypes(i)"
+            style="height: 3rem; padding-left: 2rem; cursor: pointer;">
+            <svg-icon :iconClass="icons[i.id]"> </svg-icon>
+            {{i.name}}
+        </div>
+      </div>
+      <div class="float-left-six" style="text-align: center;">
+        <div class="left-six">
+          <img :src="shopTypes[1].img" style="width: 100%; height: 100%; cursor: pointer;" @click="selectShopTypes(shopTypes[1])"/>
+        </div>
+        <div class="right-three">
+          <img :src="shopTypes[0].img" style="width: 100%; height: 100%; cursor: pointer;" @click="selectShopTypes(shopTypes[0])"/>
+        </div>
+        <div class="left-three">
+          <img :src="shopTypes[2].img" style="width: 100%; height: 100%; cursor: pointer;" @click="selectShopTypes(shopTypes[2])"/>
+        </div>
+        <div class="left-three">
+          <img :src="shopTypes[3].img" style="width: 100%; height: 100%; cursor: pointer;" @click="selectShopTypes(shopTypes[3])"/>
+        </div>
+        <div class="left-three">
+          <img :src="shopTypes[4].img" style="width: 100%; height: 100%; cursor: pointer;" @click="selectShopTypes(shopTypes[4])"/>
+        </div>
+      </div>
+      <div class="float-left-two" style="text-align: center; background: #f4f6f6; cursor: pointer;" @click="directToMyMessage">
+        <div style="font-weight: bold; margin: 5rem 0 2rem 0; font-size: 2rem;">用户信息</div>
+        <div>
+          <img :src="CustomerInfo.CustomerImg" style="width: 5rem; height: 5rem; border-radius: 50%;" />
+        </div>
+        <div>
+          {{CustomerInfo.CustomerName}}
+        </div>
+      </div>
+     </div>
+     <div style="clear:both;"></div>
+     <div class="shop-header">门店信息</div>
      <div v-for="(i, index) of shopList" v-bind:key="i.name" class="list_item" @click="showDetail(index)"
-          style="text-align: left; padding-left: 3rem; vertical-align: bottom; cursor:pointer;">
-       <img :src="i.img" style="width: 6rem; height: 5rem; display: inline-block; margin-right: 3rem;" />
+          style="text-align: left; vertical-align: bottom; cursor:pointer;">
+       <img :src="i.img" style="width: 6rem; height: 5rem; display: inline-block; margin: 0 3rem 0 3rem;" />
        <div style="display: inline-block;">
          <p style="font-size: 1.5rem">{{i.name}}</p>
          <p>{{i.province + i.city + i.district + i.location}}</p>
@@ -56,21 +66,38 @@
 </template>
 <script>
 import * as shopApi from '../../../api/Shop';
-import cityData from '../../../data';
+import myBanner from '../../../components/Banner';
 
 export default {
+  components: {
+    'myBanner': myBanner
+  },
   data() {
     return {
       shopTypes: [],
-      shopList:[],
+      shopList: this.$store.getters.getShopList,
       showSelectCityDialogShow: false,
-      'cityData': cityData,
-      selectedProvince: "110000",
-      selectedCity: "110100",
-      selectedProvinceName: "北京市",
-      selectedCityName: "直辖区",
+      cityData: this.$store.getters.getCityData,
+      selectedProvince: this.$store.getters.getSelectedProvince,
+      selectedCity: this.$store.getters.getSelectedCity,
+      selectedProvinceName: this.$store.getters.getSelectedProvinceName,
+      selectedCityName: this.$store.getters.getSelectedCityName,
       selectedShopType: 1,
-      userName: this.$store.getters.user.userName
+      userName: this.$store.getters.user.userName,
+
+      icons: {
+        1: 'beauty',
+        3: 'entertain',
+        2: 'food',
+        4: 'living',
+        5: 'learning'
+      },
+      CustomerInfo: {
+        CustomerName: "",
+        CustomerImg: "",
+        CustomerAddress: "",
+        CustomerEmail: ""
+      },
     }
   },
   beforeCreate() {
@@ -80,12 +107,23 @@ export default {
         this.shopTypes = res.body;
         shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.selectedProvince], this.cityData[this.selectedProvince][this.selectedCity], 1).then(res => {
           if(res.status != 200) this.$message.error('获取门店错误')
-          else this.shopList = res.body;
+          else {
+            this.shopList = res.body;
+            //this.$store.dispatch('commitSetShopList', res.body);
+          }
         })
       }
     })
-    this.selectedProvinceName = cityData['86'][this.selectedProvince];
-    this.selectedCityName = cityData[this.selectedProvince][this.selectedCity];
+    //this.selectedProvinceName = this.cityData['86'][this.selectedProvince];
+    //this.selectedCityName = this.cityData[this.selectedProvince][this.selectedCity];
+    this.$store.dispatch('commitProvinceName', this.cityData['86'][this.selectedProvince]);
+    this.$store.dispatch('commitCityName', this.cityData[this.selectedProvince][this.selectedCity]);
+  },
+  beforeMount() {
+    this.CustomerInfo.CustomerName = this.$store.getters.user.userName;
+    this.CustomerInfo.CustomerImg = this.$store.getters.user.lookingImg;
+    this.CustomerInfo.CustomerAddress = this.$store.getters.user.address;
+    this.CustomerInfo.CustomerEmail = this.$store.getters.user.email;
   },
   methods: {
     showDetail(index) {
@@ -96,14 +134,17 @@ export default {
     selectShopTypes(type) {
       this.selectedShopType = type.id;
       console.log('test')
-      shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.selectedProvince], this.cityData[this.selectedProvince][this.selectedCity], type.id).then(res => {
+      shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.$store.getters.getSelectedProvince], this.cityData[this.$store.getters.getSelectedProvince][this.$store.getters.getSelectedCity], type.id).then(res => {
         if(res.status != 200) this.$message.error('获取门店错误')
-        else this.shopList = res.body;
+        else {
+          this.shopList = res.body;
+          //this.$store.dispatch('commitSetShopList', res.body);
+        }
       })
     },
     directToMyMessage() {
       this.$router.push('/Customer/Basic');
-    },
+    },/* 
     getShopsByCity() {
       this.selectedProvinceName = cityData['86'][this.selectedProvince];
       this.selectedCityName = cityData[this.selectedProvince][this.selectedCity];
@@ -115,7 +156,7 @@ export default {
           this.shopList = res.body;
         }
       })
-    }
+    } */
   }
 }
 </script>
@@ -126,11 +167,11 @@ export default {
   @list_item_height : 10rem;
   @left_two_height : 8rem;
 
-  .banner {
-    height: 3rem;
-    background: #edf6eb;
-    padding: 0 12rem 0 16rem;
-    font-size: 0.8rem;
-    color: #666a65;
-  }
+  @fleft_two_height : 20rem;
+  @fleft_three_height : 20rem;
+  @fleft_six_height : 20rem;
+
+  @left_six_height : 10rem;
+  @right_three_height : 10rem;
+  @left_three_height : 10rem;
 </style>

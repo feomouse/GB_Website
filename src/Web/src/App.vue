@@ -15,5 +15,6 @@
     position: relative;
     text-align: center;
     width : 100%;
+    box-sizing: border-box;
   }
 </style>

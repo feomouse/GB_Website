@@ -4,9 +4,17 @@
 @left_five_height : auto;
 @left_three_height : auto;
 @left_two_height : auto;
+@right_seven_height : auto;
 @right_two_height : auto;
+@left_seven_height : auto;
+@left_six_height : auto;
+@right_three_height : auto;
 @top_distance : auto;
 @tab_container_height : auto;
+
+@fleft_two_height : auto;
+@fleft_three_height : auto;
+@fleft_six_height : auto;
 
 .logo_container {
   width: 100%;
@@ -51,6 +59,18 @@
   display: inline-block;
 }
 
+.left-six {
+  width: 60%;
+  height: @left_six_height;
+  display: inline-block;
+}
+
+.left-seven {
+  width: 70%;
+  height: @left_seven_height;
+  display: inline-block;
+}
+
 .left-three {
   width: 30%;
   height: @left_three_height;
@@ -66,6 +86,17 @@
 .right-two {
   width: 20%;
   height: @right_two_height;
+  display: inline-block;
+}
+
+.right-three {
+  width: 28%;
+  height: @right_three_height;
+  display: inline-block;
+}
+.right-seven {
+  width: 68%;
+  height: @right_seven_height;
   display: inline-block;
 }
 
@@ -91,4 +122,34 @@
   border-top: 1px black solid;
   text-align : left;
   padding-top: 2rem;
+}
+
+.float-left-two {
+  float: left;
+  height: @fleft_two_height;
+  width: 20%;
+}
+
+.float-left-three {
+  float: left;
+  height: @fleft_three_height;
+  width: 30%;
+}
+
+.float-left-six {
+  float: left;
+  height: @fleft_six_height;
+  width: 60%;
+}
+
+.shop-header {
+  margin: 3rem 0 3rem 0;
+  width: 100%;
+  height: 3rem;
+  font-size: 2rem;
+  font-weight: bold;
+  background: #7dcea0;
+  color: white;
+  padding-left: 2rem;
+  text-align: left;
 }

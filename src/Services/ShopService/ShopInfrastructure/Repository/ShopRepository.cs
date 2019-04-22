@@ -32,6 +32,7 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
          dic.Add(ShopType.beauty.Id, ShopType.beauty.Name);
          dic.Add(ShopType.entertain.Id, ShopType.entertain.Name);
          dic.Add(ShopType.food.Id, ShopType.food.Name);
+         dic.Add(ShopType.livingPlace.Id, ShopType.livingPlace.Name);
 
          return dic;
       }

@@ -1,7 +1,8 @@
 var state = {
   shopId: "",
   shopName: "",
-  shopSelectedName: ""
+  shopSelectedName: "",
+  shopList: []
 }
 
 var getters = {
@@ -13,6 +14,9 @@ var getters = {
   },
   getShopSelectedName: (state) => {
     return state.shopSelectedName;
+  },
+  getShopList: (state) => {
+    return state.shopList
   }
 }
 
@@ -25,6 +29,9 @@ var mutations = {
   },
   setShopSelectedName: (state, name) => {
     state.shopSelectedName = name;
+  },
+  setShopList: (state, list) => {
+    state.shopList = list;
   }
 }
 
@@ -37,6 +44,9 @@ var actions = {
   },
   commitSetSelectedName: ({commit}, name) => {
     commit('setShopSelectedName', name)
+  },
+  commitSetShopList: ({commit}, list) => {
+    commit('setShopList', list)
   }
 }
 

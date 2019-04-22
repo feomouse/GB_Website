@@ -1,23 +1,32 @@
 <template>
-  <div class="auto_eight">
-    <div class="auto_ten" style="text-align: left;">
-      <h1>{{shopDetail.name}}</h1>
-      <img :src="shopDetail.pic" style="width: 12rem; height: 12rem; display: inline-block; margin-right: 10rem;"/>
-      <div style="display: inline-block;">
-        <p>门店地址: {{shopDetail.province + shopDetail.city + shopDetail.district + shopDetail.location}}</p>
-        <p>联系电话: {{shopDetail.tel}}</p>
+  <div class="auto_ten" style="background: #f8f9f9;">
+    <myBanner></myBanner>
+    <div class="auto_eight" style="text-align: left; box-shadow: 3px 3px 3px lightgray; padding: 2rem 0 2rem 2rem;">
+      <div style="float: left">
+        <h1>{{shopDetail.name}}</h1>
+        <div>
+          <p>门店地址: {{shopDetail.province + shopDetail.city + shopDetail.district + shopDetail.location}}</p>
+          <p>联系电话: {{shopDetail.tel}}</p>
+        </div>
       </div>
+      <div style="float: right;">
+        <img :src="shopDetail.pic" style="width: 24rem; height: 12rem;"/>
+      </div>
+      <div style="clear: both;"></div>
     </div>
-    <div class="auto_ten">
+    <div class="auto_eight" style="margin-top: 3rem;">
+      <div class="shop-header">团购产品</div>
       <div v-for="(i, index) of gbProductList" 
            v-bind:key="i.productName" 
            class="list_item" 
            style="text-align:left; cursor: pointer;"
            @click="showGBProductDetail(index)">
         <img :src="i.img" style="width: 5rem; height: 5rem; display: inline-block; margin: 1rem 5rem 0 1rem;" />
-        <h2 style="display: inline-block; margin-right: 5rem;">{{i.productName}}</h2>
+        <div style="display: inline-block; margin-right: 5rem;">
+          <div style="height:2rem;">{{i.productName}}</div>
+          <div>价格: <h1 style="display: inline;">{{i.price}}</h1></div>
+        </div>
         <div style="display: inline-block; margin: 0 5rem 1rem 0;">
-          <p>价格: {{i.price}}</p>
           <p>规格: {{i.quantity}}</p>
         </div>
         <div style="display: inline-block; margin: 0 5rem 1rem 0;">
@@ -54,6 +63,19 @@
         </div>
       </el-dialog>
     </div>
+    <div class="auto_eight" style="margin-top: 3rem;">
+      <div class="shop-header">用户点评</div>
+      <div v-for="i of commentList"
+           v-bind:key="i.pkId"
+           style="text-align: left; border-bottom: 1px solid lightgray;">
+          <div>用户: <h2 style="display: inline;">{{i.userName}}</h2></div>
+          <div style="text-align: right;">点赞数: {{i.stars}} 日期: {{i.date}}</div>
+          <div style="margin-top: 3rem;">{{i.comment}}</div>
+          <div>
+            <img :src="i.img" />
+          </div>
+      </div>
+    </div>
     <!--<div @click="test" style="cursor: pointer;">测试</div>-->
   </div>
 </template>
@@ -61,8 +83,13 @@
 import * as shopApi from '../../../api/Shop';
 import * as merchantApi from '../../../api/Merchant';
 import * as orderApi from '../../../api/Order';
+import * as commentApi from '../../../api/Evaluate';
+import myBanner from '../../../components/Banner';
 
 export default {
+  components: {
+    'myBanner': myBanner
+  },
   data() {
     return {
       shopDetail: {},
@@ -82,7 +109,8 @@ export default {
         "SpkId": "aa2bdc64-373a-409d-5838-08d6b9a3b542",
         "Time": "2019/01/03 00:00:00"
       },
-      gbProductDialogVisible: false
+      gbProductDialogVisible: false,
+      commentList: []
     }
   },
   beforeCreate() {
@@ -99,6 +127,11 @@ export default {
           else this.productTypes = res.body;
         })
       })
+    }),
+    commentApi.getUserCommentsByShopId(this.$store.getters.getShopId).then(res => {
+      if(res.status != 200) this.$message.error();
+
+      else this.commentList = res.body;
     })
   },
   computed: {

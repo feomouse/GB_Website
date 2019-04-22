@@ -13,6 +13,9 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
       public static ShopType entertain = new ShopType(3, "娱乐", "http://localhost:50020/d930c84fc2ac4e9ce9c5823af69afc0e.jpg");
 
+      public static ShopType livingPlace = new ShopType(4, "住宿", "http://localhost:50020/00e2160545854b67a10b56d3275e5026.jpg");
+
+      public static ShopType learning = new ShopType(5, "学习培训", "http://localhost:50020/e7ee4adde7da4be59607c075c9d65b6f.jpg");
       public string Img { get; set; }
 
       public ShopType ()
@@ -25,7 +28,7 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
         Img = img;
       }
 
-      public static IEnumerable<ShopType> List() => new[] { beauty, food, entertain};
+      public static IEnumerable<ShopType> List() => new[] { beauty, food, entertain, livingPlace, learning};
 
       public static ShopType FromName (string name)
       {

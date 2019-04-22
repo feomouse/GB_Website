@@ -38,7 +38,9 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         shopTypes.Add(new ShopTypesViewModel(ShopType.beauty.Id, ShopType.beauty.Name, ShopType.beauty.Img));
         shopTypes.Add(new ShopTypesViewModel(ShopType.entertain.Id, ShopType.entertain.Name, ShopType.entertain.Img));
         shopTypes.Add(new ShopTypesViewModel(ShopType.food.Id, ShopType.food.Name, ShopType.food.Img));
-
+        shopTypes.Add(new ShopTypesViewModel(ShopType.livingPlace.Id, ShopType.livingPlace.Name, ShopType.livingPlace.Img));
+        shopTypes.Add(new ShopTypesViewModel(ShopType.learning.Id, ShopType.learning.Name, ShopType.learning.Img));
+        
         return shopTypes;
       }  
       [HttpPost]

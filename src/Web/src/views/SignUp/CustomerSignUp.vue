@@ -12,11 +12,11 @@
             <div class="InputError__Mes" v-if="ShowUserNameError">请输入正确的邮箱或电话</div>
           </div>
           <div class="a-element-a-line">
-            <input class="rem15-rem2-input" placeholder="密码" v-model="SignUp.Password"/>
+            <input class="rem15-rem2-input" placeholder="密码" v-model="SignUp.Password" type="password">
             <div class="InputError__Mes" v-if="ShowPassError">请输入秘密</div>
           </div>
           <div class="a-element-a-line">
-            <input class="rem15-rem2-input" placeholder="确认密码" v-model="SignUp.ConfirmedPassword"/>
+            <input class="rem15-rem2-input" placeholder="确认密码" v-model="SignUp.ConfirmedPassword" type="password"/>
             <div class="InputError__Mes" v-if="ShowPassComfiredError">确认密码与密码不相同</div>
           </div>
           <div class="a-element-a-line">
@@ -98,22 +98,21 @@
           }
 
           else if(status == 200) {
+            this.SignUp = {
+              Email: "",
+              PhoneNumber: "",
+              Password: "",
+              ConfirmedPassword: "",
+              Role: "customer"
+            }
+
+            this.UserName = "";
+            this.$router.push('/Customer/SignIn');
             this.ShopSignUpSuccess = true;
             setTimeout(()=> {
               this.ShopSignUpSuccess = false;
             }, 2000);
           }
-          
-          this.SignUp = {
-            Email: "",
-            PhoneNumber: "",
-            Password: "",
-            ConfirmedPassword: "",
-            Role: "customer"
-          }
-
-          this.UserName = "";
-          this.$router.push('/Customer/SignIn');
         })
       }
     }

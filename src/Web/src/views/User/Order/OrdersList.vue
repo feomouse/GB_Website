@@ -116,17 +116,17 @@
           <el-button type="success" @click="seeComment(i.pkId)">查看评论</el-button>
         </div>
         <el-dialog label="评价" :visible.sync="commentDetailDialogVisible">
-          <div>
-            <label>评价: </label>
-            <i class="el-icon-star-on" v-for="i of starsNum" v-bind:key="i.id"></i>
+          <div style="float: left;">
+            <img :src="comment.img" style="width: 8rem; height: 6rem;" />
           </div>
-          <div>
-            <label>评论内容: </label>
-            <p>{{comment.comment}}</p>
-          </div>
-          <div>
-            <label>图片: </label>
-            <img :src="comment.img" style="width: 5rem; height: 5rem;" />
+          <div style="font-size: 1.5rem;">
+            <div>
+              <label>评价: </label>
+              <i class="el-icon-star-on" v-for="i of starsNum" v-bind:key="i.id"></i>
+            </div>
+            <div>
+              <label>评论内容: {{comment.comment}}</label>
+            </div>
           </div>
           <div slot="footer">
             <el-button @click="commentDetailDialogVisible = false">取消</el-button>
@@ -186,7 +186,7 @@ export default {
           else if(i.isUsed == true) {
             this.ordersListIsUsed.push(i);
           }
-          if(i.isUsed == true && i.evaluate != null) {
+          if(i.isUsed == true && i.evaluate != "") {
             this.ordersListIsEvaluate.push(i);
           }
         }
@@ -219,7 +219,7 @@ export default {
                 else if(i.isUsed == true) {
                   this.ordersListIsUsed.push(i);
                 }
-                if(i.isUsed == true && i.evaluate != null) {
+                if(i.isUsed == true && i.evaluate != "") {
                   this.ordersListIsEvaluate.push(i);
                 }
               }
@@ -252,7 +252,7 @@ export default {
             else if(i.isUsed == true) {
               this.ordersListIsUsed.push(i);
             }
-            if(i.isUsed == true && i.evaluate != null) {
+            if(i.isUsed == true && i.evaluate != "") {
               this.ordersListIsEvaluate.push(i);
             }
           }
@@ -319,7 +319,7 @@ export default {
             else if(i.isUsed == true) {
               this.ordersListIsUsed.push(i);
             }
-            if(i.isUsed == true && i.evaluate != null) {
+            if(i.isUsed == true && i.evaluate != "") {
               this.ordersListIsEvaluate.push(i);
             }
           }

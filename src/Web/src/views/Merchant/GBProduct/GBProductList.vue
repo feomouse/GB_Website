@@ -1,7 +1,7 @@
 <template>
   <div class="auto_ten tabContent_container">
     <div style="width: 100%; height: 3rem;">
-      <button class="rem5-rem2-button" style="float: left" @click="createGBDialogVisible = true">新建</button>
+      <el-button type="success" @click="createGBDialogVisible = true">新建</el-button>
       <el-dialog title="新建团购产品" :visible.sync="createGBDialogVisible">
         <el-form :model="newGBProduct">
           <el-form-item label="产品名称: " label-width="5rem">
@@ -76,6 +76,7 @@
             :value="i.pkId"></el-option>
         </el-select>
         <i class="el-icon-circle-plus-outline" @click="addProductTypeDialogVisible = true"></i>
+        <el-button type="primary" @click="payDialogVisible = true">确认交易</el-button>
         <el-dialog :visible.sync="addProductTypeDialogVisible">
           <el-form label-width="80px">
             <el-form-item label="产品类型" style="width:40%;">
@@ -86,6 +87,14 @@
             <el-button type="primary" @click="addProductType">创建</el-button>
             <el-button @click="addProductTypeDialogVisible = false">取消</el-button>
           </div>
+        </el-dialog>
+        <el-dialog :visible.sync="payDialogVisible">
+          <el-form label-width="80px">
+            <el-form-item label="团购码">
+              <el-input placeholder="请输入团购码" v-model="orderCode"></el-input>
+            </el-form-item>
+            <el-button type="success" @click="ensurePay">确认交易</el-button>
+          </el-form>
         </el-dialog>
       </div>
     </div>
@@ -178,6 +187,7 @@
 </template>
 <script>
 import * as merchantApi from '../../../api/Merchant';
+import * as orderApi from '../../../api/Order';
 import * as imgApi from '../../../api/img';
 
 export default {
@@ -226,24 +236,37 @@ export default {
       createGBDialogVisible: false,
       detailGBDialogVisible: false,
       deleteDialogVisible: false,
-      addProductTypeDialogVisible: false
+      addProductTypeDialogVisible: false,
+      payDialogVisible: false,
+      orderCode: ""
     }
   },
   beforeCreate() {
-    merchantApi.getProductTypeByShopName(this.$store.getters.getShopName).then(res => {
-      if(res.status == 400) this.$message.error();
-      else {
-        for(let i of res.body) {
-          this.productTypes.push({
-            pkId: i.pkId,
-            name: i.typeName
-          })
-        }
+    merchantApi.ifSetGBService(this.$store.getters.getMerchantId).then(res => {
+      if(res.status != 200) {
+        this.$message.error('不存在');
       }
-      merchantApi.getGBProductByShopName(this.$store.getters.getShopName).then(res => {
-        if(res.status == 400) this.$message.error('获取团购产品失败');
-        else this.gbProducts = res.body;
-      })
+
+      else if (res.body == false) {
+        this.$router.push('/Merchant/Operation/GBServiceApply');
+      }
+      else {
+        merchantApi.getProductTypeByShopName(this.$store.getters.getShopName).then(res => {
+          if(res.status == 400) this.$message.error();
+          else {
+            for(let i of res.body) {
+              this.productTypes.push({
+                pkId: i.pkId,
+                name: i.typeName
+              })
+            }
+          }
+          merchantApi.getGBProductByShopName(this.$store.getters.getShopName).then(res => {
+            if(res.status == 400) this.$message.error('获取团购产品失败');
+            else this.gbProducts = res.body;
+          })
+        })
+      }
     })
   },
   methods: {
@@ -339,6 +362,13 @@ export default {
         }
         this.addProductTypeDialogVisible = false;
       })
+    },
+    ensurePay() {
+      orderApi.ensurePay(
+        {"ShopName": this.$store.getters.getShopName, "OrderCode": this.orderCode}).then(res => {
+          if(res.status != 200) this.$message.error();
+          else this.$message({type: "success", message: "交易成功"}); 
+        })
     },
     beforeCreateAvatarUpload(file) {
       var is = file.type == 'image/jpeg' || file.type == 'image/png';

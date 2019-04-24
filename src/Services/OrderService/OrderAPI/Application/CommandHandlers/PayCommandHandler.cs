@@ -19,7 +19,7 @@ namespace GB_Project.Services.OrderService.OrderAPI.Application.CommandHandlers
 
     public Task<bool> Handle (PayCommand command, CancellationToken cancellaitonToken)
     {
-        var client = new RestClient("http://localhost:50020");
+        var client = new RestClient("http://localhost:50015");
 
         var request = new RestRequest("/v1/api/pay/order");
 

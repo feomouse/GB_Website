@@ -95,7 +95,10 @@ module.exports = {
     port: 55000,
     hot: true,
     proxy: {
-      "/": "http://localhost:5000/"
+      "/": {
+        target: "https://localhost:5000/",
+        secure: false
+      }
     }
   }
 }

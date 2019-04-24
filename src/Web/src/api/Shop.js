@@ -71,3 +71,13 @@ export const GetShopListByCity = (province, city) => {
     return resFail;
   })
 }
+
+export const SetGroupBuying = (shopId) => {
+  return Vue.http.post('/shop/SetGroupBuying', {
+    'ShopId': shopId
+  }).then(resSuccess => {
+    return resSuccess;
+  }, resFail => {
+    return resFail;
+  })
+}

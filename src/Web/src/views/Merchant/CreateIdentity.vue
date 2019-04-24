@@ -156,20 +156,29 @@
       },
 
       sendIdentity() {
-        merchantApi.addIdentity(this.identity).then((res) => {
-          if(res !== 200) this.$message.error("创建资质失败");
+        if(/^[A-Za-z\u4e00-\u9fa5]{1,10}$/.test(this.identity.IdentityName) &&
+           /^[0-9]{18}$/.test(this.identity.IdentityNum) && 
+           /^[0-9A-Za-z]{15}$/.test(this.identity.LicenseCode) &&
+           /^[A-Za-z\u4e00-\u9fa5]{1,15}$/.test(this.identity.LicenseName) &&
+           /^[A-Za-z\u4e00-\u9fa5]{1,10}$/.test(this.identity.LicenseOwner) &&
+           /^\d{11}$/.test(this.identity.Tel)) {
+          merchantApi.addIdentity(this.identity).then((res) => {
+            if(res !== 200) this.$message.error("创建资质失败");
 
-          else {
-            merchantApi.checkIdentity({
-              "MerchantId": this.$store.getters.getMerchantId,
-	            "CheckResult": true
-            }).then(res => {
-              if(res.status != 200) this.$message.error();
+            else {
+              merchantApi.checkIdentity({
+                "MerchantId": this.$store.getters.getMerchantId,
+                "CheckResult": true
+              }).then(res => {
+                if(res.status != 200) this.$message.error();
 
-              else this.$router.push('/Merchant/Operation');
-            })
-          }
-        });
+                else this.$router.push('/Merchant/Operation');
+              })
+            }
+          });
+        } else {
+          this.$messsage.error('资质信息格式有误');
+        }
       }
     }
   }

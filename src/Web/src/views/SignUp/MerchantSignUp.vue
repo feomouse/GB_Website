@@ -98,22 +98,21 @@
           }
 
           else if(status == 200) {
+            this.SignUp = {
+              Email: "",
+              PhoneNumber: "",
+              Password: "",
+              ConfirmedPassword: "",
+              Role: "customer"
+            }
+
+            this.UserName = "";
+            this.$router.push('/Merchant/SignIn');
             this.ShopSignUpSuccess = true;
             setTimeout(()=> {
               this.ShopSignUpSuccess = false;
             }, 2000);
           }
-          
-          this.SignUp = {
-            Email: "",
-            PhoneNumber: "",
-            Password: "",
-            ConfirmedPassword: "",
-            Role: "customer"
-          }
-
-          this.UserName = "";
-          this.$router.push('/Merchant/SignIn');
         })
       }
     }

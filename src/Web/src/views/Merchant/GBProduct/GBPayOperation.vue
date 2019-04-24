@@ -1,10 +1,10 @@
 <template>
-  <div class="auto_eight">
+  <div class="auto_ten tabContent_container">
     <div class="a-element-a-line" style="margin-top: 4rem;">
       <input class="rem15-rem2-input" placeholder="团购券码" v-model="orderCode" />
     </div>
     <div class="a-element-a-line">
-      <button class="rem15-rem2-button" @click="ensure">确认团购交易</button>
+      <el-button type="success" @click="ensure">确认团购交易</el-button>
     </div>
   </div>
 </template>

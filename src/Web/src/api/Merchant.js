@@ -165,3 +165,15 @@ export const checkIdentity = (body) => {
     return resFail;
   })
 }
+
+export const ifSetGBService = (merchantId) => {
+  return Vue.http.get('/shop/IfSetGB', {
+    headers: {
+      'merchantId': merchantId
+    }
+  }).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}

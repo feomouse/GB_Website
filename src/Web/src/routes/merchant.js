@@ -3,6 +3,8 @@ import Operation from '../views/Merchant/Operation';
 import CreateIdentity from '../views/Merchant/CreateIdentity';
 import EditShop from '../views/Merchant/Shop/EditShop';
 import GBProductOperations from '../views/Merchant/GBProduct/GBProductOperations';
+import ApplyGBService from '../views/Merchant/GBProduct/ApplyGBService';
+import GBServiceContract from '../views/Merchant/GBProduct/GBServiceContract';
 
 export default [{
   path : '/Merchant/CreateShop', component: CreateShop
@@ -15,6 +17,12 @@ export default [{
   }, {
     path: 'GBProductOperations',
     component: GBProductOperations
+  }, {
+    path: 'GBServiceApply',
+    component: ApplyGBService
+  }, {
+    path: 'GBServiceContract',
+    component: GBServiceContract
   }]
 }, {
   path : '/Merchant/CreateIdentity', component: CreateIdentity

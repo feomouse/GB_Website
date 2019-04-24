@@ -86,6 +86,7 @@ export default {
           this.$store.dispatch('commitToken',res.body.token.access_token);
           this.$store.dispatch('commitRefreshToken', res.body.token.refresh_token);
           this.$store.dispatch('commitSetMerchantName', res.body.pkId);
+          this.$store.dispatch('commitSetMerchantUserName', this.UserName);
           this.ShopSignInSuccess = true;
 
           setTimeout(()=> {
@@ -96,7 +97,9 @@ export default {
             if(res.status != 200) this.$message.error();
 
             if(res.body.shopId == "00000000-0000-0000-0000-000000000000") this.$router.push('/Merchant/CreateShop');
-            else this.$router.push('/Merchant/Operation');
+            else {
+              this.$router.push('/Merchant/Operation');
+            }
           })
         }
       })

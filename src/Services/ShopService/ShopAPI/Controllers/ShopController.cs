@@ -161,6 +161,17 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         }
       }
 
+      [HttpGet]
+      [Route("IfSetGB")]
+      public ActionResult JudgeIfGB([FromHeader]string merchantId)
+      {
+        Shop shop = _query.getShopByMerchantId(merchantId);
+
+        if(shop == null) return BadRequest();
+
+        else return Ok(shop.GroupBuying);
+      }
+
       [HttpPost]
       [Route("SetGroupBuying")]
       public ActionResult SetGB([FromBody] SetGBCommand command) 

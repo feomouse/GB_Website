@@ -1,6 +1,6 @@
 <template>
   <div class="auto_ten">
-    <div class="holdTab_container" style="height: 3rem; margin: 2rem 0 3rem 0;">
+    <div class="holdTab_container" style="height: 3rem; margin: 2rem 0 0 0;">
       <a class="tab_link" v-for="i in tabsData" v-bind:key="i.label" @click="clickTab(i.link)">{{i.label}}</a>
     </div>
     <slot :name="tabLabelNowData"></slot>

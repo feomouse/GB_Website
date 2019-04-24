@@ -24,6 +24,7 @@
   import ProductType from './ProductType';
   import GBPayOperation from './GBPayOperation';
   import CommentGBProduct from './CommentGBProduct';
+  import * as merchantApi from '../../../api/Merchant';
 
   export default {
     components : {
@@ -42,15 +43,18 @@
         }, */ {
           label : "团购产品",
           link : "list"
-        }, {
+        }/* , {
           label : "交易确认",
           link : "pay"
-        }, {
+        } */, {
           label : "评论",
           link : "comment"
         }]
       }
-    }
+    },
+    beforeMount() {
+
+    },
   }
 </script>
 <style lang="less">

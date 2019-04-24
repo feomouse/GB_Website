@@ -10,13 +10,13 @@
         <el-upload
           class="avatar-uploader"
           action=""
-          style="display: inline-block; margin-left: 2rem;"
+          style="float: left; margin-left: 2rem;"
           :show-file-list="false"
           :before-upload="boforeUpload">
           <img v-if="CustomerInfo.CustomerImg" :src="CustomerInfo.CustomerImg" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i> 
         </el-upload>
-        <h2 style="display: inline-block; margin-left: 5rem;">用户名: {{CustomerInfo.CustomerName}}</h2>
+        <h2 style="float: left; margin-left: 5rem;">用户名: {{CustomerInfo.CustomerName}}</h2>
         <div style="float: right; padding-right: 5rem;"><p style="display: inline-block; cursor:pointer;" @click="ShowNameEditDialog = true">修改用户名></p></div>
       </div>
       <el-dialog title="编辑用户名" :visible.sync="ShowNameEditDialog">
@@ -31,6 +31,7 @@
           <el-button @click="ShowNameEditDialog = false">取消</el-button>
         </div>
       </el-dialog>
+      <div style="clear:both;"></div>
       <div class="msgItem">
         <div class="msgItemHeader">邮箱</div>
         <div style="text-align: left; line-height: 6rem; padding-left: 3rem;">{{CustomerInfo.CustomerEmail}}

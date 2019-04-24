@@ -46,7 +46,7 @@
         <el-button class="rem15-rem3-button" type="success" @click="updateShop">更新门店基本信息</el-button>
       </div>
     </div>
-    <div style="float: right; width: 20rem; padding-top: 10rem;">      
+    <div style="float: right; width: 18rem; padding-top: 10rem;">      
       <div style="height: 100%;">
         <el-upload
           class="avatar-uploader"

@@ -1,31 +1,29 @@
 <template>
-  <div class="auto_ten">
-    <div class="list_item" v-for="i of comments" v-bind:key="i.pkId">
+  <div class="auto_ten tabContent_container">
+    <div class="list_item" style="padding: 2rem 0 0 2rem;" v-for="i of comments" v-bind:key="i.pkId">
       <div style="text-align: left;">
         <img :src="i.img" style="border-radius: 50%; display: inline-block;" />
-        <p style="display: inline-block;">{{i.userName}}</p>
+        <p style="display: inline-block;">用户: {{i.userName}}</p>
       </div>
       <div>
-        <p>{{i.comment}}</p>
+        <h3>{{i.comment}}</h3>
       </div>
       <div style="text-align: right; margin: 0 2rem 1rem 0;">
         <p>日期: {{i.date}}</p>
+        <el-button type="primary" style="margin: 0 2rem 1rem 0;" @click="reply(i)">回复</el-button>
       </div>
-      <div style="text-align: right;">
-        <p style="cursor: pointer;" @click="reply(i)">回复</p>
-        <el-dialog label="回复评论" :visible.sync="replyDialogVisible">
-          <el-input  
-            type="textarea"
-            rows="2"
-            placeholder="请输入内容"
-            v-model="replyComment.Reply">
-          </el-input>
-          <div slot="footer">
-            <el-button @click="replyDialogVisible = false">取消</el-button>
-            <el-button type="primary" @click="ensureReply">回复</el-button>
-          </div>
-        </el-dialog>
-      </div>
+      <el-dialog label="回复评论" :visible.sync="replyDialogVisible">
+        <el-input  
+          type="textarea"
+          rows="2"
+          placeholder="请输入内容"
+          v-model="replyComment.Reply">
+        </el-input>
+        <div slot="footer">
+          <el-button @click="replyDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="ensureReply">回复</el-button>
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>

@@ -25,14 +25,52 @@ export default {
   },
   beforeCreate() {
     identityApi.GetMerchantNameById(this.$store.getters.getMerchantId).then(res => {
-      if(res.status != 200) this.$message.error();
+      if(res.status == 401) {
+        identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+          if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+          else {
+            this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+            identityApi.GetMerchantNameById(this.$store.getters.getMerchantId).then(res => {
+              if(res.status != 200) this.$message.error();
+
+              else {
+                this.$store.dispatch('commitSetMerchantUserName', res.body.name);
+              }
+            })
+          }
+        })
+      }
+      else if(res.status != 200) this.$message.error();
 
       else {
         this.$store.dispatch('commitSetMerchantUserName', res.body.name);
       }
     }),
     shopApi.GetShopInfoByMerchantId(this.$store.getters.getMerchantId).then(res => {
-      if(res.status != 200) {
+      if(res.status == 401) {
+        identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+          if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+          else {
+            this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+            shopApi.GetShopInfoByMerchantId(this.$store.getters.getMerchantId).then(res => {
+              if(res.status != 200) {
+                if(res.status == 400 && res.body == "identity yourself first") {
+                  this.$router.push('/Merchant/CreateIdentity');
+                }
+              }
+              else {
+                this.$store.dispatch('commitSetShopId', res.body.pkId);
+                this.$store.dispatch('commitSetShopName', res.body.name);
+              }
+            })
+          }
+        })
+      }
+      else if(res.status != 200) {
         if(res.status == 400 && res.body == "identity yourself first") {
           this.$router.push('/Merchant/CreateIdentity');
         }

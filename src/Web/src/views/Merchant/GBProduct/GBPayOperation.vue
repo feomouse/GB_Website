@@ -10,6 +10,7 @@
 </template>
 <script>
 import * as orderApi from '../../../api/Order';
+import * as identityApi from '../../../api/Identity';
 
 export default {
   data() {
@@ -19,9 +20,22 @@ export default {
   },
   methods: {
     ensure() {
-      orderApi.ensurePay(
-        {"ShopName": this.$store.getters.getShopName, "OrderCode": this.orderCode}).then(res => {
-          if(res.status != 200) this.$message.error();
+      orderApi.ensurePay({"ShopName": this.$store.getters.getShopName, "OrderCode": this.orderCode}).then(res => {
+          if(res.status == 401) {
+            identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+              if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+              else {
+                this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+                orderApi.ensurePay({"ShopName": this.$store.getters.getShopName, "OrderCode": this.orderCode}).then(res => {
+                  if(res.status != 200) this.$message.error();
+                  else this.$message({type: "success", message: "交易成功"}); 
+                })
+              }
+            })
+          }
+          else if(res.status != 200) this.$message.error();
           else this.$message({type: "success", message: "交易成功"}); 
         })
     }

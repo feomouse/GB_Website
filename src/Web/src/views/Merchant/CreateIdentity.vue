@@ -77,6 +77,7 @@
 <script>
   import * as merchantApi from '../../api/Merchant';
   import * as imgUploadApi from '../../api/img';
+  import * as identityApi from '../../../api/Identity';
 
   export default {
     data() {
@@ -111,6 +112,19 @@
         }
 
         imgUploadApi.ImgUpload(form).then(data => {
+          if(data.status == 401) {
+            identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+              if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+              else {
+                this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+                imgUploadApi.ImgUpload(form).then(data => {
+                  this.identity.IdentityImgF = data.body;
+                })
+              }
+            })
+          }
           this.identity.IdentityImgF = data.body;
         })
 
@@ -130,6 +144,19 @@
         }
 
         imgUploadApi.ImgUpload(form).then(data => {
+          if(data.status == 401) {
+            identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+              if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+              else {
+                this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+                imgUploadApi.ImgUpload(form).then(data => {
+                  this.identity.IdentityImgB = data.body;
+                })
+              }
+            })
+          }
           this.identity.IdentityImgB = data.body;
         })
 
@@ -149,6 +176,19 @@
         }
 
         imgUploadApi.ImgUpload(form).then(data => {
+          if(data.status == 401) {
+            identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+              if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+              else {
+                this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+                imgUploadApi.ImgUpload(form).then(data => {
+                  this.identity.LicenseImg = data.body;
+                })
+              }
+            })
+          }
           this.identity.LicenseImg = data.body;
         })
 
@@ -163,7 +203,31 @@
            /^[A-Za-z\u4e00-\u9fa5]{1,10}$/.test(this.identity.LicenseOwner) &&
            /^\d{11}$/.test(this.identity.Tel)) {
           merchantApi.addIdentity(this.identity).then((res) => {
-            if(res !== 200) this.$message.error("创建资质失败");
+            if(res == 401) {
+              identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+                if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+                else {
+                  this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+                  merchantApi.addIdentity(this.identity).then((res) => {
+                    if(res !== 200) this.$message.error("创建资质失败");
+
+                    else {
+                      merchantApi.checkIdentity({
+                        "MerchantId": this.$store.getters.getMerchantId,
+                        "CheckResult": true
+                      }).then(res => {
+                        if(res.status != 200) this.$message.error();
+
+                        else this.$router.push('/Merchant/Operation');
+                      })
+                    }
+                  })
+                }
+              })
+            }
+            else if(res !== 200) this.$message.error("创建资质失败");
 
             else {
               merchantApi.checkIdentity({

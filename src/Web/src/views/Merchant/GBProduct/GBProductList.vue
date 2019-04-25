@@ -189,6 +189,7 @@
 import * as merchantApi from '../../../api/Merchant';
 import * as orderApi from '../../../api/Order';
 import * as imgApi from '../../../api/img';
+import * as identityApi from '../../../api/Identity';
 
 export default {
   data () {
@@ -243,7 +244,43 @@ export default {
   },
   beforeCreate() {
     merchantApi.ifSetGBService(this.$store.getters.getMerchantId).then(res => {
-      if(res.status != 200) {
+      if(res.status == 401) {
+        identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+          if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+          else {
+            this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+            merchantApi.ifSetGBService(this.$store.getters.getMerchantId).then(res => {
+              if(res.status != 200) {
+                this.$message.error('不存在');
+              }
+
+              else if (res.body == false) {
+                this.$router.push('/Merchant/Operation/GBServiceApply');
+              }
+              else {
+                merchantApi.getProductTypeByShopName(this.$store.getters.getShopName).then(res => {
+                  if(res.status == 400) this.$message.error();
+                  else {
+                    for(let i of res.body) {
+                      this.productTypes.push({
+                        pkId: i.pkId,
+                        name: i.typeName
+                      })
+                    }
+                  }
+                  merchantApi.getGBProductByShopName(this.$store.getters.getShopName).then(res => {
+                    if(res.status == 400) this.$message.error('获取团购产品失败');
+                    else this.gbProducts = res.body;
+                  })
+                })
+              }
+            })
+          }
+        })
+      }
+      else if(res.status != 200) {
         this.$message.error('不存在');
       }
 
@@ -272,7 +309,30 @@ export default {
   methods: {
     createGBProduct() {
       merchantApi.addGBProduct(this.newGBProduct).then(res => {
-        if(res.status != 201) this.$message.error();
+        if(res.status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+              merchantApi.addGBProduct(this.newGBProduct).then(res => {
+                if(res.status != 201) this.$message.error();
+                else {
+                  this.$message({type: 'success', message: '创建团购产品成功'});
+                  this.createGBDialogVisible = false;
+                  merchantApi.getGBProductsByProductTypeId(this.selectedProductType).then(res => {
+                    if(res.status != 200) this.$message.error('获取团购产品失败');
+                    else {
+                      this.gbProducts = res.body;
+                    }
+                  })
+                }
+              })
+            }
+          })
+        }
+        else if(res.status != 201) this.$message.error();
         else {
           this.$message({type: 'success', message: '创建团购产品成功'});
           this.createGBDialogVisible = false;
@@ -310,7 +370,24 @@ export default {
         "Remark" : this.editGBProduct.remark
       }
       merchantApi.updateGBProduct(newEditGBProduct).then(res => {
-        if(res.status != 200) this.$message.error('更新失败');
+        if(res.status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+              merchantApi.updateGBProduct(newEditGBProduct).then(res => {
+                if(res.status != 200) this.$message.error('更新失败');
+                else {
+                  this.$message({type: 'success', message: '更新成功'});
+                  this.detailGBDialogVisible = false;
+                }
+              })
+            }
+          })
+        }
+        else if(res.status != 200) this.$message.error('更新失败');
         else {
           this.$message({type: 'success', message: '更新成功'});
           this.detailGBDialogVisible = false;
@@ -323,7 +400,28 @@ export default {
     },
     deleteGBProduct() {
        merchantApi.deleteGBProduct(this.deleteGBProductName).then(res => {
-        if(res.status != 204) this.$message.error('删除失败');
+        if(res.status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+              merchantApi.deleteGBProduct(this.deleteGBProductName).then(res => {
+                if(res.status != 204) this.$message.error('删除失败');
+                else {
+                  this.$message({type: 'success', message: '删除成功'});
+                  this.deleteDialogVisible = false;
+                  merchantApi.getGBProductByShopName(this.$store.getters.getShopName).then(res => {
+                    if(res.status != 200) this.$message.error('获取产品失败');
+                    else this.gbProducts = res.body;
+                  })
+                }
+              })
+            }
+          })
+        }
+        else if(res.status != 204) this.$message.error('删除失败');
         else {
           this.$message({type: 'success', message: '删除成功'});
           this.deleteDialogVisible = false;
@@ -336,7 +434,23 @@ export default {
     },
     changeType(productTypeId) {
       merchantApi.getGBProductsByProductTypeId(productTypeId).then(res => {
-        if(res.status != 200) this.$message.error('获取团购产品失败');
+        if(res.status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+              merchantApi.getGBProductsByProductTypeId(productTypeId).then(res => {
+                if(res.status != 200) this.$message.error('获取团购产品失败');
+                else {
+                  this.gbProducts = res.body;
+                }
+              })
+            }
+          })
+        }
+        else if(res.status != 200) this.$message.error('获取团购产品失败');
         else {
           this.gbProducts = res.body;
         }
@@ -344,7 +458,35 @@ export default {
     },
     addProductType() {
       merchantApi.createProductType(this.productTypeForm).then(res => {
-        if(res.status != 201) this.$message.error();
+        if(res.status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+              merchantApi.createProductType(this.productTypeForm).then(res => {
+                if(res.status != 201) this.$message.error();
+                else {
+                  this.$message({message: '创建成功', type: 'success'});
+                  merchantApi.getProductTypeByShopName(this.$store.getters.getShopName).then(res => {
+                    if(res.status == 400) this.$message.error();
+                    else {
+                      this.productTypes = [];
+                      for(let i of res.body) {
+                        this.productTypes.push({
+                          pkId: i.pkId,
+                          name: i.typeName
+                        })
+                      }
+                    }
+                  })
+                }
+              })
+            }
+          })
+        }
+        else if(res.status != 201) this.$message.error();
         else {
           this.$message({message: '创建成功', type: 'success'});
           merchantApi.getProductTypeByShopName(this.$store.getters.getShopName).then(res => {
@@ -364,9 +506,22 @@ export default {
       })
     },
     ensurePay() {
-      orderApi.ensurePay(
-        {"ShopName": this.$store.getters.getShopName, "OrderCode": this.orderCode}).then(res => {
-          if(res.status != 200) this.$message.error();
+      orderApi.ensurePay({"ShopName": this.$store.getters.getShopName, "OrderCode": this.orderCode}).then(res => {
+          if(res.status == 401) {
+            identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+              if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+              else {
+                this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+                orderApi.ensurePay({"ShopName": this.$store.getters.getShopName, "OrderCode": this.orderCode}).then(res => {
+                  if(res.status != 200) this.$message.error();
+                  else this.$message({type: "success", message: "交易成功"}); 
+                })
+              }
+            })
+          }
+          else if(res.status != 200) this.$message.error();
           else this.$message({type: "success", message: "交易成功"}); 
         })
     },
@@ -383,7 +538,21 @@ export default {
       }
       
       imgApi.ImgUpload(form).then(res => {
-        if(res.status != 200) this.$message.error('上传错误');
+        if(res.status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+              imgApi.ImgUpload(form).then(res => {
+                if(res.status != 200) this.$message.error('上传错误');
+                else this.newGBProduct.img = res.body;  
+              })
+            }
+          })
+        }
+        else if(res.status != 200) this.$message.error('上传错误');
         else this.newGBProduct.img = res.body;
       })
     },
@@ -400,7 +569,21 @@ export default {
       }
       
       imgApi.ImgUpload(form).then(res => {
-        if(res.status != 200) this.$message.error('上传错误');
+        if(res.status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+              imgApi.ImgUpload(form).then(res => {
+                if(res.status != 200) this.$message.error('上传错误');
+                else this.editGBProduct.img = res.body;
+              })
+            }
+          })
+        }
+        else if(res.status != 200) this.$message.error('上传错误');
         else this.editGBProduct.img = res.body;
       })
     }

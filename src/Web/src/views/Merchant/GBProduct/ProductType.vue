@@ -24,6 +24,7 @@
 </template>
 <script>
 import * as merchantApi from '../../../api/Merchant';
+import * as identityApi from '../../../api/Identity';
 
 export default {
   data() {

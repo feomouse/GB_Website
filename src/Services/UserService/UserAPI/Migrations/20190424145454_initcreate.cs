@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace UserAPI.Migrations
 {
-    public partial class initCreate : Migration
+    public partial class initcreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,7 +16,7 @@ namespace UserAPI.Migrations
                 columns: table => new
                 {
                     PkId = table.Column<Guid>(nullable: false),
-                    LookingImg = table.Column<string>(type: "varchar(50)", nullable: true),
+                    LookingImg = table.Column<string>(type: "varchar(100)", nullable: true),
                     Address = table.Column<string>(type: "varchar(50)", nullable: true),
                     Email = table.Column<string>(type: "varchar(25)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(10)", nullable: true)

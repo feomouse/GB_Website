@@ -140,6 +140,7 @@
 import * as orderApi from '../../../api/Order';
 import * as commentApi from '../../../api/Evaluate';
 import * as merchantApi from '../../../api/Merchant';
+import * as identityApi from '../../../api/Identity';
 
 export default {
   props: {
@@ -173,7 +174,37 @@ export default {
   },
   beforeCreate() {
     orderApi.getOrderByUserId(this.$store.getters.userId).then(res => {
-      if (res.status != 200) this.$message.error();
+      if(res.status == 401) {
+        identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+          if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+          else {
+            this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+            orderApi.getOrderByUserId(this.$store.getters.userId).then(res => {
+              if (res.status != 200) this.$message.error();
+              else {
+                for(let i of res.body)
+                {
+                  if(i.isPayed == false) {
+                    this.ordersListNotPayed.push(i);
+                  }
+                  else if(i.isPayed == true && i.isUsed == false) {
+                    this.ordersListIsPayedNotUsed.push(i);
+                  }
+                  else if(i.isUsed == true) {
+                    this.ordersListIsUsed.push(i);
+                  }
+                  if(i.isUsed == true && i.evaluate != "") {
+                    this.ordersListIsEvaluate.push(i);
+                  }
+                }
+              }
+            })
+          }
+        })
+      }
+      else if (res.status != 200) this.$message.error();
       else {
         for(let i of res.body)
         {
@@ -196,7 +227,49 @@ export default {
   methods: {
     pay(order) {
       orderApi.pay({"OrderId":order.pkId, "TotalCost":order.totalCost}).then(res => {
-        if(res.status != 200) this.$message.error();
+        if(res.status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+              orderApi.pay({"OrderId":order.pkId, "TotalCost":order.totalCost}).then(res => {
+                if(res.status != 200) this.$message.error();
+
+                else {
+                  this.$message({type: "success", message: "模拟订单支付成功"});
+                  orderApi.getOrderByUserId(this.$store.getters.userId).then(res => {
+                    if (res.status != 200) this.$message.error();
+                    else {
+                      this.ordersListNotPayed = [];
+                      this.ordersListIsPayedNotUsed = [];
+                      this.ordersListIsUsed = [];
+                      this.ordersListIsEvaluate = [];
+                      
+                      for(let i of res.body)
+                      {
+                        if(i.isPayed == false) {
+                          this.ordersListNotPayed.push(i);
+                        }
+                        else if(i.isPayed == true && i.isUsed == false) {
+                          this.ordersListIsPayedNotUsed.push(i);
+                        }
+                        else if(i.isUsed == true) {
+                          this.ordersListIsUsed.push(i);
+                        }
+                        if(i.isUsed == true && i.evaluate != "") {
+                          this.ordersListIsEvaluate.push(i);
+                        }
+                      }
+                    }
+                  })
+                }
+              })
+            }
+          })
+        }
+        else if(res.status != 200) this.$message.error();
 
         else {
           this.$message({type: "success", message: "模拟订单支付成功"});
@@ -234,7 +307,42 @@ export default {
     },
     refreshSeeUsed() {
       orderApi.getOrderByUserId(this.$store.getters.userId).then(res => {
-        if (res.status != 200) this.$message.error();
+        if(res.status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+              orderApi.getOrderByUserId(this.$store.getters.userId).then(res => {
+                if (res.status != 200) this.$message.error();
+                else {
+                  this.ordersListNotPayed = [];
+                  this.ordersListIsPayedNotUsed = [];
+                  this.ordersListIsUsed = [];
+                  this.ordersListIsEvaluate = [];
+                  
+                  for(let i of res.body)
+                  {
+                    if(i.isPayed == false) {
+                      this.ordersListNotPayed.push(i);
+                    }
+                    else if(i.isPayed == true && i.isUsed == false) {
+                      this.ordersListIsPayedNotUsed.push(i);
+                    }
+                    else if(i.isUsed == true) {
+                      this.ordersListIsUsed.push(i);
+                    }
+                    if(i.isUsed == true && i.evaluate != "") {
+                      this.ordersListIsEvaluate.push(i);
+                    }
+                  }
+                };
+              })
+            }
+          })
+        }
+        else if (res.status != 200) this.$message.error();
         else {
           this.ordersListNotPayed = [];
           this.ordersListIsPayedNotUsed = [];
@@ -262,7 +370,29 @@ export default {
     },
     commentAction(order) {
       merchantApi.getGBProductKeyByProductName(order.groupProductName).then(res => {
-        if(res.status != 200) {
+        if(res.status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+              merchantApi.getGBProductKeyByProductName(order.groupProductName).then(res => {
+                if(res.status != 200) {
+                  this.$message.error();
+                  return;
+                }
+                else {
+                  this.evaluate.ProductId = res.body;
+                  this.evaluate.OrderId = order.pkId;
+                  this.evaluate.ShopId = this.$store.getters.getShopId;
+                  this.evaluate.UserName = this.$store.getters.user.email;
+                }
+              })
+            }
+          })
+        }
+        else if(res.status != 200) {
           this.$message.error();
           return;
         }
@@ -287,7 +417,29 @@ export default {
       this.evaluate.Date = date.getFullYear() + '/' + date.getMonth() + '/' + date.getDate() + ' '
                            + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
       commentApi.addUserComment(this.evaluate).then(res => {
-        if(res.status != 201) this.$message.error();
+        if(res.status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+              commentApi.addUserComment(this.evaluate).then(res => {
+                if(res.status != 201) this.$message.error();
+
+                else {
+                  this.$message({
+                    type: "success",
+                    message: "评论成功"
+                  });
+
+                  this.evaluateDialogVisible = false;
+                }
+              })
+            }
+          })
+        }
+        else if(res.status != 201) this.$message.error();
 
         else {
           this.$message({
@@ -301,7 +453,42 @@ export default {
     },
     refresh() {
       orderApi.getOrderByUserId(this.$store.getters.userId).then(res => {
-        if (res.status != 200) this.$message.error();
+        if(res.status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+              orderApi.getOrderByUserId(this.$store.getters.userId).then(res => {
+                if (res.status != 200) this.$message.error();
+                else {
+                  this.ordersListNotPayed = [];
+                  this.ordersListIsPayedNotUsed = [];
+                  this.ordersListIsUsed = [];
+                  this.ordersListIsEvaluate = [];
+                  
+                  for(let i of res.body)
+                  {
+                    if(i.isPayed == false) {
+                      this.ordersListNotPayed.push(i);
+                    }
+                    else if(i.isPayed == true && i.isUsed == false) {
+                      this.ordersListIsPayedNotUsed.push(i);
+                    }
+                    else if(i.isUsed == true) {
+                      this.ordersListIsUsed.push(i);
+                    }
+                    if(i.isUsed == true && i.evaluate != "") {
+                      this.ordersListIsEvaluate.push(i);
+                    }
+                  }
+                }
+              })
+            }
+          })
+        }
+        else if (res.status != 200) this.$message.error();
         else {
           this.ordersListNotPayed = [];
           this.ordersListIsPayedNotUsed = [];
@@ -328,7 +515,30 @@ export default {
     },
     seeComment(orderId){
       commentApi.getUserCommentByOrderId(orderId).then(res => {
-        if(res.status != 200) this.$message.error();
+        if(res.status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+              commentApi.getUserCommentByOrderId(orderId).then(res => {
+                if(res.status != 200) this.$message.error();
+
+                else {
+                  this.comment = res.body;
+                  this.starsNum = [];
+                  for(var i = 0; i < res.body.stars; i++) {
+                    this.starsNum.push({id:i});
+                  }
+                  this.commentDetailDialogVisible = true;
+                  console.log(this.commentDetailDialogVisible);
+                }
+              })
+            }
+          })
+        }
+        else if(res.status != 200) this.$message.error();
 
         else {
           this.comment = res.body;

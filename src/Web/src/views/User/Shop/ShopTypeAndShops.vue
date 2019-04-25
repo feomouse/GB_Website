@@ -66,6 +66,7 @@
 </template>
 <script>
 import * as shopApi from '../../../api/Shop';
+import * as identityApi from '../../../api/Identity';
 import myBanner from '../../../components/Banner';
 
 export default {
@@ -102,7 +103,30 @@ export default {
   },
   beforeCreate() {
     shopApi.GetShopTypes().then(res => {
-      if(res.status != 200) this.$message.error('获取门店类型错误');
+      if(res.status == 401) {
+        identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+          if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+          else {
+            this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+            shopApi.GetShopTypes().then(res => {
+              if(res.status != 200) this.$message.error('获取门店类型错误');
+              else {
+                this.shopTypes = res.body;
+                shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.selectedProvince], this.cityData[this.selectedProvince][this.selectedCity], 1).then(res => {
+                  if(res.status != 200) this.$message.error('获取门店错误')
+                  else {
+                    this.shopList = res.body;
+                    //this.$store.dispatch('commitSetShopList', res.body);
+                  }
+                })
+              }
+            })
+          }
+        })
+      }
+      else if(res.status != 200) this.$message.error('获取门店类型错误');
       else {
         this.shopTypes = res.body;
         shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.selectedProvince], this.cityData[this.selectedProvince][this.selectedCity], 1).then(res => {
@@ -133,9 +157,24 @@ export default {
     },
     selectShopTypes(type) {
       this.selectedShopType = type.id;
-      console.log('test')
       shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.$store.getters.getSelectedProvince], this.cityData[this.$store.getters.getSelectedProvince][this.$store.getters.getSelectedCity], type.id).then(res => {
-        if(res.status != 200) this.$message.error('获取门店错误')
+        if(res.status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+              shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.$store.getters.getSelectedProvince], this.cityData[this.$store.getters.getSelectedProvince][this.$store.getters.getSelectedCity], type.id).then(res => {
+                if(res.status != 200) this.$message.error('获取门店错误')
+                else {
+                  this.shopList = res.body;
+                }
+              })
+            }
+          })
+        }
+        else if(res.status != 200) this.$message.error('获取门店错误')
         else {
           this.shopList = res.body;
           //this.$store.dispatch('commitSetShopList', res.body);

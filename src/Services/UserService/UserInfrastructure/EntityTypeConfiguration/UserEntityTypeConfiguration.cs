@@ -12,7 +12,7 @@ namespace GB_Project.Services.UserService.UserInfrastructure.EntityTypeConfigura
 
       builder.HasKey(b => b.PkId);
 
-      builder.Property(b => b.LookingImg).HasColumnType("varchar(50)");
+      builder.Property(b => b.LookingImg).HasColumnType("varchar(100)");
 
       builder.Property(b => b.Address).HasColumnType("varchar(50)");
 

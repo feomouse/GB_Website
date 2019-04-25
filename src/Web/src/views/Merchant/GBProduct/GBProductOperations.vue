@@ -25,6 +25,7 @@
   import GBPayOperation from './GBPayOperation';
   import CommentGBProduct from './CommentGBProduct';
   import * as merchantApi from '../../../api/Merchant';
+  import * as identityApi from '../../../api/Identity';
 
   export default {
     components : {

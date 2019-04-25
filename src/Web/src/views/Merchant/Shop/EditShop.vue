@@ -66,6 +66,7 @@ import * as shopApi from '../../../api/Shop';
 import * as merchantApi from '../../../api/Merchant';
 import * as imgApi from '../../../api/img';
 import * as map from '../../../data';
+import * as identityApi from '../../../api/Identity';
 
 export default {
   data() {
@@ -81,7 +82,23 @@ export default {
   },
   beforeMount() {
     shopApi.GetShopInfoByMerchantId(this.$store.getters.getMerchantId).then(res => {
-      if(res.status == 400) this.$message.error();
+      if(res.status == 401) {
+        identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+          if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+          else {
+            this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+            shopApi.GetShopInfoByMerchantId(this.$store.getters.getMerchantId).then(res => {
+              if(res.status == 400) this.$message.error();
+              else {
+                this.newShop = res.body;
+              }
+            })
+          }
+        })
+      }
+      else if(res.status == 400) this.$message.error();
       else {
         this.newShop = res.body;
       }
@@ -114,6 +131,19 @@ export default {
         }
 
         imgApi.ImgUpload(form).then(data => {
+          if(data.status == 401) {
+            identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+              if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+              else {
+                this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+                imgApi.ImgUpload(form).then(data => {
+                  this.newShop.pic = data.body;
+                })
+              }
+            })
+          }
           this.newShop.pic = data.body;
         })
 
@@ -133,7 +163,24 @@ export default {
         "Pic": this.newShop.pic
       }
       merchantApi.updateShop(shop).then(res => {
-        if(res.status == 400) this.$message.error();
+        if(data.status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+              merchantApi.updateShop(shop).then(res => {
+                if(res.status == 400) this.$message.error();
+                else {
+                  this.newShop = res.body;
+                  this.$message('更新成功');
+                }
+              })
+            }
+          })
+        }
+        else if(res.status == 400) this.$message.error();
         else {
           this.newShop = res.body;
           this.$message('更新成功');

@@ -53,6 +53,7 @@
 <script>
 import * as merchantApi from '../../api/Merchant';
 import * as imageApi from '../../api/img';
+import * as identityApi from '../../../api/Identity';
 import map from '../../data';
 
 export default {
@@ -84,7 +85,26 @@ export default {
 
   beforeMount() {
     merchantApi.getShopTypies().then(result => {
-      if(result.status == 200)
+      if(result.status == 401) {
+        identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+          if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+          else {
+            this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+            merchantApi.getShopTypies().then(result => {
+              if(result.status == 200)
+              {
+                this.shopTypies = result.body;
+              } else if (result.status != 200)
+              {
+                this.$message.error("get shop type error")
+              } 
+            })
+          }
+        })
+      }
+      else if(result.status == 200)
       {
         this.shopTypies = result.body;
       } else if (result.status != 200)
@@ -110,7 +130,25 @@ export default {
       }
 
       imageApi.ImgUpload(form).then(result => {
-        if(result.status != 200)
+        if(result.status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+              imageApi.ImgUpload(form).then(result => {
+                if(result.status != 200)
+                {
+                  this.$message.error('上传图片失败!');
+                } else {
+                  this.shop.Pic = result.body;
+                }
+              })
+            }
+          })
+        }
+        else if(result.status != 200)
         {
           this.$message.error('上传图片失败!');
         } else {
@@ -124,7 +162,31 @@ export default {
       this.shop.District = this.mapData[this.tempLocation.cityCode][this.tempLocation.districtCode];
 
       merchantApi.createShop(this.shop).then(result => {
-        if(result.status == 201)
+        if(result.status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+              merchantApi.createShop(this.shop).then(result => {
+                if(result.status == 201)
+                {
+                  this.$message({
+                    message: "创建门店成功",
+                    type: "success"
+                  })
+
+                  this.$router.push('/Merchant/CreateIdentity');
+                } else if (result.status != 201)
+                {
+                  this.$message.error("创建门店失败");
+                }
+              })
+            }
+          })
+        }
+        else if(result.status == 201)
         {
           this.$message({
             message: "创建门店成功",

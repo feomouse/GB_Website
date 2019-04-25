@@ -135,7 +135,12 @@ export default {
               imgApi.ImgUpload(form).then(res => {
                 if (res.status == 400) this.$message.error();
       
-                this.CustomerInfo.CustomerImg = res.body;
+                else {
+                  userApi.setCustomerImg(this.CustomerInfo.CustomerName, res.body).then(res => {
+                    
+                  })
+                  this.CustomerInfo.CustomerImg = res.body;
+                }
               })
             }
           })
@@ -153,7 +158,38 @@ export default {
         UserName: this.TempCustomerInfo.CustomerName
       }
       userApi.setCustomerUserName(setUserNameObj).then(status => {
-        if (status == 200) {
+        if(status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+              userApi.setCustomerUserName(setUserNameObj).then(status => {
+                if (status == 200) {
+                  this.CustomerInfo.CustomerName = this.TempCustomerInfo.CustomerName;
+                  this.JudgeEditing.isUserNameEditing = false;
+
+                  userApi.getUserBasicMessage(this.$store.getters.userId).then(res => {
+                    if(res.status != 200)
+                    {
+                      this.$message.error('请求用户数据失败');
+                    }
+                    else if(res.status == 200)
+                    {
+                      this.$store.dispatch('commitSetUser', res.body);
+                      this.ShowNameEditDialog = false;
+                    }
+                  })
+                } else if (status != 200)
+                {
+                  this.$message.error("修改用户名失败");
+                }
+              })
+            }
+          })
+        }
+        else if (status == 200) {
           this.CustomerInfo.CustomerName = this.TempCustomerInfo.CustomerName;
           this.JudgeEditing.isUserNameEditing = false;
 
@@ -180,7 +216,36 @@ export default {
         Address: this.TempCustomerInfo.CustomerAddress
       };
       userApi.setCustomerAddress(setUserAddressObj).then(status => {
-        if (status == 200) {
+        if(status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+              userApi.setCustomerAddress(setUserAddressObj).then(status => {
+                if (status == 200) {
+                  this.CustomerInfo.CustomerAddress = this.TempCustomerInfo.CustomerAddress;
+
+                  userApi.getUserBasicMessage(this.$store.getters.userId).then(res => {
+                    if(res.status != 200)
+                    {
+                      this.$message.error('请求用户数据失败');
+                    }
+                    else if(res.status == 200)
+                    {
+                      this.$store.dispatch('commitSetUser', res.body);
+                      this.ShowAddressEditDialog = false;
+                    }
+                  })
+                } else if (status != 200) {
+                  this.$message.error('请求用户数据失败');
+                }
+              })
+            }
+          })
+        }
+        else if (status == 200) {
           this.CustomerInfo.CustomerAddress = this.TempCustomerInfo.CustomerAddress;
 
           userApi.getUserBasicMessage(this.$store.getters.userId).then(res => {

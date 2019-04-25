@@ -39,12 +39,10 @@ export const setCustomerAddress = (body) => {
   })
 }
 
-export const upLoadCustomerImg = (formData) => {
-  return Vue.http.post('/user/uploadImg', formData,
-  {
-    headers: {
-      'Content-Type': "multipart/form-data"
-    }
+export const setCustomerImg = (userId, fileName) => {
+  return Vue.http.post('/user/SetImg', {
+    'UserId': userId,
+    'FileName': fileName
   }).then(responseSuccess => {
     return responseSuccess.body;
   }, responseFail => {

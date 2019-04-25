@@ -29,6 +29,7 @@
 </template>
 <script>
 import * as commentApi from '../../../api/Evaluate';
+import * as identityApi from '../../../api/Identity';
 
 export default {
   data() {
@@ -44,7 +45,24 @@ export default {
   },
   beforeCreate() {
     commentApi.getUserCommentsByShopId(this.$store.getters.getShopId).then(res => {
-      if(res.status != 200) this.$message.error();
+      if(res.status == 401) {
+        identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+          if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+          else {
+            this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+
+            commentApi.getUserCommentsByShopId(this.$store.getters.getShopId).then(res => {
+              if(res.status != 200) this.$message.error();
+
+              else {
+                this.comments = res.body;
+              }
+            })
+          }
+        })
+      }
+      else if(res.status != 200) this.$message.error();
 
       else {
         this.comments = res.body;

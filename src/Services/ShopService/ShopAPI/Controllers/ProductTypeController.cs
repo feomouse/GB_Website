@@ -24,10 +24,10 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
 
       [HttpGet]
       [Route("getProductTypes")]
-      public ActionResult<List<ProductTypesViewModel>> getShopProductTypesByShopName ([FromQuery]string shopName)
+      public ActionResult<List<ProductTypesViewModel>> getShopProductTypesByShopName ([FromQuery]string shopName, string province, string city)
       {
         List<ProductTypesViewModel> types = new List<ProductTypesViewModel>();
-        List<ProductType> productTypes = _query.getShopProductTypesByShopName(shopName);
+        List<ProductType> productTypes = _query.getShopProductTypesByShopName(shopName, province, city);
 
         foreach(var type in productTypes)
         {

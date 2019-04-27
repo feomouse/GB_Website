@@ -1,5 +1,5 @@
 <template>
-  <div class="auto_eight" style="background: #eff7f2; padding-bottom: 5rem;">
+  <div class="auto_eight" style="background: #eff7f2; padding-bottom: 5rem; box-shadow: 6px 6px 6px lightgray; margin-top: 3rem;">
     <header style="text-align: left; font-weight: bold; font-size: 3rem; color: gray; padding-left: 3rem; margin-bottom: 4rem;">门店信息</header>
     <div class="left-eight">
       <el-form label-width="70px" inline="true" style="text-align:left;">
@@ -29,8 +29,9 @@
         <el-form-item label="具体地点" style="width: 100%;">
           <el-input v-model="shop.Location" placeholder="请输入门店具体地点"></el-input>
         </el-form-item>
-        <el-form-item label="电话" style="width: 30%;">
+        <el-form-item label="电话" style="width: 80%;">
           <el-input v-model="shop.Tel" placeholder="请输入门店电话"></el-input>
+          <span v-if="telErrMsgShow" style="color: red; font-size: 0.75rem;">请输入正确电话</span>
         </el-form-item>
       </el-form>
       <div>
@@ -53,7 +54,7 @@
 <script>
 import * as merchantApi from '../../api/Merchant';
 import * as imageApi from '../../api/img';
-import * as identityApi from '../../../api/Identity';
+import * as identityApi from '../../api/Identity';
 import map from '../../data';
 
 export default {
@@ -79,7 +80,8 @@ export default {
         cityCode: "",
         districtCode: ""
       },
-      mapData: map
+      mapData: map,
+      telErrMsgShow: false
     }
   },
 
@@ -91,6 +93,7 @@ export default {
 
           else {
             this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+            this.$store.dispatch('commitToken', res.body.access_token);
 
             merchantApi.getShopTypies().then(result => {
               if(result.status == 200)
@@ -136,6 +139,7 @@ export default {
 
             else {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+              this.$store.dispatch('commitToken', res.body.access_token);
 
               imageApi.ImgUpload(form).then(result => {
                 if(result.status != 200)
@@ -157,6 +161,15 @@ export default {
       })
     },
     createShop() {
+      if(!/^1[34567]\d{9}$/.test(this.shop.Tel))
+      {
+        this.telErrMsgShow = true;
+        setTimeout(() => {
+          this.telErrMsgShow = false;
+        }, 2000);
+
+        return;
+      }
       this.shop.Province = this.mapData['86'][this.tempLocation.provinceCode];
       this.shop.City = this.mapData[this.tempLocation.provinceCode][this.tempLocation.cityCode];
       this.shop.District = this.mapData[this.tempLocation.cityCode][this.tempLocation.districtCode];
@@ -168,7 +181,8 @@ export default {
 
             else {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
-
+              this.$store.dispatch('commitToken', res.body.access_token);
+              
               merchantApi.createShop(this.shop).then(result => {
                 if(result.status == 201)
                 {

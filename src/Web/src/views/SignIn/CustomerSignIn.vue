@@ -9,7 +9,7 @@
           <h2>顾客登陆</h2>
           <div class="a-element-a-line">
             <input class="rem15-rem2-input" placeholder="邮箱或电话" v-model="UserName"/>
-            <div class="InputError__Mes" v-if="ShowEmailError">请输入正确的邮箱或电话</div>
+            <div class="InputError__Mes" v-if="ShowUserNameError">请输入正确的邮箱或电话</div>
           </div>
           <div class="a-element-a-line">
             <input class="rem15-rem2-input" placeholder="密码" v-model="SignIn.Password" type="password"/>
@@ -19,6 +19,10 @@
             <div class="rem15-rem2-button" v-on:click="LoginRequest">登陆</div>
             <div class="InputError__Mes" v-if="ShowSignInError">登陆失败</div> 
             <div class="NormalSuccess__Mes" v-if="ShopSignInSuccess">登陆成功</div>
+          </div>
+          <div class="a-element-a-line">
+            <p style="cursor: pointer; color: blue; font-size: 0.75rem; float: left;" @click="redirectToRegister">>>我要注册</p>
+            <p style="cursor: pointer; color: blue; font-size: 0.75rem; float: right;" @click="redirectToMerchant">>>我是商户</p>
           </div>
         </div>
       </div>
@@ -116,6 +120,12 @@ export default {
           this.$message.error('登陆失败');
         }
       })
+    },
+    redirectToRegister() {
+      this.$router.push('/Customer/SignUp');
+    },
+    redirectToMerchant() {
+      this.$router.push('/Merchant/SignIn');
     }
   }
 }

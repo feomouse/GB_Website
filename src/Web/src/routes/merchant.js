@@ -5,6 +5,7 @@ import EditShop from '../views/Merchant/Shop/EditShop';
 import GBProductOperations from '../views/Merchant/GBProduct/GBProductOperations';
 import ApplyGBService from '../views/Merchant/GBProduct/ApplyGBService';
 import GBServiceContract from '../views/Merchant/GBProduct/GBServiceContract';
+import WelcomePage from '../views/Merchant/WelcomePage';
 
 export default [{
   path : '/Merchant/CreateShop', component: CreateShop
@@ -23,6 +24,9 @@ export default [{
   }, {
     path: 'GBServiceContract',
     component: GBServiceContract
+  }, {
+    path: 'Welcome',
+    component: WelcomePage
   }]
 }, {
   path : '/Merchant/CreateIdentity', component: CreateIdentity

@@ -38,7 +38,7 @@ namespace GB_Project.Services.UserService.UserInfrastructure.Repository
 
     public string SetUserImg(string userId, string filename)
     {
-      string imgUrl = "http://localhost:50020/" + filename;
+      string imgUrl = filename;
 
       var user = _context.user.Where(b => b.PkId.ToString() == userId).FirstOrDefault();
 

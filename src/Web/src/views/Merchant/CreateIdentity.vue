@@ -77,7 +77,7 @@
 <script>
   import * as merchantApi from '../../api/Merchant';
   import * as imgUploadApi from '../../api/img';
-  import * as identityApi from '../../../api/Identity';
+  import * as identityApi from '../../api/Identity';
 
   export default {
     data() {
@@ -118,6 +118,7 @@
 
               else {
                 this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+                this.$store.dispatch('commitToken', res.body.access_token);
 
                 imgUploadApi.ImgUpload(form).then(data => {
                   this.identity.IdentityImgF = data.body;
@@ -150,6 +151,7 @@
 
               else {
                 this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+                this.$store.dispatch('commitToken', res.body.access_token);
 
                 imgUploadApi.ImgUpload(form).then(data => {
                   this.identity.IdentityImgB = data.body;
@@ -182,6 +184,7 @@
 
               else {
                 this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+                this.$store.dispatch('commitToken', res.body.access_token);
 
                 imgUploadApi.ImgUpload(form).then(data => {
                   this.identity.LicenseImg = data.body;
@@ -209,7 +212,8 @@
 
                 else {
                   this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
-
+                  this.$store.dispatch('commitToken', res.body.access_token);
+                  
                   merchantApi.addIdentity(this.identity).then((res) => {
                     if(res !== 200) this.$message.error("创建资质失败");
 
@@ -241,7 +245,7 @@
             }
           });
         } else {
-          this.$messsage.error('资质信息格式有误');
+          this.$message.error('资质信息格式有误');
         }
       }
     }

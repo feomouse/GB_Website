@@ -68,6 +68,7 @@
 import * as shopApi from '../../../api/Shop';
 import * as identityApi from '../../../api/Identity';
 import myBanner from '../../../components/Banner';
+import cityData from '../../../data';
 
 export default {
   components: {
@@ -78,7 +79,7 @@ export default {
       shopTypes: [],
       shopList: this.$store.getters.getShopList,
       showSelectCityDialogShow: false,
-      cityData: this.$store.getters.getCityData,
+      'cityData': cityData,
       selectedProvince: this.$store.getters.getSelectedProvince,
       selectedCity: this.$store.getters.getSelectedCity,
       selectedProvinceName: this.$store.getters.getSelectedProvinceName,
@@ -101,7 +102,7 @@ export default {
       },
     }
   },
-  beforeCreate() {
+  beforeMount() {
     shopApi.GetShopTypes().then(res => {
       if(res.status == 401) {
         identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
@@ -109,6 +110,7 @@ export default {
 
           else {
             this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+            this.$store.dispatch('commitToken', res.body.access_token);
 
             shopApi.GetShopTypes().then(res => {
               if(res.status != 200) this.$message.error('获取门店类型错误');
@@ -142,8 +144,7 @@ export default {
     //this.selectedCityName = this.cityData[this.selectedProvince][this.selectedCity];
     this.$store.dispatch('commitProvinceName', this.cityData['86'][this.selectedProvince]);
     this.$store.dispatch('commitCityName', this.cityData[this.selectedProvince][this.selectedCity]);
-  },
-  beforeMount() {
+
     this.CustomerInfo.CustomerName = this.$store.getters.user.userName;
     this.CustomerInfo.CustomerImg = this.$store.getters.user.lookingImg;
     this.CustomerInfo.CustomerAddress = this.$store.getters.user.address;
@@ -164,7 +165,8 @@ export default {
 
             else {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
-
+              this.$store.dispatch('commitToken', res.body.access_token);
+              
               shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.$store.getters.getSelectedProvince], this.cityData[this.$store.getters.getSelectedProvince][this.$store.getters.getSelectedCity], type.id).then(res => {
                 if(res.status != 200) this.$message.error('获取门店错误')
                 else {

@@ -1,7 +1,7 @@
 <template>
   <div class="auto_ten">
     <div class="holdTab_container" style="height: 3rem; margin: 2rem 0 0 0;">
-      <a class="tab_link" v-for="i in tabsData" v-bind:key="i.label" @click="clickTab(i.link)">{{i.label}}</a>
+      <a v-bind:class="[activeItemIndex == index? isSelected: '', tab_link]" v-for="(i, index) in tabsData" v-bind:key="i.label" @click="clickTab(i.link, index)">{{i.label}}</a>
     </div>
     <slot :name="tabLabelNowData"></slot>
   </div>  
@@ -10,18 +10,22 @@
 export default {
   props: {
     tabs: Array,
-    tabLabelNow: String
+    tabLabelNow: String,
+    activeIndex: String
   },
   data() {
     return {
       tabsData: this.tabs,
-      tabLabelNowData: this.tabLabelNow
+      tabLabelNowData: this.tabLabelNow,
+      activeItemIndex: this.activeIndex,
+      isSelected: 'isSelected',
+      tab_link: 'tab_link'
     }
   },
   methods: {
-    clickTab(link) {
+    clickTab(link, index) {
       this.tabLabelNowData = link;
-      console.log(link);
+      this.activeItemIndex = index;
     }
   }
 }
@@ -29,4 +33,8 @@ export default {
 <style lang="less">
   @import '../less/container';
   @import '../less/formEle';
+
+  .isSelected {
+    color: green;
+  }
 </style>

@@ -39,6 +39,16 @@ namespace GB_Project.Services.UserService.UserAPI.Controllers
       {
         return BadRequest("NO USER");
       }
+
+      if(user.UserName == null) 
+      {
+        Random random = new Random();
+        var command = new SetUserNameCommand(UserId, "A" + random.Next(10000, 99999).ToString());
+        
+        var result = _mediator.Send(command).GetAwaiter().GetResult();
+      }
+
+      user = _query.GetUserByUserId(UserId);
       
       return Ok(user);
     }

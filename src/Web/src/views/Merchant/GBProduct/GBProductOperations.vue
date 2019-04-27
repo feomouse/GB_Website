@@ -1,5 +1,5 @@
 <template>
-  <mytab :tabLabelNow="tabLabels[0].link" :tabs="tabLabels">
+  <mytab :tabLabelNow="tabLabels[0].link" :tabs="tabLabels" activeIndex='0'>
     <template v-slot:edit>
       <edit-gbproduct></edit-gbproduct>
     </template>

@@ -60,9 +60,9 @@ export const createProductType = (newType) => {
   })
 }
 
-export const getProductTypeByShopName = (shopName) => {
+export const getProductTypeByShopName = (shopName, province, city) => {
   return Vue.http.get('/shop/productType/getProductTypes', {
-    params: {'shopName': shopName}
+    params: {'shopName': shopName, 'province': province, 'city': city}
   }).then(resSuccess => {
     return resSuccess;
   }, resFail => {
@@ -90,10 +90,12 @@ export const addGBProduct = (GBProduct) => {
   })
 }
 
-export const getGBProductByShopName = (shopName) => {
+export const getGBProductByShopName = (shopName, province, city) => {
   return Vue.http.get('/shop/GBProduct/GBProducts', {
     params: {
-      'shopName': shopName
+      'shopName': shopName,
+      'province': province,
+      'city': city
     }
   }).then(resSuccess => {
     return resSuccess;

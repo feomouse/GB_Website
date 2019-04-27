@@ -1,6 +1,7 @@
 <template>
   <div class="auto_ten">
     <div class="banner">
+      <p style="float: left; cursor: pointer; margin-right: 3rem;" @click="redirectToShops">浏览门店</p>
       <p style="float: left; cursor: pointer;" @click="showSelectCityDialogShow = true">选择城市: {{selectedProvinceName + ' ' + selectedCityName}}</p>
       <p style="float: right; cursor: pointer;" @click="directToMyMessage">{{userName}} : 我的信息</p>
     </div>
@@ -52,6 +53,9 @@ export default {
     }
   },
   methods : {
+    redirectToShops() {
+      this.$router.push('/Shops');
+    },
     directToMyMessage() {
       this.$router.push('/Customer/Basic');
     },

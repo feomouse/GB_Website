@@ -21,10 +21,12 @@ export const GetShopInfoByMerchantId = (merchantId) => {
   })
 }
 
-export const GetShopInfoByShopName = (shopName) => {
+export const GetShopInfoByShopNameAndCity = (shopName, province, city) => {
   return Vue.http.get('/shop/SearchShop', {
     params: {
-      name : shopName
+      name : shopName,
+      'province': province,
+      'city': city
     }
   }).then(successRes => {
     return successRes;

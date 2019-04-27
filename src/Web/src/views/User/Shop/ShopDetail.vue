@@ -86,6 +86,7 @@ import * as orderApi from '../../../api/Order';
 import * as commentApi from '../../../api/Evaluate';
 import * as identityApi from '../../../api/Identity';
 import myBanner from '../../../components/Banner';
+import cityData from '../../../data';
 
 export default {
   components: {
@@ -111,31 +112,27 @@ export default {
         "Time": "2019/01/03 00:00:00"
       },
       gbProductDialogVisible: false,
-      commentList: []
+      commentList: [],
+      'cityData': cityData
     }
   },
-  beforeCreate() {
-    shopApi.GetShopInfoByShopName(this.$store.getters.getShopSelectedName).then(res => {
+  beforeMount() {
+    shopApi.GetShopInfoByShopNameAndCity(this.$store.getters.getShopSelectedName, 
+                                         this.cityData['86'][this.$store.getters.getSelectedProvince], 
+                                         this.cityData[this.$store.getters.getSelectedProvince][this.$store.getters.getSelectedCity]).then(res => {
       if(res.status == 401) {
         identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
           if(res.status == 400) this.$router.push('/Customer/SignIn');
 
           else {
             this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+            this.$store.dispatch('commitToken', res.body.access_token);
 
-            shopApi.GetShopInfoByShopName(this.$store.getters.getShopSelectedName).then(res => {
+            shopApi.GetShopInfoByShopNameAndCity(this.$store.getters.getShopSelectedName, 
+                                         this.cityData['86'][this.$store.getters.getSelectedProvince], 
+                                         this.cityData[this.$store.getters.getSelectedProvince][this.$store.getters.getSelectedCity]).then(res => {
               if(res.status != 200) this.$message.error();
               else this.shopDetail = res.body;
-
-              merchantApi.getGBProductByShopName(this.$store.getters.getShopSelectedName).then(res => {
-                if(res.status != 200) this.$message.error();
-                else this.gbProductList = res.body;
-
-                merchantApi.getProductTypeByShopName(this.$store.getters.getShopSelectedName).then(res => {
-                  if(res.status != 200) this.$message.error();
-                  else this.productTypes = res.body;
-                })
-              })
             })
           }
         })
@@ -143,11 +140,15 @@ export default {
       else if(res.status != 200) this.$message.error();
       else this.shopDetail = res.body;
 
-      merchantApi.getGBProductByShopName(this.$store.getters.getShopSelectedName).then(res => {
+      merchantApi.getGBProductByShopName(this.$store.getters.getShopSelectedName,
+                                         this.cityData['86'][this.$store.getters.getSelectedProvince], 
+                                         this.cityData[this.$store.getters.getSelectedProvince][this.$store.getters.getSelectedCity]).then(res => {
         if(res.status != 200) this.$message.error();
         else this.gbProductList = res.body;
 
-        merchantApi.getProductTypeByShopName(this.$store.getters.getShopSelectedName).then(res => {
+        merchantApi.getProductTypeByShopName(this.$store.getters.getShopSelectedName,
+                                         this.cityData['86'][this.$store.getters.getSelectedProvince], 
+                                         this.cityData[this.$store.getters.getSelectedProvince][this.$store.getters.getSelectedCity]).then(res => {
           if(res.status != 200) this.$message.error();
           else this.productTypes = res.body;
         })
@@ -160,6 +161,7 @@ export default {
 
           else {
             this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+            this.$store.dispatch('commitToken', res.body.access_token);
 
             commentApi.getUserCommentsByShopId(this.$store.getters.getShopId).then(res => {
               if(res.status != 200) this.$message.error();
@@ -208,7 +210,8 @@ export default {
 
             else {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
-
+              this.$store.dispatch('commitToken', res.body.access_token);
+              
               orderApi.addOrder(this.gbProductOrder).then(res => {
                 if(res.status != 201) this.$message.error();
                 else this.$message({type: "success", message: "创建订单成功"});

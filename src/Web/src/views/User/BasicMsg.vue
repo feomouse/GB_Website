@@ -1,5 +1,6 @@
 <template>
   <div id="userBasicHolder__place">
+    <user-banner></user-banner>
     <div class="auto_eight">
       <div style="text-align: left; 
                   padding-left: 2rem; 
@@ -34,26 +35,8 @@
       <div style="clear:both;"></div>
       <div class="msgItem">
         <div class="msgItemHeader">邮箱</div>
-        <div style="text-align: left; line-height: 6rem; padding-left: 3rem;">{{CustomerInfo.CustomerEmail}}
-<!--           <div style="text-align: right; float: right; padding-right: 4rem;">
-            <el-button @click="ShowEmailEditDialog = true">修改</el-button>
-          </div> -->
-        </div>
+        <div style="text-align: left; line-height: 6rem; padding-left: 3rem;">{{CustomerInfo.CustomerEmail}}</div>
       </div>
-      <!--<el-dialog title="编辑邮箱" :visible.sync="ShowEmailEditDialog">
-        <el-form :model="CustomerInfo" label-width="80px">
-          <el-form-item label="久邮箱">
-            {{CustomerInfo.CustomerEmail}}
-          </el-form-item>
-          <el-form-item label="新邮箱">
-            <el-input v-model="CustomerInfo.CustomerEmail"></el-input>
-          </el-form-item>
-          <div slot="footer">
-            <el-button type="primary" @click="">确认修改</el-button>
-            <el-button @click="ShowEditDialog = false">取消</el-button>
-          </div>
-        </el-form>
-      </el-dialog>-->
       <div class="msgItem">
         <div class="msgItemHeader">地址</div>
         <div style="text-align: left; line-height: 6rem; padding-left: 3rem;">{{CustomerInfo.CustomerAddress}}
@@ -83,8 +66,12 @@
 import * as userApi from '../../api/User';
 import * as imgApi from '../../api/img';
 import * as identityApi from '../../api/Identity';
+import UserBanner from '../../components/Banner';
 
 export default {
+  components: {
+    'user-banner': UserBanner
+  },
   data() {
     return {
       CustomerInfo: {
@@ -131,15 +118,17 @@ export default {
 
             else {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+              this.$store.dispatch('commitToken', res.body.access_token);
 
               imgApi.ImgUpload(form).then(res => {
                 if (res.status == 400) this.$message.error();
       
                 else {
-                  userApi.setCustomerImg(this.CustomerInfo.CustomerName, res.body).then(res => {
-                    
+                  userApi.setCustomerImg(this.$store.getters.userId, res.body).then(res => {
+                    if(res.status != 200) this.$message.error("设置图像失败");
+
+                    else this.CustomerInfo.CustomerImg = res.body;
                   })
-                  this.CustomerInfo.CustomerImg = res.body;
                 }
               })
             }
@@ -147,7 +136,15 @@ export default {
         }
         else if (res.status == 400) this.$message.error();
 
-        this.CustomerInfo.CustomerImg = res.body;
+        else {
+          userApi.setCustomerImg(this.$store.getters.userId, res.body).then(res => {
+            if(res.status != 200) this.$message.error("设置图像失败");
+
+            else {
+              this.CustomerInfo.CustomerImg = res.body;
+            }
+          })
+        }
       })
 
       return is;
@@ -164,11 +161,12 @@ export default {
 
             else {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+              this.$store.dispatch('commitToken', res.body.access_token);
 
               userApi.setCustomerUserName(setUserNameObj).then(status => {
                 if (status == 200) {
                   this.CustomerInfo.CustomerName = this.TempCustomerInfo.CustomerName;
-                  this.JudgeEditing.isUserNameEditing = false;
+                  this.ShowNameEditDialog = false;
 
                   userApi.getUserBasicMessage(this.$store.getters.userId).then(res => {
                     if(res.status != 200)
@@ -178,7 +176,6 @@ export default {
                     else if(res.status == 200)
                     {
                       this.$store.dispatch('commitSetUser', res.body);
-                      this.ShowNameEditDialog = false;
                     }
                   })
                 } else if (status != 200)
@@ -191,7 +188,7 @@ export default {
         }
         else if (status == 200) {
           this.CustomerInfo.CustomerName = this.TempCustomerInfo.CustomerName;
-          this.JudgeEditing.isUserNameEditing = false;
+          this.ShowNameEditDialog = false;
 
           userApi.getUserBasicMessage(this.$store.getters.userId).then(res => {
             if(res.status != 200)
@@ -201,7 +198,6 @@ export default {
             else if(res.status == 200)
             {
               this.$store.dispatch('commitSetUser', res.body);
-              this.ShowNameEditDialog = false;
             }
           })
         } else if (status != 200)
@@ -222,6 +218,7 @@ export default {
 
             else {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+              this.$store.dispatch('commitToken', res.body.access_token);
 
               userApi.setCustomerAddress(setUserAddressObj).then(status => {
                 if (status == 200) {

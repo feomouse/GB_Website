@@ -23,7 +23,7 @@ export default {
       merchantName: this.$store.getters.getMerchantName
     }
   },
-  beforeCreate() {
+  beforeMount() {
     identityApi.GetMerchantNameById(this.$store.getters.getMerchantId).then(res => {
       if(res.status == 401) {
         identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
@@ -31,6 +31,7 @@ export default {
 
           else {
             this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+            this.$store.dispatch('commitToken', res.body.access_token);
 
             identityApi.GetMerchantNameById(this.$store.getters.getMerchantId).then(res => {
               if(res.status != 200) this.$message.error();
@@ -55,7 +56,8 @@ export default {
 
           else {
             this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
-
+            this.$store.dispatch('commitToken', res.body.access_token);
+            
             shopApi.GetShopInfoByMerchantId(this.$store.getters.getMerchantId).then(res => {
               if(res.status != 200) {
                 if(res.status == 400 && res.body == "identity yourself first") {

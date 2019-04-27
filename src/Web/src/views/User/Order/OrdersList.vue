@@ -180,6 +180,7 @@ export default {
 
           else {
             this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+            this.$store.dispatch('commitToken', res.body.access_token);
 
             orderApi.getOrderByUserId(this.$store.getters.userId).then(res => {
               if (res.status != 200) this.$message.error();
@@ -233,6 +234,7 @@ export default {
 
             else {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+              this.$store.dispatch('commitToken', res.body.access_token);
 
               orderApi.pay({"OrderId":order.pkId, "TotalCost":order.totalCost}).then(res => {
                 if(res.status != 200) this.$message.error();
@@ -313,6 +315,7 @@ export default {
 
             else {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+              this.$store.dispatch('commitToken', res.body.access_token);
 
               orderApi.getOrderByUserId(this.$store.getters.userId).then(res => {
                 if (res.status != 200) this.$message.error();
@@ -376,6 +379,7 @@ export default {
 
             else {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+              this.$store.dispatch('commitToken', res.body.access_token);
 
               merchantApi.getGBProductKeyByProductName(order.groupProductName).then(res => {
                 if(res.status != 200) {
@@ -423,6 +427,7 @@ export default {
 
             else {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+              this.$store.dispatch('commitToken', res.body.access_token);
 
               commentApi.addUserComment(this.evaluate).then(res => {
                 if(res.status != 201) this.$message.error();
@@ -459,6 +464,7 @@ export default {
 
             else {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+              this.$store.dispatch('commitToken', res.body.access_token);
 
               orderApi.getOrderByUserId(this.$store.getters.userId).then(res => {
                 if (res.status != 200) this.$message.error();
@@ -521,7 +527,8 @@ export default {
 
             else {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
-
+              this.$store.dispatch('commitToken', res.body.access_token);
+              
               commentApi.getUserCommentByOrderId(orderId).then(res => {
                 if(res.status != 200) this.$message.error();
 

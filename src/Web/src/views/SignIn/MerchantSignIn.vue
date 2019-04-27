@@ -20,6 +20,9 @@
             <div class="InputError__Mes" v-if="ShowSignInError">登陆失败</div> 
             <div class="NormalSuccess__Mes" v-if="ShopSignInSuccess">登陆成功</div>
           </div>
+          <div class="a-element-a-line">
+            <p style="cursor: pointer; color: blue; font-size: 0.75rem; float: right;" @click="redirectToRegistry">>>我要注册</p>
+          </div>
         </div>
       </div>
     </div>
@@ -94,15 +97,18 @@ export default {
           }, 2000);
 
           MerchantApi.getMerchantBasicByMerchantId(this.$store.getters.getMerchantId).then(res => {
-            if(res.status != 200) this.$message.error();
+            if(res.status != 200) this.$message.error("获取商户信息出错");
 
             if(res.body.shopId == "00000000-0000-0000-0000-000000000000") this.$router.push('/Merchant/CreateShop');
             else {
-              this.$router.push('/Merchant/Operation');
+              this.$router.push('/Merchant/Operation/Welcome');
             }
           })
         }
       })
+    },
+    redirectToRegistry() {
+      this.$router.push('/Merchant/SignUp');
     }
   }
 }

@@ -11,6 +11,8 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
         Shop GetShopByName(string shopName);
 
+        Shop GetShopByNameAndCity(string shopName, string province, string city);
+
         Shop GetShopByShopId(string shopId);
 
         List<Shop> GetShopListByShopTypeAndCity(string province, string city, int shopType);
@@ -35,13 +37,13 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
         int AddGBProduct(GBProduct newgbProduct);
 
-        List<GBProduct> GetGBProductsByShopName(string shopName);
+        List<GBProduct> GetGBProductsByShopName(string shopName, string province, string city);
 
         GBProduct UpdateGBProducts(GBProduct newgbProduct);
 
         int DeleteGBProduct(string gbProductName);
 
-        List<ProductType> GetShopProductTypesByShopName(string shopName);
+        List<ProductType> GetShopProductTypesByShopName(string shopName, string province, string city);
 
         int DeleteProductType(string productTypePkId);
 

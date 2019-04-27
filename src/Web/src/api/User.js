@@ -44,8 +44,8 @@ export const setCustomerImg = (userId, fileName) => {
     'UserId': userId,
     'FileName': fileName
   }).then(responseSuccess => {
-    return responseSuccess.body;
+    return responseSuccess;
   }, responseFail => {
-    return responseFail.status;
+    return responseFail;
   })
 }

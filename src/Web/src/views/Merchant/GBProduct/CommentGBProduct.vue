@@ -51,6 +51,7 @@ export default {
 
           else {
             this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+            this.$store.dispatch('commitToken', res.body.access_token);
 
             commentApi.getUserCommentsByShopId(this.$store.getters.getShopId).then(res => {
               if(res.status != 200) this.$message.error();
@@ -78,7 +79,28 @@ export default {
     },
     ensureReply() {
       commentApi.addReplyComment(this.replyComment).then(res => {
-        if(res.status != 201) this.$message.error();
+        if(res.status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+              this.$store.dispatch('commitToken', res.body.access_token);
+              
+              commentApi.addReplyComment(this.replyComment).then(res => {
+                if(res.status != 201) this.$message.error();
+
+                else {
+                  this.$message({
+                    type: "success",
+                    message: "回复成功"
+                  })
+                }
+              })
+            }
+          })
+        }
+        else if(res.status != 201) this.$message.error();
 
         else {
           this.$message({

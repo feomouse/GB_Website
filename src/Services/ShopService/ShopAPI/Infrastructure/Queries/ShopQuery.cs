@@ -42,19 +42,24 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
       return _repo.GetShopListByCity(province, city);
     }
 
-    public List<GBProduct> getGBProductsByShopName( string shopName)
+    public List<GBProduct> getGBProductsByShopName( string shopName, string province, string city)
     {
-      return _repo.GetGBProductsByShopName(shopName);
+      return _repo.GetGBProductsByShopName(shopName,province,city);
     }
 
-    public List<ProductType> getShopProductTypesByShopName(string shopName)
+    public List<ProductType> getShopProductTypesByShopName(string shopName, string province, string city)
     {
-      return _repo.GetShopProductTypesByShopName(shopName);
+      return _repo.GetShopProductTypesByShopName(shopName, province, city);
     }
 
     public string getGBProductByName(string name)
     {
       return _repo.GetGBProductKeyByName(name);
+    }
+
+    public Shop getShopByNameAndCity(string name, string province ,string city)
+    {
+      return _repo.GetShopByNameAndCity(name, province, city);
     }
 /* 
     public Product getProductByName(string name) 

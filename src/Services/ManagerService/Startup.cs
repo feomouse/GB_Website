@@ -10,34 +10,44 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.FileProviders;
-using System.Reflection;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer;
+using GB_Project.Services.ManagerService.Models.Context;
+using GB_Project.Services.ManagerService.Querys;
+using GB_Project.Services.ManagerService.Services;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using GB_Project.Services.ManagerService.MediatRModule;
 
-namespace CityService
+namespace ManagerService
 {
     public class Startup
     {
-        private readonly IHostingEnvironment _env; 
-
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-
-            _env = env;
         }
 
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            var physicalProvider = _env.ContentRootFileProvider;
-            var manifestEmbeddedProvider = new ManifestEmbeddedFileProvider(Assembly.GetEntryAssembly());
-            var compositeProvider = new CompositeFileProvider(physicalProvider, manifestEmbeddedProvider);
-            
-            services.AddSingleton<IFileProvider>(compositeProvider);
+            services.AddDbContext<ManagerDbContext>();
+
+            services.AddSingleton<IManagerQuery, ManagerQuery>();
+
+            services.AddScoped<IManagerRepository, ManagerRepository>();
+
+            var builder = new ContainerBuilder ();
+
+            builder.Populate (services);
+
+            builder.RegisterModule(new MediatRModule());
+
+            return new AutofacServiceProvider (builder.Build ());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +63,6 @@ namespace CityService
                 app.UseHsts();
             }
 
-            app.UseStaticFiles();
             app.UseHttpsRedirection();
             app.UseMvc();
         }

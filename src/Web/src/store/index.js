@@ -7,6 +7,7 @@ import Shop from './shop';
 import Order from './order';
 import Staff from './staff';
 import City from './city';
+import Manager from './manager';
 
 Vue.use(Vuex);
 
@@ -18,6 +19,7 @@ export default new Vuex.Store({
     shop: Shop,
     order: Order,
     staff: Staff,
-    city: City
+    city: City,
+    manager: Manager
   }
 })

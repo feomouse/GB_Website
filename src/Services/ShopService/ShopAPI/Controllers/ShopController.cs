@@ -68,9 +68,9 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
 
       [HttpGet]
       [Route("SearchShop")]
-      public ObjectResult GetShopByName ([FromQuery] string name)
+      public ObjectResult GetShopByNameAndCity ([FromQuery] string name, string province, string city)
       {
-        Shop shop = _query.getShopByName(name);
+        Shop shop = _query.getShopByNameAndCity(name, province ,city);
 
         if(shop == null)
         {

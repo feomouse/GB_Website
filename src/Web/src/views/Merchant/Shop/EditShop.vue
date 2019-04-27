@@ -1,6 +1,7 @@
 <template>
   <div class="auto_ten">
-    <div class="left-eight" style="text-align:left;">
+    <div style="font-size: 2rem; border-bottom: 2px solid lightgray; color: lightgray;">门店基本信息</div>
+    <div class="left-eight" style="text-align:left; background: #eff7f2; box-shadow: 3px 3px 3px lightgray; margin-top: 1rem;">
       <el-form label-width="100px">
         <el-form-item label="名字: " style="width: 40%;">
           <el-input placeholder="请输入" v-model="newShop.name"></el-input>
@@ -9,8 +10,9 @@
           <el-select v-model="newShop.province">
             <el-option v-for="(i, k) of dataMap['86']" 
                     v-bind:key="k" 
-                    v-bind:value="k" 
-                    >{{i}}
+                    v-bind:value="k"
+                    :label="i"
+                    >
             </el-option>
           </el-select>
         </el-form-item>
@@ -18,8 +20,9 @@
           <el-select v-model="newShop.city">
             <el-option v-for="(i, k) of dataMap[newShop.province]" 
                     v-bind:key="k" 
-                    v-bind:value="k" 
-                    >{{i}}
+                    v-bind:value="k"
+                    :label="i"
+                    >
             </el-option>
           </el-select>
         </el-form-item>
@@ -27,8 +30,9 @@
           <el-select v-model="newShop.district">
             <el-option v-for="(i, k) of dataMap[newShop.city]" 
                     v-bind:key="k" 
-                    v-bind:value="k" 
-                    >{{i}}
+                    v-bind:value="k"
+                    :label="i"
+                    >
             </el-option>
           </el-select>
         </el-form-item>
@@ -163,27 +167,34 @@ export default {
         "Pic": this.newShop.pic
       }
       merchantApi.updateShop(shop).then(res => {
-        if(data.status == 401) {
+        if(res.status == 401) {
           identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
             if(res.status == 400) this.$router.push('/Customer/SignIn');
 
             else {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
-
+              this.$store.dispatch('commitToken', res.body.access_token);
+              
               merchantApi.updateShop(shop).then(res => {
-                if(res.status == 400) this.$message.error();
+                if(res.status == 400) this.$message.error('更新失败');
                 else {
                   this.newShop = res.body;
-                  this.$message('更新成功');
+                  this.$message({
+                    type: 'success',
+                    message:'更新成功'
+                  });
                 }
               })
             }
           })
         }
-        else if(res.status == 400) this.$message.error();
+        else if(res.status == 400) this.$message.error('更新失败');
         else {
           this.newShop = res.body;
-          this.$message('更新成功');
+          this.$message({
+            type: 'success',
+            message:'更新成功'
+          });
         }
       })
     }

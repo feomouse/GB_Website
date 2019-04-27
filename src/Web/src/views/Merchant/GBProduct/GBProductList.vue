@@ -1,7 +1,8 @@
 <template>
   <div class="auto_ten tabContent_container">
     <div style="width: 100%; height: 3rem;">
-      <el-button type="success" @click="createGBDialogVisible = true">新建</el-button>
+      <el-button type="success" @click="createGBDialogVisible = true">新建团购产品</el-button>
+      <el-button type="primary" @click="payDialogVisible = true">确认交易</el-button>
       <el-dialog title="新建团购产品" :visible.sync="createGBDialogVisible">
         <el-form :model="newGBProduct">
           <el-form-item label="产品名称: " label-width="5rem">
@@ -66,18 +67,28 @@
           <el-button type="primary" @click="createGBProduct">确 定</el-button>
         </div>
       </el-dialog>
+      <el-dialog :visible.sync="payDialogVisible" title="团购交易">
+        <el-form label-width="80px">
+          <el-form-item label="团购码">
+            <el-input placeholder="请输入团购码" v-model="orderCode" style="width: 25rem;"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer">
+          <el-button type="success" @click="ensurePay">确认交易</el-button>
+        </div>
+      </el-dialog>
       <div style="float:right;">
         <p style="display: inline;">产品类型: </p>
-        <el-select v-model="selectedProductType" placeholder="请选择产品类型" @change="changeType">
+        <el-select v-model="selectedProductType" placeholder="请选择产品类型" @change="changeType" style="margin-right: 1rem;">
           <el-option
             v-for="i in productTypes"
             :key="i.pkId"
             :label="i.name"
             :value="i.pkId"></el-option>
         </el-select>
-        <i class="el-icon-circle-plus-outline" @click="addProductTypeDialogVisible = true"></i>
-        <el-button type="primary" @click="payDialogVisible = true">确认交易</el-button>
-        <el-dialog :visible.sync="addProductTypeDialogVisible">
+        <el-button icon="el-icon-circle-plus-outline" @click="addProductTypeDialogVisible = true"></el-button>
+        <el-button icon="el-icon-remove-outline" @click="delProductTypeDialogVisible = true"></el-button>
+        <el-dialog :visible.sync="addProductTypeDialogVisible" title="新建类型">
           <el-form label-width="80px">
             <el-form-item label="产品类型" style="width:40%;">
               <el-input placeholder="请输入" v-model="productTypeForm.TypeName"></el-input>
@@ -88,13 +99,22 @@
             <el-button @click="addProductTypeDialogVisible = false">取消</el-button>
           </div>
         </el-dialog>
-        <el-dialog :visible.sync="payDialogVisible">
+        <el-dialog :visible.sync="delProductTypeDialogVisible" title="删除类型">
           <el-form label-width="80px">
-            <el-form-item label="团购码">
-              <el-input placeholder="请输入团购码" v-model="orderCode"></el-input>
+            <el-form-item label="产品类型" style="width:40%;">
+              <el-select v-model="delProductTypeId" placeholder="请选择产品类型">
+                <el-option
+                  v-for="i in productTypes"
+                  :key="i.pkId"
+                  :label="i.name"
+                  :value="i.pkId"></el-option>
+              </el-select>
             </el-form-item>
-            <el-button type="success" @click="ensurePay">确认交易</el-button>
           </el-form>
+          <div slot="footer">
+            <el-button type="primary" @click="delProductType">删除</el-button>
+            <el-button @click="delProductTypeDialogVisible = false">取消</el-button>
+          </div>
         </el-dialog>
       </div>
     </div>
@@ -102,7 +122,7 @@
       <div style="float:left; line-height: 4rem;">
         <img :src="i.img" style="float: left; width: 8rem; height: 8rem; padding: 1rem;"/>
         <div style="float: left; margin: 0 0 0 2rem;">
-          <h1>{{i.productName}}</h1>
+          <h3>{{i.productName}}</h3>
         </div>
       </div>
       <div style="margin: 2rem 2rem 0 0; float:right; line-height: 4rem;">
@@ -174,8 +194,8 @@
         <el-button style="display:inline-block;"
                 type="success"
                 @click="showDeleteGBProduct(index)">删除</el-button>
-        <el-dialog label="删除" :visible.sync="deleteDialogVisible">
-          <div>确认删除?</div>
+        <el-dialog title="删除团购产品" :visible.sync="deleteDialogVisible">
+          <h2 style="margin-left: 2rem;">确认删除?</h2>
           <div slot="footer">
             <el-button @click="deleteDialogVisible = false">取 消</el-button>
             <el-button type="primary" @click="deleteGBProduct()">确 定</el-button>
@@ -231,6 +251,7 @@ export default {
         "ShopId": this.$store.getters.getShopId,
         "TypeName": ""
       },
+      delProductTypeId: "",
       deleteGBProductName: "",
       productTypes:[],
       selectedProductType: "",
@@ -238,6 +259,7 @@ export default {
       detailGBDialogVisible: false,
       deleteDialogVisible: false,
       addProductTypeDialogVisible: false,
+      delProductTypeDialogVisible: false,
       payDialogVisible: false,
       orderCode: ""
     }
@@ -250,6 +272,7 @@ export default {
 
           else {
             this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+            this.$store.dispatch('commitToken', res.body.access_token);
 
             merchantApi.ifSetGBService(this.$store.getters.getMerchantId).then(res => {
               if(res.status != 200) {
@@ -315,10 +338,12 @@ export default {
 
             else {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+              this.$store.dispatch('commitToken', res.body.access_token);
 
               merchantApi.addGBProduct(this.newGBProduct).then(res => {
                 if(res.status != 201) this.$message.error();
                 else {
+                  this.newGBProduct = {};
                   this.$message({type: 'success', message: '创建团购产品成功'});
                   this.createGBDialogVisible = false;
                   merchantApi.getGBProductsByProductTypeId(this.selectedProductType).then(res => {
@@ -334,6 +359,7 @@ export default {
         }
         else if(res.status != 201) this.$message.error();
         else {
+          this.newGBProduct = {};
           this.$message({type: 'success', message: '创建团购产品成功'});
           this.createGBDialogVisible = false;
           merchantApi.getGBProductsByProductTypeId(this.selectedProductType).then(res => {
@@ -376,6 +402,7 @@ export default {
 
             else {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+              this.$store.dispatch('commitToken', res.body.access_token);
 
               merchantApi.updateGBProduct(newEditGBProduct).then(res => {
                 if(res.status != 200) this.$message.error('更新失败');
@@ -406,6 +433,7 @@ export default {
 
             else {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+              this.$store.dispatch('commitToken', res.body.access_token);
 
               merchantApi.deleteGBProduct(this.deleteGBProductName).then(res => {
                 if(res.status != 204) this.$message.error('删除失败');
@@ -440,6 +468,7 @@ export default {
 
             else {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+              this.$store.dispatch('commitToken', res.body.access_token);
 
               merchantApi.getGBProductsByProductTypeId(productTypeId).then(res => {
                 if(res.status != 200) this.$message.error('获取团购产品失败');
@@ -464,6 +493,7 @@ export default {
 
             else {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+              this.$store.dispatch('commitToken', res.body.access_token);
 
               merchantApi.createProductType(this.productTypeForm).then(res => {
                 if(res.status != 201) this.$message.error();
@@ -505,6 +535,79 @@ export default {
         this.addProductTypeDialogVisible = false;
       })
     },
+    delProductType() {
+      merchantApi.getGBProductsByProductTypeId(this.selectedProductType).then(res => {
+        if(res.status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+              this.$store.dispatch('commitToken', res.body.access_token);
+
+              merchantApi.getGBProductsByProductTypeId(this.selectedProductType).then(res => {
+                if(res.status != 200) this.$message.error('获取团购产品失败');
+                else {
+                  if(res.body.length != 0) this.$message({
+                    type: 'warning',
+                    message: '请先删除该品类下的团购产品'
+                  })
+                  else {
+                    merchantApi.deleteProductType(this.delProductTypeId).then(res => {
+                      if(res.status != 204) this.$message.error('删除失败');
+                      else {
+                        this.$message({message: '删除成功', type: 'success'});
+                        merchantApi.getProductTypeByShopName(this.$store.getters.getShopName).then(res => {
+                          if(res.status == 400) this.$message.error('获取产品类型失败');
+                          else {
+                            this.productTypes = [];
+                            for(let i of res.body) {
+                              this.productTypes.push({
+                                pkId: i.pkId,
+                                name: i.typeName
+                              })
+                            }
+                          }
+                        })
+                      }
+                    })
+                  }
+                }
+              })
+            }
+          })
+        }
+        else if(res.status != 200) this.$message.error('获取团购产品失败');
+        else {
+          if(res.body.length != 0) this.$message({
+            type: 'warning',
+            message: '请先删除该品类下的团购产品'
+          })
+          else {
+            merchantApi.deleteProductType(this.delProductTypeId).then(res => {
+              if(res.status != 204) this.$message.error('删除失败');
+              else {
+                this.$message({message: '删除成功', type: 'success'});
+                merchantApi.getProductTypeByShopName(this.$store.getters.getShopName).then(res => {
+                  if(res.status == 400) this.$message.error('获取产品类型失败');
+                  else {
+                    this.productTypes = [];
+                    for(let i of res.body) {
+                      this.productTypes.push({
+                        pkId: i.pkId,
+                        name: i.typeName
+                      })
+                    }
+                  }
+                })
+              }
+            })
+          }
+        }
+      })
+      this.delProductTypeDialogVisible = false;
+      }
+    },
     ensurePay() {
       orderApi.ensurePay({"ShopName": this.$store.getters.getShopName, "OrderCode": this.orderCode}).then(res => {
           if(res.status == 401) {
@@ -513,6 +616,7 @@ export default {
 
               else {
                 this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+                this.$store.dispatch('commitToken', res.body.access_token);
 
                 orderApi.ensurePay({"ShopName": this.$store.getters.getShopName, "OrderCode": this.orderCode}).then(res => {
                   if(res.status != 200) this.$message.error();
@@ -544,6 +648,7 @@ export default {
 
             else {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+              this.$store.dispatch('commitToken', res.body.access_token);
 
               imgApi.ImgUpload(form).then(res => {
                 if(res.status != 200) this.$message.error('上传错误');
@@ -575,7 +680,8 @@ export default {
 
             else {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
-
+              this.$store.dispatch('commitToken', res.body.access_token);
+              
               imgApi.ImgUpload(form).then(res => {
                 if(res.status != 200) this.$message.error('上传错误');
                 else this.editGBProduct.img = res.body;
@@ -588,7 +694,6 @@ export default {
       })
     }
   }
-}
 </script>
 <style lang="less" scoped>
   @import '../../../less/container';

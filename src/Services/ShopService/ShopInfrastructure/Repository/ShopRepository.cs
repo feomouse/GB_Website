@@ -49,6 +49,11 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         return _context.shops.Where(s => s.Name == shopName).FirstOrDefault();
       }
 
+      public Shop GetShopByNameAndCity(string shopName, string province, string city)
+      {
+        return _context.shops.Where(s => (s.Name == shopName && s.Province == province && s.City == city)).FirstOrDefault();
+      }
+
       public Shop GetShopByShopId(string shopId)
       {
         return _context.shops.Where(s => s.PkId.ToString() == shopId).FirstOrDefault();
@@ -107,9 +112,9 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         return _context.SaveChanges();
       }
 
-      public List<GBProduct> GetGBProductsByShopName(string shopName)
+      public List<GBProduct> GetGBProductsByShopName(string shopName, string province, string city)
       {
-        Shop shop = _context.shops.Where(b => b.Name == shopName).FirstOrDefault();
+        Shop shop = _context.shops.Where(b => (b.Name == shopName && b.Province == province && b.City == city)).FirstOrDefault();
 
         ProductType[] types = _context.producttypes.Where(b => b._Shop == shop).ToArray();
 
@@ -168,9 +173,9 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
           return imgLocation;
       }
 
-      public List<ProductType> GetShopProductTypesByShopName(string shopName)
+      public List<ProductType> GetShopProductTypesByShopName(string shopName, string province, string city)
       {
-        var shop = _context.shops.Where(s => s.Name == shopName).FirstOrDefault();
+        var shop = _context.shops.Where(b => (b.Name == shopName && b.Province == province && b.City == city)).FirstOrDefault();
         return shop == null ?  new List<ProductType>() : _context.producttypes.Where(t => t.ShopId == shop.PkId).ToList();
       }
 

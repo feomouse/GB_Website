@@ -27,7 +27,8 @@ export default {
 
               else {
                 this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
-
+                this.$store.dispatch('commitToken', res.body.access_token);
+                
                 orderApi.ensurePay({"ShopName": this.$store.getters.getShopName, "OrderCode": this.orderCode}).then(res => {
                   if(res.status != 200) this.$message.error();
                   else this.$message({type: "success", message: "交易成功"}); 

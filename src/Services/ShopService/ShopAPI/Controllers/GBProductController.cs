@@ -50,9 +50,9 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [Route("GBProducts")]
-    public ActionResult GetGBProducts ([FromQuery] string shopName)
+    public ActionResult GetGBProducts ([FromQuery] string shopName, string province, string city)
     {
-      List<GBProduct> gbProducts = _query.getGBProductsByShopName(shopName);
+      List<GBProduct> gbProducts = _query.getGBProductsByShopName(shopName, province, city);
 
       List<GBProductsVIewModel> gbProductsViews = new List<GBProductsVIewModel>();
 

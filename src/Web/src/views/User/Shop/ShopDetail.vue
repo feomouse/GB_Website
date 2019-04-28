@@ -10,7 +10,7 @@
         </div>
       </div>
       <div style="float: right;">
-        <img :src="shopDetail.pic" style="width: 24rem; height: 12rem;"/>
+        <img :src="shopDetail.pic" style="width: 24rem; height: 12rem; margin-right: 2rem;"/>
       </div>
       <div style="clear: both;"></div>
     </div>
@@ -34,10 +34,10 @@
           <p>月销量: {{i.mSellNum}}</p>
         </div>
       </div>
-      <el-dialog label="团购产品详细信息" :visible.sync="gbProductDialogVisible" style="text-align: left;">
+      <el-dialog title="团购产品详细信息" :visible.sync="gbProductDialogVisible" style="text-align: left;">
         <div>
           <img :src="selectedGBProduct.img" style="width: 8rem; height: 8rem; display: inline-block; margin-right: 5rem; "/>
-          <el-input-number v-model="gbProductOrder.Number" :min="1" :max="50" label="描述文字" style="display: inline-block;"></el-input-number>
+          <span style="margin-right: 2rem;">选择数量:</span><el-input-number v-model="gbProductOrder.Number" :min="1" :max="50" label="描述文字" style="display: inline-block;"></el-input-number>
         </div>
         <div>
           <p style="display: inline-block; width: 10rem;">名称: {{selectedGBProduct.productName}}</p>
@@ -62,18 +62,24 @@
           <el-button type="primary" @click="createGBOrder">创建订单</el-button>
         </div>
       </el-dialog>
+      
     </div>
     <div class="auto_eight" style="margin-top: 3rem;">
       <div class="shop-header">用户点评</div>
       <div v-for="i of commentList"
            v-bind:key="i.pkId"
-           style="text-align: left; border-bottom: 1px solid lightgray;">
-          <div>用户: <h2 style="display: inline;">{{i.userName}}</h2></div>
-          <div style="text-align: right;">点赞数: {{i.stars}} 日期: {{i.date}}</div>
-          <div style="margin-top: 3rem;">{{i.comment}}</div>
-          <div>
-            <img :src="i.img" />
+           style="text-align: left; border-bottom: 1px solid lightgray; padding: 1rem 3rem 0 3rem; background: #f2f3f4;">
+          <div><p style="display: inline;">{{i.userName}}</p></div>
+          <div style="margin-top: 1rem;">
+            <i v-for="i in i.stars" :key="i" class="el-icon-star-on">
+            </i>  
           </div>
+          <div style="text-align: right;">日期: {{i.date}}</div>
+          <div style="margin: 3rem 0 3rem 0;">{{i.comment}}</div>
+          <div style="color: green; margin-bottom: 2rem;">商家回复: {{replyList[i.pkId].reply}}</div>
+<!--           <div>
+            <img :src="i.img" />
+          </div> -->
       </div>
     </div>
     <!--<div @click="test" style="cursor: pointer;">测试</div>-->
@@ -113,6 +119,7 @@ export default {
       },
       gbProductDialogVisible: false,
       commentList: [],
+      replyList: {},
       'cityData': cityData
     }
   },
@@ -166,14 +173,61 @@ export default {
             commentApi.getUserCommentsByShopId(this.$store.getters.getShopId).then(res => {
               if(res.status != 200) this.$message.error();
 
-              else this.commentList = res.body;
+              else {
+                this.commentList = res.body;
+                for(let i = 0; i < this.commentList.length; i++) {
+                  if(this.commentList[i].isReply) {
+                    commentApi.getReplyCommentByCommentId(this.commentList[i].pkId).then(res => {
+                      if(res.status != 200) this.$message.error("获取回复失败");
+
+                      else {
+                        this.replyList[this.commentList[i].pkId] = res.body;
+                        this.replyList[this.commentList[i].pkId].date = this.replyList[this.commentList[i].pkId].date.split('T')[0];
+                      }
+                    })
+                  }
+
+                  let dateArr = this.commentList[i].date.split('T');
+                  this.commentList[i].date = dateArr[0];
+
+                  let starsArr = [];
+                  for(let j = 0; j < this.commentList[i].stars; j++)
+                  {
+                    starsArr.push({});
+                  }
+                  this.commentList[i].stars = starArr;
+                }
+              }
             })
           }
         })
       }
       else if(res.status != 200) this.$message.error();
 
-      else this.commentList = res.body;
+      else {
+        this.commentList = res.body;
+        for(let i = 0; i < this.commentList.length; i++) {
+          if(this.commentList[i].isReply) {
+            commentApi.getReplyCommentByCommentId(this.commentList[i].pkId).then(res => {
+              if(res.status != 200) this.$message.error("获取回复失败");
+
+              else {
+                this.replyList[this.commentList[i].pkId] = res.body;
+                this.replyList[this.commentList[i].pkId].date = this.replyList[this.commentList[i].pkId].date.split('T')[0];
+              }
+            })
+          }
+          let dateArr = this.commentList[i].date.split('T');
+          this.commentList[i].date = dateArr[0];
+
+          let starsArr = [];
+          for(let j = 0; j < this.commentList[i].stars; j++)
+          {
+            starsArr.push({});
+          }
+          this.commentList[i].stars = starArr;
+        }
+      }
     })
   },
   computed: {
@@ -186,6 +240,8 @@ export default {
   methods: {
     showGBProductDetail(index) {
       this.selectedGBProduct = this.gbProductList[index];
+      this.selectedGBProduct.vailSDate = this.selectedGBProduct.vailSDate.split('T')[0];
+      this.selectedGBProduct.vailEDate = this.selectedGBProduct.vailEDate.split('T')[0];
       this.gbProductDialogVisible = true;
     },
     createGBOrder() {
@@ -198,6 +254,7 @@ export default {
       this.gbProductOrder.OrderCode = "";
       this.gbProductOrder.PayWay = 1;
       this.gbProductOrder.CpkId = this.$store.getters.userId;
+      this.gbProductOrder.SpkId = this.$store.getters.getShopId;
       this.gbProductOrder.SName = this.$store.getters.getShopSelectedName;
       this.gbProductOrder.Time = now.getFullYear() + "/" + now.getMonth() + "/" + now.getDate() + " " 
                                  + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
@@ -226,14 +283,6 @@ export default {
 
         this.gbProductDialogVisible = false;
       })
-    },
-    test() {
-      let testRouter = this.$router.resolve({path: '/test'});
-      window.open(testRouter.href, '_self');
-
-      let div = document.createElement('div');
-      div.innerHTML = '<div>test</div>';
-      document.getElementById('container').appendChild(div);
     }
   }
 }

@@ -25,6 +25,8 @@ namespace GB_Project.Services.OrderService.OrderDomin.GroupOrderAggregate
 
       public Guid CpkId { get; private set; }
 
+      public Guid SpkId { get; private set; }
+
       public string SName { get; private set; }
 
       public DateTime Time { get; private set; }
@@ -32,7 +34,7 @@ namespace GB_Project.Services.OrderService.OrderDomin.GroupOrderAggregate
       public string Img { get; private set; }
 
       public GroupBuyingOrder(string groupProductName, int number, int totalCost, bool isPayed, string evaluate, bool isUsed,
-                              Guid orderCode, int payWay, Guid cpkId, string sName, DateTime time, string img)
+                              Guid orderCode, int payWay, Guid cpkId, Guid spkId, string sName, DateTime time, string img)
       {
         PkId = Guid.NewGuid();
         GroupProductName = groupProductName;
@@ -44,6 +46,7 @@ namespace GB_Project.Services.OrderService.OrderDomin.GroupOrderAggregate
         OrderCode = orderCode;
         PayWay = payWay;
         CpkId = cpkId;
+        SpkId = spkId;
         SName = sName;
         Time = time;
         Img = img;

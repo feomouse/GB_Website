@@ -30,6 +30,8 @@ namespace GB_Project.Services.OrderService.OrderInfrastructure.EntityTypeConfigu
 
         builder.Property(t => t.CpkId).HasColumnType("Uniqueidentifier");
 
+        builder.Property(t => t.SpkId).HasColumnType("Uniqueidentifier");
+
         builder.Property(t => t.SName).HasColumnType("varchar(20)");
 
         builder.Property(t => t.Time).HasColumnType("date");

@@ -47,12 +47,13 @@ export const GetShopBasicListByShopType = (shopType) => {
   })
 }
 
-export const GetShopListByShopTypeAndCity = (province, city, shopType) => {
+export const GetShopListByShopTypeAndCity = (province, city, shopType, page) => {
   return Vue.http.get('/shop/ShopBasicList', {
     params: {
       'province': province,
       'city': city,
-      'shopType' : shopType
+      'shopType' : shopType,
+      'page': page
     }
   }).then(successRes => {
     return successRes;
@@ -81,5 +82,19 @@ export const SetGroupBuying = (shopId) => {
     return resSuccess;
   }, resFail => {
     return resFail;
+  })
+}
+
+export const GetShopsCount = (province, city, shopType) => {
+  return Vue.http.get('/shop/TotalShopsCount', {
+    params: {
+      'province': province,
+      'city': city,
+      'shopType': shopType
+    }
+  }).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
   })
 }

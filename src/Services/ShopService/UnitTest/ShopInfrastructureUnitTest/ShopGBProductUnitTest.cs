@@ -22,7 +22,7 @@ namespace GB_Project.Services.ShopService.UnitTest.ShopInfrastructureUnitTest
         [TestMethod]
         public void TestAddGBProduct()
         {
-          var type = config.Repository.GetProductTypeByProductTypeId("0DB3BA58-A23E-4F52-579D-08D6B46766A5");
+          var type = config.Repository.GetProductTypeByProductTypeId("D9E8A126-951E-47AF-FD1A-08D6CB9F4363");
           var gbProduct = new GBProduct("三角面包", 10, 8, "一个/份", DateTime.Now, DateTime.Now.AddDays(2), "1个月", "d/img", "无", type);
           var result = config.Repository.AddGBProduct(gbProduct);
 
@@ -32,10 +32,9 @@ namespace GB_Project.Services.ShopService.UnitTest.ShopInfrastructureUnitTest
         [TestMethod]
         public void TestGetGBProductsByShopName()
         {
-            List<GBProduct> gbProducts = config.Repository.GetGBProductsByShopName("花园行车铺");
+            List<GBProduct> gbProducts = config.Repository.GetGBProductsByShopName("士多店", "天津市", "市辖区");
             
             Assert.AreNotEqual(0, gbProducts.Count);
-            Assert.AreEqual(2, gbProducts.Count);
         }
 
         [TestMethod]

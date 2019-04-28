@@ -116,9 +116,9 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
 
       [HttpGet]
       [Route("ShopBasicList")]
-      public ActionResult GetShopBasicListByShopTypeAndCity([FromQuery]string province, string city, int shopType)
+      public ActionResult GetShopBasicListByShopTypeAndCity([FromQuery]string province, string city, int shopType, int page)
       {
-        List<Shop> shopList  = _query.getShopListByShopTypeAndCity(province, city, shopType);
+        List<Shop> shopList  = _query.getShopListByShopTypeAndCity(province, city, shopType, page);
 
         if(shopList == null) return BadRequest();
 
@@ -129,6 +129,13 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         }
 
         return Ok(shopBasicList);
+      }
+
+      [HttpGet]
+      [Route("TotalShopsCount")]
+      public ActionResult GetTotalShopsCount([FromQuery]string province, string city, int shopType)
+      {
+        return Ok(_query.getShopsTotalCount(province, city, shopType));
       }
 
       [HttpGet]
@@ -182,7 +189,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         else return Ok("团购服务申请成功");
       }
 
-      [HttpPost]
+/*       [HttpPost]
       [Route("UploadShopImg")]
       public ActionResult UploadShopImg()
       {
@@ -207,7 +214,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         }
 
         return new StatusCodeResult(400);
-      }
+      } */
 
       [HttpPost]
       [ProducesResponseType(200)]

@@ -20,6 +20,8 @@ namespace GB_Project.Services.CommentService.CommentAPI.Application.CommandsHand
       ReplyComment RComment = new ReplyComment(command.Reply, Convert.ToDateTime(command.Date));
 
       RComment.SetUserComment(_repo.GetUserCommentByCommentId(command.CommentId));
+
+      _repo.SetCommentIsReply(command.CommentId);
       
       return Task.FromResult(_repo.AddReplyComment(RComment));
     }

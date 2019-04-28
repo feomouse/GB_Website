@@ -12,6 +12,7 @@ import MerchantMenu from '../../components/MerchantMenu';
 import MerchantBanner from '../../components/MerchantBanner';
 import * as shopApi from '../../api/Shop'; 
 import * as identityApi from '../../api/Identity';
+import cityData from '../../data';
 
 export default {
   components : {
@@ -20,7 +21,8 @@ export default {
   },
   data() {
     return {
-      merchantName: this.$store.getters.getMerchantName
+      merchantName: this.$store.getters.getMerchantName,
+      'cityData': cityData
     }
   },
   beforeMount() {
@@ -67,6 +69,8 @@ export default {
               else {
                 this.$store.dispatch('commitSetShopId', res.body.pkId);
                 this.$store.dispatch('commitSetShopName', res.body.name);
+                this.$store.dispatch('commitProvinceName', res.body.province);
+                this.$store.dispatch('commitCityName', res.body.city);
               }
             })
           }
@@ -80,6 +84,8 @@ export default {
       else {
         this.$store.dispatch('commitSetShopId', res.body.pkId);
         this.$store.dispatch('commitSetShopName', res.body.name);
+        this.$store.dispatch('commitProvinceName', res.body.province);
+        this.$store.dispatch('commitCityName', res.body.city);
       }
     })
   },

@@ -1,77 +1,70 @@
 <template>
   <div id="userBasicHolder__place">
-    <user-banner></user-banner>
-    <div class="auto_eight">
-      <div style="text-align: left; 
-                  padding-left: 2rem; 
-                  height: 4rem; line-height: 4rem; background: white; 
-                  sont-size: 3rem; font-weight: bold;">用户基本信息:
-      </div>
-      <div style="height:15rem; background: lightgreen; line-height: 15rem; text-align: left;" class="auto_ten">
-        <el-upload
-          class="avatar-uploader"
-          action=""
-          style="float: left; margin-left: 2rem;"
-          :show-file-list="false"
-          :before-upload="boforeUpload">
-          <img v-if="CustomerInfo.CustomerImg" :src="CustomerInfo.CustomerImg" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i> 
-        </el-upload>
-        <h2 style="float: left; margin-left: 5rem;">用户名: {{CustomerInfo.CustomerName}}</h2>
-        <div style="float: right; padding-right: 5rem;"><p style="display: inline-block; cursor:pointer;" @click="ShowNameEditDialog = true">修改用户名></p></div>
-      </div>
-      <el-dialog title="编辑用户名" :visible.sync="ShowNameEditDialog">
-        <el-form :model="CustomerInfo" label-width="80px">
-          <el-form-item label="旧用户名">{{CustomerInfo.CustomerName}}</el-form-item>
-          <el-form-item label="新用户名">
-            <el-input v-model="TempCustomerInfo.CustomerName"></el-input>
-          </el-form-item>
-        </el-form>
-        <div slot="footer">
-          <el-button type="primary" @click="insureUserNameChange">确认修改</el-button>
-          <el-button @click="ShowNameEditDialog = false">取消</el-button>
-        </div>
-      </el-dialog>
-      <div style="clear:both;"></div>
-      <div class="msgItem">
-        <div class="msgItemHeader">邮箱</div>
-        <div style="text-align: left; line-height: 6rem; padding-left: 3rem;">{{CustomerInfo.CustomerEmail}}</div>
-      </div>
-      <div class="msgItem">
-        <div class="msgItemHeader">地址</div>
-        <div style="text-align: left; line-height: 6rem; padding-left: 3rem;">{{CustomerInfo.CustomerAddress}}
-          <div style="text-align: right; float: right; padding-right: 4rem;">
-            <el-button @click="ShowAddressEditDialog = true">修改</el-button>
-          </div>
-        </div>
-      </div>
-      <el-dialog title="编辑地址" :visible.sync="ShowAddressEditDialog">
-        <el-form :model="CustomerInfo" label-width="80px">
-          <el-form-item label="旧地址">
-            {{CustomerInfo.CustomerAddress}}
-          </el-form-item>
-          <el-form-item label="新地址">
-            <el-input v-model="TempCustomerInfo.CustomerAddress"></el-input>
-          </el-form-item>
-        </el-form>
-        <div slot="footer">
-          <el-button type="primary" @click="insureUserAddressChange">确认修改</el-button>
-          <el-button @click="ShowAddressEditDialog = false">取消</el-button>
-        </div>
-      </el-dialog>
+    <div style="text-align: left; 
+                padding-left: 2rem; 
+                height: 4rem; line-height: 4rem; background: white; 
+                sont-size: 3rem; font-weight: bold;">用户基本信息:
     </div>
+    <div style="height:15rem; background: lightgreen; line-height: 15rem; text-align: left;" class="auto_ten">
+      <el-upload
+        class="avatar-uploader"
+        action=""
+        style="float: left; margin-left: 2rem;"
+        :show-file-list="false"
+        :before-upload="boforeUpload">
+        <img v-if="CustomerInfo.CustomerImg" :src="CustomerInfo.CustomerImg" class="avatar">
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i> 
+      </el-upload>
+      <h2 style="float: left; margin-left: 5rem;">用户名: {{CustomerInfo.CustomerName}}</h2>
+      <div style="float: right; padding-right: 5rem;"><p style="display: inline-block; cursor:pointer;" @click="ShowNameEditDialog = true">修改用户名></p></div>
+    </div>
+    <el-dialog title="编辑用户名" :visible.sync="ShowNameEditDialog">
+      <el-form :model="CustomerInfo" label-width="80px">
+        <el-form-item label="旧用户名">{{CustomerInfo.CustomerName}}</el-form-item>
+        <el-form-item label="新用户名">
+          <el-input v-model="TempCustomerInfo.CustomerName"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button type="primary" @click="insureUserNameChange">确认修改</el-button>
+        <el-button @click="ShowNameEditDialog = false">取消</el-button>
+      </div>
+    </el-dialog>
+    <div style="clear:both;"></div>
+    <div class="msgItem">
+      <div class="msgItemHeader">邮箱</div>
+      <div style="text-align: left; line-height: 6rem; padding-left: 3rem;">{{CustomerInfo.CustomerEmail}}</div>
+    </div>
+    <div class="msgItem">
+      <div class="msgItemHeader">地址</div>
+      <div style="text-align: left; line-height: 6rem; padding-left: 3rem;">{{CustomerInfo.CustomerAddress}}
+        <div style="text-align: right; float: right; padding-right: 4rem;">
+          <el-button @click="ShowAddressEditDialog = true">修改</el-button>
+        </div>
+      </div>
+    </div>
+    <el-dialog title="编辑地址" :visible.sync="ShowAddressEditDialog">
+      <el-form :model="CustomerInfo" label-width="80px">
+        <el-form-item label="旧地址">
+          {{CustomerInfo.CustomerAddress}}
+        </el-form-item>
+        <el-form-item label="新地址">
+          <el-input v-model="TempCustomerInfo.CustomerAddress"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button type="primary" @click="insureUserAddressChange">确认修改</el-button>
+        <el-button @click="ShowAddressEditDialog = false">取消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
 import * as userApi from '../../api/User';
 import * as imgApi from '../../api/img';
 import * as identityApi from '../../api/Identity';
-import UserBanner from '../../components/Banner';
 
 export default {
-  components: {
-    'user-banner': UserBanner
-  },
   data() {
     return {
       CustomerInfo: {

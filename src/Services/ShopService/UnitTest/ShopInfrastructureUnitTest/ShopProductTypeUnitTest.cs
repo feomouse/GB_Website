@@ -22,7 +22,7 @@ namespace GB_Project.Services.ShopService.UnitTest.ShopInfrastructureUnitTest
       [TestMethod]
       public void TestCreateShopProductType()
       {
-        var shop = config.Repository.GetShopByName("vf行车铺");
+        var shop = config.Repository.GetShopByNameAndCity("士多店", "天津市", "市辖区");
         
         var productType = new ProductType(shop, "凉菜");
         var result = config.Repository.CreateShopProductType(productType);
@@ -42,7 +42,7 @@ namespace GB_Project.Services.ShopService.UnitTest.ShopInfrastructureUnitTest
       [TestMethod]
       public void TestGetShopProductTypesByShopName()
       {
-        var types = config.Repository.GetShopProductTypesByShopName("vf行车铺");
+        var types = config.Repository.GetShopProductTypesByShopName("士多店", "天津市", "市辖区");
 
         Assert.AreNotEqual(0, types.Count);
       }

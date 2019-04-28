@@ -53,6 +53,9 @@ namespace CommentAPI.Migrations
                     b.Property<string>("Img")
                         .HasColumnType("varchar(100)");
 
+                    b.Property<bool>("IsReply")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
 

@@ -61,6 +61,13 @@
          <p>{{i.province + i.city + i.district + i.location}}</p>
        </div>
      </div>
+     <div style="text-align:center;">
+      <el-pagination
+        layout="prev, pager, next"
+        :total="shopsNum"
+        @current-change="changePage">
+      </el-pagination>
+     </div>
    </div>
   </div>
 </template>
@@ -100,6 +107,7 @@ export default {
         CustomerAddress: "",
         CustomerEmail: ""
       },
+      shopsNum: 0
     }
   },
   beforeMount() {
@@ -116,10 +124,15 @@ export default {
               if(res.status != 200) this.$message.error('获取门店类型错误');
               else {
                 this.shopTypes = res.body;
-                shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.selectedProvince], this.cityData[this.selectedProvince][this.selectedCity], 1).then(res => {
+                shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.selectedProvince], this.cityData[this.selectedProvince][this.selectedCity], 1, 1).then(res => {
                   if(res.status != 200) this.$message.error('获取门店错误')
                   else {
                     this.shopList = res.body;
+                    shopApi.GetShopsCount(this.cityData['86'][this.selectedProvince], this.cityData[this.selectedProvince][this.selectedCity], 1).then(res => {
+                      if(res.status != 200) this.$message.error("获取数量错误");
+
+                      else this.shopsNum = res.body;
+                    })
                     //this.$store.dispatch('commitSetShopList', res.body);
                   }
                 })
@@ -131,10 +144,15 @@ export default {
       else if(res.status != 200) this.$message.error('获取门店类型错误');
       else {
         this.shopTypes = res.body;
-        shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.selectedProvince], this.cityData[this.selectedProvince][this.selectedCity], 1).then(res => {
+        shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.selectedProvince], this.cityData[this.selectedProvince][this.selectedCity], 1, 1).then(res => {
           if(res.status != 200) this.$message.error('获取门店错误')
           else {
             this.shopList = res.body;
+            shopApi.GetShopsCount(this.cityData['86'][this.selectedProvince], this.cityData[this.selectedProvince][this.selectedCity], 1).then(res => {
+              if(res.status != 200) this.$message.error("获取数量错误");
+
+              else this.shopsNum = res.body;
+            })
             //this.$store.dispatch('commitSetShopList', res.body);
           }
         })
@@ -158,7 +176,7 @@ export default {
     },
     selectShopTypes(type) {
       this.selectedShopType = type.id;
-      shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.$store.getters.getSelectedProvince], this.cityData[this.$store.getters.getSelectedProvince][this.$store.getters.getSelectedCity], type.id).then(res => {
+      shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.$store.getters.getSelectedProvince], this.cityData[this.$store.getters.getSelectedProvince][this.$store.getters.getSelectedCity], type.id, 1).then(res => {
         if(res.status == 401) {
           identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
             if(res.status == 400) this.$router.push('/Customer/SignIn');
@@ -167,7 +185,46 @@ export default {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
               this.$store.dispatch('commitToken', res.body.access_token);
               
-              shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.$store.getters.getSelectedProvince], this.cityData[this.$store.getters.getSelectedProvince][this.$store.getters.getSelectedCity], type.id).then(res => {
+              shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.$store.getters.getSelectedProvince], this.cityData[this.$store.getters.getSelectedProvince][this.$store.getters.getSelectedCity], type.id, 1).then(res => {
+                if(res.status != 200) this.$message.error('获取门店错误')
+                else {
+                  this.shopList = res.body;
+                  shopApi.GetShopsCount(this.cityData['86'][this.selectedProvince], this.cityData[this.selectedProvince][this.selectedCity], 1).then(res => {
+                    if(res.status != 200) this.$message.error("获取数量错误");
+
+                    else this.shopsNum = res.body;
+                  })
+                }
+              })
+            }
+          })
+        }
+        else if(res.status != 200) this.$message.error('获取门店错误')
+        else {
+          this.shopList = res.body;
+          shopApi.GetShopsCount(this.cityData['86'][this.selectedProvince], this.cityData[this.selectedProvince][this.selectedCity], 1).then(res => {
+            if(res.status != 200) this.$message.error("获取数量错误");
+
+            else this.shopsNum = res.body;
+          })
+          //this.$store.dispatch('commitSetShopList', res.body);
+        }
+      })
+    },
+    directToMyMessage() {
+      this.$router.push('/Customer/Basic');
+    },
+    changePage(page) {
+      shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.$store.getters.getSelectedProvince], this.cityData[this.$store.getters.getSelectedProvince][this.$store.getters.getSelectedCity], this.selectedShopType, page).then(res => {
+        if(res.status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+              this.$store.dispatch('commitToken', res.body.access_token);
+              
+              shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.$store.getters.getSelectedProvince], this.cityData[this.$store.getters.getSelectedProvince][this.$store.getters.getSelectedCity], this.selectedShopType, page).then(res => {
                 if(res.status != 200) this.$message.error('获取门店错误')
                 else {
                   this.shopList = res.body;
@@ -182,10 +239,8 @@ export default {
           //this.$store.dispatch('commitSetShopList', res.body);
         }
       })
-    },
-    directToMyMessage() {
-      this.$router.push('/Customer/Basic');
-    },/* 
+    }
+    /* 
     getShopsByCity() {
       this.selectedProvinceName = cityData['86'][this.selectedProvince];
       this.selectedCityName = cityData[this.selectedProvince][this.selectedCity];

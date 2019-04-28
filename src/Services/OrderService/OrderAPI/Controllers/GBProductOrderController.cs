@@ -8,6 +8,7 @@ using GB_Project.Services.OrderService.OrderAPI.Application.Commands;
 using GB_Project.Services.OrderService.OrderAPI.GetQuery;
 using System.Text;
 using System.IO;
+using GB_Project.EventBus.BasicEventBus.Abstraction;
 
 namespace OrderAPI.Controllers
 {
@@ -17,7 +18,7 @@ namespace OrderAPI.Controllers
     {
       private IMediator _mediator;
       private IGBQuery _query;
-      
+
       public GBProductOrderController(IMediator mediator, IGBQuery query) 
       {
           _mediator = mediator;

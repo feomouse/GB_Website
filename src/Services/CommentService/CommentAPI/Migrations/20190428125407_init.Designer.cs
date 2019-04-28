@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CommentAPI.Migrations
 {
     [DbContext(typeof(CommentContext))]
-    [Migration("20190411084722_initCreaete")]
-    partial class initCreaete
+    [Migration("20190428125407_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -54,6 +54,9 @@ namespace CommentAPI.Migrations
 
                     b.Property<string>("Img")
                         .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("IsReply")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");

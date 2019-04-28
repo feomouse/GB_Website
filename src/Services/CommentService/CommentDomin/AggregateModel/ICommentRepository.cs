@@ -14,6 +14,10 @@ namespace GB_Project.Services.CommentService.CommentDomin.AggregateModel
 
     UserComment GetUserCommentByCommentId(string commentId);
 
+    ReplyComment GetReplyCommentByCommentId(string commentId);
+
     int AddReplyComment(ReplyComment comment);
+
+    bool SetCommentIsReply(string commentId);
   }
 }

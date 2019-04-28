@@ -19,6 +19,8 @@ namespace GB_Project.Services.CommentService.CommentDomin.AggregateModel
 
     public Guid ShopId { get; private set; }
 
+    public bool IsReply { get; private set; }
+
     public string UserName { get; private set; }
 
     public UserComment (string comment, DateTime date, int stars, string img, 
@@ -31,7 +33,13 @@ namespace GB_Project.Services.CommentService.CommentDomin.AggregateModel
       OrderId = orderId;
       ProductId = productId;
       ShopId = shopId;
+      IsReply = false;
       UserName = userName;
+    }
+
+    public void SetIsReply()
+    {
+      IsReply = true;
     }
   }
 }

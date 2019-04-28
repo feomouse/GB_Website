@@ -22,6 +22,8 @@ namespace GB_Project.Services.OrderService.OrderAPI.Application.Commands
 
       public string CpkId { get; private set; }
 
+      public string SpkId { get; private set; }
+
       public string SName { get; private set; }
 
       public string Time { get; private set; }
@@ -29,7 +31,7 @@ namespace GB_Project.Services.OrderService.OrderAPI.Application.Commands
       public string Img { get; private set; }
 
       public AddGBOrderCommand(string groupProductName, int number, int totalCost, bool isPayed, string evaluate, bool isUsed,
-                              string orderCode, int payWay, string cpkId, string sName, string time, string img)
+                              string orderCode, int payWay, string cpkId, string spkId, string sName, string time, string img)
       {
         GroupProductName = groupProductName;
         Number = number;
@@ -40,6 +42,7 @@ namespace GB_Project.Services.OrderService.OrderAPI.Application.Commands
         OrderCode = orderCode;
         PayWay = payWay;
         CpkId = cpkId;
+        SpkId = spkId;
         SName = sName;
         Time = time;
         Img = img;

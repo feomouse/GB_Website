@@ -46,5 +46,17 @@ namespace GB_Project.Services.CommentService.CommentInfrastructrue.Repository
 
       return _context.SaveChanges(); 
     }
+
+    public ReplyComment GetReplyCommentByCommentId(string commentId)
+    {
+      return _context.ReplyComments.Where(b => b.CommentId.ToString() == commentId).FirstOrDefault();
+    }
+
+    public bool SetCommentIsReply(string commentId)
+    {
+      _context.UserComments.Where(u => u.PkId.ToString() == commentId).FirstOrDefault().SetIsReply();
+
+      return (_context.SaveChanges() != 0);
+    }
   }
 }

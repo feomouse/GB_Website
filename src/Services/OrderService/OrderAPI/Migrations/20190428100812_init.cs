@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OrderAPI.Migrations
 {
-    public partial class initCreate : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -25,6 +25,7 @@ namespace OrderAPI.Migrations
                     OrderCode = table.Column<Guid>(type: "Uniqueidentifier", nullable: false),
                     PayWay = table.Column<int>(type: "int", nullable: false),
                     CpkId = table.Column<Guid>(type: "Uniqueidentifier", nullable: false),
+                    SpkId = table.Column<Guid>(type: "Uniqueidentifier", nullable: false),
                     SName = table.Column<string>(type: "varchar(20)", nullable: true),
                     Time = table.Column<DateTime>(type: "date", nullable: false),
                     Img = table.Column<string>(type: "varchar(100)", nullable: true)

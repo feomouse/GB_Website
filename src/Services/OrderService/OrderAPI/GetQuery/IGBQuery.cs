@@ -6,5 +6,7 @@ namespace GB_Project.Services.OrderService.OrderAPI.GetQuery
   public interface IGBQuery
   {
       List<GroupBuyingOrder> getGBProductListByUserId(string userId);
+
+      GroupBuyingOrder getGBOrderByOrderId (string orderId);
   }
 }

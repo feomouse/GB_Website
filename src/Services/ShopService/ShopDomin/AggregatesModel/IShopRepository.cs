@@ -15,7 +15,7 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
         Shop GetShopByShopId(string shopId);
 
-        List<Shop> GetShopListByShopTypeAndCity(string province, string city, int shopType);
+        List<Shop> GetShopListByShopTypeAndCity(string province, string city, int shopType, int page);
 
         List<Shop> GetShopListByCity(string province, string city);
 
@@ -52,5 +52,9 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
         string GetGBProductKeyByName (string gbProductName);
 
         List<GBProduct> GetGBProductsByProductId (string productTypeId);
+
+        bool IncreGBPayAmount (string gbProductName, string shopName, int itemCost);
+
+        int GetShopsTotalCount(string province, string city, int shopType);
     } 
 }

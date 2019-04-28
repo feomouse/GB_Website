@@ -5,7 +5,7 @@ const state = {
   'selectedProvince': "110000",
   'selectedCity': "110100",
   'selectedProvinceName': "北京市",
-  'selectedCityName': "直辖区",
+  'selectedCityName': "市辖区",
 }
 
 const getters = {

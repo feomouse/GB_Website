@@ -15,7 +15,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
 
       List<GBProduct> getGBProductsByShopName( string shopName, string province, string city);
 
-      List<Shop> getShopListByShopTypeAndCity(string province, string city, int shopType);
+      List<Shop> getShopListByShopTypeAndCity(string province, string city, int shopType, int page);
 
       string getGBProductByName(string name);
 
@@ -34,5 +34,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
       List<ProductType> getShopProductTypesByShopName(string shopName, string province, string city);
 
       //GBRule getGBRuleByContentAndGBProductId(string content, Guid gbProId);
+
+      int getShopsTotalCount(string province, string city, int shopType);
     } 
 }

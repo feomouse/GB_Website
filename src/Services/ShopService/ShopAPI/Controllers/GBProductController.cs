@@ -53,7 +53,9 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
     public ActionResult GetGBProducts ([FromQuery] string shopName, string province, string city)
     {
       List<GBProduct> gbProducts = _query.getGBProductsByShopName(shopName, province, city);
-
+ 
+      if(gbProducts == null) return BadRequest();
+      
       List<GBProductsVIewModel> gbProductsViews = new List<GBProductsVIewModel>();
 
       foreach(var p in gbProducts)

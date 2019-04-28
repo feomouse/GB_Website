@@ -93,5 +93,18 @@ namespace GB_Project.Services.CommentService.CommentAPI.Controller
 
       return StatusCode(201);
     }
+
+    [HttpGet]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [Route("getReplyComment")]
+    public ActionResult GetReplyCommentByCommentId([FromHeader] string commentId)
+    {
+      var reply = _query.GetReplyCommentByCommentId(commentId);
+ 
+      if(reply == null) return BadRequest();
+
+      else return Ok(reply);
+    }
   }
 }

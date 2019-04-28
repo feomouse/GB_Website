@@ -16,5 +16,10 @@ namespace GB_Project.Services.OrderService.OrderAPI.GetQuery
     {
       return _repo.GetGBOrders(userId);
     }
+
+    public GroupBuyingOrder getGBOrderByOrderId (string orderId)
+    {
+      return _repo.GetGBOrderById(orderId);
+    }
   }
 }

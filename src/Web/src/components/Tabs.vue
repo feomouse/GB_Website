@@ -30,11 +30,12 @@ export default {
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
   @import '../less/container';
   @import '../less/formEle';
 
   .isSelected {
     color: green;
+    border-bottom: 3px solid green;
   }
 </style>

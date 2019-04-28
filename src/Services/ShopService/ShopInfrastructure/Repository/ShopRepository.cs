@@ -59,9 +59,9 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         return _context.shops.Where(s => s.PkId.ToString() == shopId).FirstOrDefault();
       }
 
-      public List<Shop> GetShopListByShopTypeAndCity(string province, string city, int shopType)
+      public List<Shop> GetShopListByShopTypeAndCity(string province, string city, int shopType, int page)
       {
-        return _context.shops.Where(s => (s.Type == shopType && s.Province == province && s.City == city)).ToList();
+        return _context.shops.Where(s => (s.Type == shopType && s.Province == province && s.City == city)).Skip((page-1)*10).Take(10).ToList();
       }
       
       public bool CheckIfIdentitied(string shopId)
@@ -115,6 +115,8 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
       public List<GBProduct> GetGBProductsByShopName(string shopName, string province, string city)
       {
         Shop shop = _context.shops.Where(b => (b.Name == shopName && b.Province == province && b.City == city)).FirstOrDefault();
+
+        if(shop == null) return null;
 
         ProductType[] types = _context.producttypes.Where(b => b._Shop == shop).ToArray();
 
@@ -225,49 +227,24 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         return _context.shops.Where(t => (t.Province == province && t.City == city)).ToList();
       }
 
-/*       public List<Shop> GetShops()
+      public bool IncreGBPayAmount (string gbProductName, string shopName, int itemCost)
       {
-        return _context.shops.ToList();
-      }
+        var tempGB = _context.gbproduct.Where(b => (b.ProductName == gbProductName && b.Price == itemCost)).ToList();
 
-      public Shop GetShopByShopId(string shopId)
-      {
-        return _context.shops.Where(s => s.PkId == new Guid(shopId)).First();
-      }
-
-      public int CreateShopProductType(ProductType type)
-      {
-        _context.producttypes.Add(type);
-
-        return _context.SaveChanges();
-      }
-
-      public ProductType GetShopProductTypeByShopProductTypeId(Guid productTypeId)
-      {
-        return _context.producttypes.Where(pt => pt.PkId == productTypeId).First();
-      }
-
-      public int AddShopProduct(Product product)
-      {
-        _context.products.Add(product);
-
-        return _context.SaveChanges();
-      }
-
-      public List<Product> GetShopProductsByShopName(string name)
-      {
-        List<Product> products = new List<Product>();
-
-        Shop shop = _context.shops.Where(s => s.Name == name).First();
-
-        List<ProductType> types = _context.producttypes.Where(p => p.ShopId == shop.PkId).ToList();
-
-        foreach(var type in types)
+        foreach(GBProduct i in tempGB)
         {
-          products.AddRange(_context.products.Where(p => p._ProductType == type).ToList());
+          if(_context.shops.Where(b => b.PkId == (_context.producttypes.Where(c => c.PkId == i.ProductTypeId).FirstOrDefault().ShopId)).FirstOrDefault().Name == shopName)
+          {
+            i.IncreMSellNum();
+            return (_context.SaveChanges() != 0);
+          }
         }
+        return false;
+      }
 
-        return products;
-      } */
+      public int GetShopsTotalCount(string province, string city, int shopType)
+      {
+        return _context.shops.Where(s => (s.Province == province && s.City == city && s.Type == shopType)).ToList().Count;
+      }
     }
 }

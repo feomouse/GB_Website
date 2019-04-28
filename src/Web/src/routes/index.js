@@ -2,10 +2,9 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Register from './register';
 import Login from './login';
-import User from './userMsg';
 import Merchant from './merchant';
 import Shop from './shop';
-import Order from './order';
+import User from './user';
 
 Vue.use(Router);
 
@@ -14,8 +13,7 @@ var routers = [
   ...Login,
   ...User,
   ...Merchant,
-  ...Shop,
-  ...Order
+  ...Shop
 ]
 
 var router = new Router({

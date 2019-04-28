@@ -28,6 +28,11 @@ namespace GB_Project.Services.OrderService.OrderInfrastructure.OrderRepository
           return _context.GroupBuyingOrders.Where(b => b.CpkId.ToString() == UserId).ToList();
         }
 
+        public GroupBuyingOrder GetGBOrderById (string orderId)
+        {
+          return _context.GroupBuyingOrders.Where(b => b.PkId.ToString() == orderId).FirstOrDefault();
+        }
+
         public int SetGBOrderPayed (string orderId)
         {
           var order = _context.GroupBuyingOrders.Where(b => b.PkId.ToString() == orderId).FirstOrDefault();

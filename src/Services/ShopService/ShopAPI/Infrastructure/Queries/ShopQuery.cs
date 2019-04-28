@@ -32,9 +32,9 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
       return _repo.GetGBProductsByProductId(productTypeId);
     }
 
-    public List<Shop> getShopListByShopTypeAndCity(string province, string city, int shopType)
+    public List<Shop> getShopListByShopTypeAndCity(string province, string city, int shopType, int page)
     {
-      return _repo.GetShopListByShopTypeAndCity(province, city, shopType);
+      return _repo.GetShopListByShopTypeAndCity(province, city, shopType, page);
     }
 
     public List<Shop> getShopListByCity(string province, string city)
@@ -60,6 +60,11 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
     public Shop getShopByNameAndCity(string name, string province ,string city)
     {
       return _repo.GetShopByNameAndCity(name, province, city);
+    }
+
+    public int getShopsTotalCount(string province, string city, int shopType)
+    {
+      return _repo.GetShopsTotalCount(province, city, shopType);
     }
 /* 
     public Product getProductByName(string name) 

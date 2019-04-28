@@ -28,7 +28,7 @@ export const pay = (order) => {
   })
 }
 
-export const ensurePay = (order) => {
+export const ensureUsed = (order) => {
   return Vue.http.post('/order/SetUsed', order).then(resSuccess => {
     return resSuccess;
   }, resFail => {

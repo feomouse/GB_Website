@@ -10,5 +10,7 @@ namespace GB_Project.Services.CommentService.CommentAPI.CommentQuery
     List<UserComment> GetUserCommentsByProductId(string productId);
 
     List<UserComment> GetUserCommentsByShopId(string shopId);
+
+    ReplyComment GetReplyCommentByCommentId(string commentId);
   }
 }

@@ -39,3 +39,15 @@ export const getUserCommentsByShopId = (shopId) => {
     return resFail;
   })
 }
+
+export const getReplyCommentByCommentId = (commentId) => {
+  return Vue.http.get('comment/getReplyComment', {
+    headers: {
+      'commentId': commentId
+    }
+  }, resSuccess => {
+    return resSuccess;
+  }, resFail => {
+    return resFail;
+  })
+}

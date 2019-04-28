@@ -31,6 +31,8 @@ namespace GB_Project.Services.CommentService.CommentInfrastructrue.EntityConfigu
 
       builder.Property("ShopId").HasColumnType("uniqueidentifier");
 
+      builder.Property("IsReply").HasColumnType("bit");
+
       builder.Property("UserName").HasColumnType("nvarchar(20)");
     }
   }

@@ -1,18 +1,18 @@
 <template>
   <div class="auto_ten tabContent_container">
     <div class="list_item" style="padding: 2rem 0 0 2rem;" v-for="i of comments" v-bind:key="i.pkId">
-      <div style="text-align: left;">
-        <img :src="i.img" style="border-radius: 50%; display: inline-block;" />
-        <p style="display: inline-block;">用户: {{i.userName}}</p>
+      <div style="text-align: left; margin: 2rem 0 1rem 1rem;">
+        <!-- <img :src="i.img" style="border-radius: 50%; display: inline-block;" /> -->
+        <p style="display: inline-block;">{{i.userName}}</p>
       </div>
       <div>
-        <h3>{{i.comment}}</h3>
+        <h3 style="margin: 2rem 0 1rem 1rem;">{{i.comment}}</h3>
       </div>
       <div style="text-align: right; margin: 0 2rem 1rem 0;">
         <p>日期: {{i.date}}</p>
         <el-button type="primary" style="margin: 0 2rem 1rem 0;" @click="reply(i)">回复</el-button>
       </div>
-      <el-dialog label="回复评论" :visible.sync="replyDialogVisible">
+      <el-dialog title="回复评论" :visible.sync="replyDialogVisible">
         <el-input  
           type="textarea"
           rows="2"
@@ -76,6 +76,8 @@ export default {
       this.replyComment.CommentId = comment.pkId;
       this.replyComment.Date = date.getFullYear() + '/' + date.getMonth() + '/' + date.getDate() + ' '
                            + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+
+      this.replyDialogVisible = true;
     },
     ensureReply() {
       commentApi.addReplyComment(this.replyComment).then(res => {
@@ -95,6 +97,7 @@ export default {
                     type: "success",
                     message: "回复成功"
                   })
+                  this.replyDialogVisible = false;
                 }
               })
             }
@@ -107,6 +110,7 @@ export default {
             type: "success",
             message: "回复成功"
           })
+          this.replyDialogVisible = false;
         }
       })
     }

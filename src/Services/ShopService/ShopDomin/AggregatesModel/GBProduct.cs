@@ -132,5 +132,10 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
     {
       ProductType = type;
     }
+
+    public void IncreMSellNum()
+    {
+      MSellNum++;
+    }
   }
 }

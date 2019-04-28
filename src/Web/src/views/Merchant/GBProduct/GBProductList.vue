@@ -74,7 +74,7 @@
           </el-form-item>
         </el-form>
         <div slot="footer">
-          <el-button type="success" @click="ensurePay">确认交易</el-button>
+          <el-button type="success" @click="ensureUseGB">确认交易</el-button>
         </div>
       </el-dialog>
       <div style="float:right;">
@@ -283,7 +283,9 @@ export default {
                 this.$router.push('/Merchant/Operation/GBServiceApply');
               }
               else {
-                merchantApi.getProductTypeByShopName(this.$store.getters.getShopName).then(res => {
+                merchantApi.getProductTypeByShopName(this.$store.getters.getShopName,    
+                                                     this.$store.getters.getSelectedProvinceName, 
+                                                     this.$store.getters.getSelectedCityName).then(res => {
                   if(res.status == 400) this.$message.error();
                   else {
                     for(let i of res.body) {
@@ -293,7 +295,9 @@ export default {
                       })
                     }
                   }
-                  merchantApi.getGBProductByShopName(this.$store.getters.getShopName).then(res => {
+                  merchantApi.getGBProductByShopName(this.$store.getters.getShopName,    
+                                                     this.$store.getters.getSelectedProvinceName, 
+                                                     this.$store.getters.getSelectedCityName).then(res => {
                     if(res.status == 400) this.$message.error('获取团购产品失败');
                     else this.gbProducts = res.body;
                   })
@@ -311,7 +315,9 @@ export default {
         this.$router.push('/Merchant/Operation/GBServiceApply');
       }
       else {
-        merchantApi.getProductTypeByShopName(this.$store.getters.getShopName).then(res => {
+        merchantApi.getProductTypeByShopName(this.$store.getters.getShopName,    
+                                                     this.$store.getters.getSelectedProvinceName, 
+                                                     this.$store.getters.getSelectedCityName).then(res => {
           if(res.status == 400) this.$message.error();
           else {
             for(let i of res.body) {
@@ -321,7 +327,9 @@ export default {
               })
             }
           }
-          merchantApi.getGBProductByShopName(this.$store.getters.getShopName).then(res => {
+          merchantApi.getGBProductByShopName(this.$store.getters.getShopName,    
+                                                     this.$store.getters.getSelectedProvinceName, 
+                                                     this.$store.getters.getSelectedCityName).then(res => {
             if(res.status == 400) this.$message.error('获取团购产品失败');
             else this.gbProducts = res.body;
           })
@@ -604,30 +612,35 @@ export default {
             })
           }
         }
+        this.delProductTypeDialogVisible = false;
       })
-      this.delProductTypeDialogVisible = false;
-      }
     },
-    ensurePay() {
-      orderApi.ensurePay({"ShopName": this.$store.getters.getShopName, "OrderCode": this.orderCode}).then(res => {
-          if(res.status == 401) {
-            identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
-              if(res.status == 400) this.$router.push('/Customer/SignIn');
+    ensureUseGB() {
+      orderApi.ensureUsed({"ShopName": this.$store.getters.getShopName, "OrderCode": this.orderCode}).then(res => {
+        if(res.status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
 
-              else {
-                this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
-                this.$store.dispatch('commitToken', res.body.access_token);
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+              this.$store.dispatch('commitToken', res.body.access_token);
 
-                orderApi.ensurePay({"ShopName": this.$store.getters.getShopName, "OrderCode": this.orderCode}).then(res => {
-                  if(res.status != 200) this.$message.error();
-                  else this.$message({type: "success", message: "交易成功"}); 
-                })
-              }
-            })
-          }
-          else if(res.status != 200) this.$message.error();
-          else this.$message({type: "success", message: "交易成功"}); 
-        })
+              orderApi.ensureUsed({"ShopName": this.$store.getters.getShopName, "OrderCode": this.orderCode}).then(res => {
+                if(res.status != 200) this.$message.error();
+                else {
+                  this.$message({type: "success", message: "交易成功"}); 
+                  this.payDialogVisible = false;
+                }
+              })
+            }
+          })
+        }
+        else if(res.status != 200) this.$message.error();
+        else {
+          this.$message({type: "success", message: "交易成功"}); 
+          this.payDialogVisible = false;
+        }
+      })
     },
     beforeCreateAvatarUpload(file) {
       var is = file.type == 'image/jpeg' || file.type == 'image/png';
@@ -692,8 +705,9 @@ export default {
         else if(res.status != 200) this.$message.error('上传错误');
         else this.editGBProduct.img = res.body;
       })
-    }
+    } 
   }
+}
 </script>
 <style lang="less" scoped>
   @import '../../../less/container';

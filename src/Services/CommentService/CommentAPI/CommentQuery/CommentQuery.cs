@@ -25,5 +25,10 @@ namespace GB_Project.Services.CommentService.CommentAPI.CommentQuery
     {
       return _repo.GetUserCommentsByShopId(shopId);
     }
+
+    public ReplyComment GetReplyCommentByCommentId(string commentId)
+    {
+      return _repo.GetReplyCommentByCommentId(commentId);
+    }
   }
 }

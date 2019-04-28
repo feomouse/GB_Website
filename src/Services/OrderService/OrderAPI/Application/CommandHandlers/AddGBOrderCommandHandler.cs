@@ -20,7 +20,7 @@ namespace GB_Project.Services.OrderService.OrderAPI.Application.CommandHandlers
       {
         var order = new GroupBuyingOrder(command.GroupProductName, command.Number, command.TotalCost, command.IsPayed, 
                              "", command.IsUsed, Guid.NewGuid(), command.PayWay,
-                             new Guid(command.CpkId), command.SName, DateTime.Parse(command.Time), command.Img);
+                             new Guid(command.CpkId), new Guid(command.SpkId), command.SName, DateTime.Parse(command.Time), command.Img);
         return Task.FromResult(_repo.AddGBOrder(order));
       }
     }

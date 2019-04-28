@@ -9,6 +9,8 @@ namespace GB_Project.Services.OrderService.OrderDomin.GroupOrderAggregate
 
         List<GroupBuyingOrder> GetGBOrders (string UserId);
 
+        GroupBuyingOrder GetGBOrderById (string orderId);
+
         int SetGBOrderPayed (string orderId);
 
         int SetGBOrderUsed (string shopName, string orderCode);

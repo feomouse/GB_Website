@@ -1,12 +1,12 @@
 <template>
-  <div class="leftMenu_container">
-    <div class="logo_container">logo容器</div>
+  <div class="leftMenu_container" style="background: #eaeded; width: 25%; padding-top: 3rem; ">
     <div class="menu-item1" 
          v-for="(i,index) in menuTranslateList" 
          v-bind:key="index" 
          @click="clickUp(i.label, index)">
          <svg-icon :iconClass="i.icon"></svg-icon>
-         {{i.label}}
+         {{i.label}}    
+         <i style="float:right; margin-right: 2rem;">></i>
     </div>
   </div>
 </template>
@@ -19,13 +19,13 @@ export default {
       control: {
       },
       menuTranslateList: [{
-          label: "门店编辑",
-          link: "/Merchant/Operation/EditShop",
+          label: "我的信息",
+          link: "/Customer/Basic",
           icon: "shop",
           level: 1
         }, {
-          label: "团购服务",
-          link: "/Merchant/Operation/GBProductOperations",
+          label: "我的订单",
+          link: "/Customer/Order",
           icon: "gb",
           level: 1
         }]
@@ -66,9 +66,8 @@ export default {
   .menu-item1 {
     min-height: 4rem;
     width: 100%;
-    border-top: 2px solid white;
     line-height: 4rem;
-    color: white;
+    color: black;
   }
 
   .menu-item2 {

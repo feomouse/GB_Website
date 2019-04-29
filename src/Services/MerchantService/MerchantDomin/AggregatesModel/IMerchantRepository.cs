@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using System;
 using GB_Project.Services.MerchantService.MerchantDomin.SeedWork;
+using System.Collections.Generic;
 
 namespace GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel
 {
@@ -15,5 +16,11 @@ namespace GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel
     Task<int> CheckMerchantIdentity (string merchantAuthId, bool result);
 
     MerchantBasic GetMerhcntBasicByMerchantId (string merchantId);
+
+    MerchantIdentity GetMerchantIdentityByIdentityId (string identityId);
+
+    List<MerchantBasic> GetMerchantBasicListNotChecked(int page);
+
+    MerchantIdentity GetMerchantIdentityByMerchantId(string merchantId);
   }
 }

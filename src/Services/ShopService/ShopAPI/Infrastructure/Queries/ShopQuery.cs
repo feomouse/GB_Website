@@ -27,6 +27,11 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
       return _repo.GetShopByMerchantId(merchantId);
     }
 
+    public Shop getShopByShopId(string shopId)
+    {
+      return _repo.GetShopByShopId(shopId);
+    }
+
     public List<GBProduct> getGBProductByProductTypeId(string productTypeId)
     {
       return _repo.GetGBProductsByProductId(productTypeId);

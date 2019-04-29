@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MerchantAPI.Migrations
 {
     [DbContext(typeof(MerchantDbContext))]
-    [Migration("20190427124023_initCreate")]
-    partial class initCreate
+    [Migration("20190429123737_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,8 +26,6 @@ namespace MerchantAPI.Migrations
                     b.Property<Guid>("AuthPkId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid?>("IdentityPkId");
-
                     b.Property<bool>("IsChecked")
                         .HasColumnType("bit");
 
@@ -35,8 +33,6 @@ namespace MerchantAPI.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("AuthPkId");
-
-                    b.HasIndex("IdentityPkId");
 
                     b.ToTable("MerchantBasic","merchant");
                 });
@@ -76,19 +72,25 @@ namespace MerchantAPI.Migrations
                     b.Property<string>("LicenseOwner")
                         .HasColumnType("nvarchar(10)");
 
+                    b.Property<Guid>("MerchantId");
+
                     b.Property<string>("Tel")
                         .HasColumnType("varchar(11)");
 
                     b.HasKey("PkId");
 
+                    b.HasIndex("MerchantId")
+                        .IsUnique();
+
                     b.ToTable("MerchantIdentity","merchant");
                 });
 
-            modelBuilder.Entity("GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel.MerchantBasic", b =>
+            modelBuilder.Entity("GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel.MerchantIdentity", b =>
                 {
-                    b.HasOne("GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel.MerchantIdentity", "Identity")
-                        .WithMany()
-                        .HasForeignKey("IdentityPkId");
+                    b.HasOne("GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel.MerchantBasic", "Merchant")
+                        .WithOne("Identity")
+                        .HasForeignKey("GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel.MerchantIdentity", "MerchantId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

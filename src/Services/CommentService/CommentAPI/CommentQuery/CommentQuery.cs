@@ -21,14 +21,19 @@ namespace GB_Project.Services.CommentService.CommentAPI.CommentQuery
       return _repo.GetUserCommentsByProductId(productId);
     }
 
-    public List<UserComment> GetUserCommentsByShopId(string shopId)
+    public List<UserComment> GetUserCommentsByShopId(string shopId, int page)
     {
-      return _repo.GetUserCommentsByShopId(shopId);
+      return _repo.GetUserCommentsByShopId(shopId, page);
     }
 
     public ReplyComment GetReplyCommentByCommentId(string commentId)
     {
       return _repo.GetReplyCommentByCommentId(commentId);
+    }
+
+    public int GetUserCommentCountByShopId(string shopId)
+    {
+      return _repo.GetUserCommentCountByShopId(shopId);
     }
   }
 }

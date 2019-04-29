@@ -18,23 +18,5 @@ namespace GB_Project.Services.ManagerService.Services
 
       return (_context.SaveChanges() != 0);
     }
-
-    public bool SetIsWarned(string userName)
-    {
-      var user = _context.violateUsers.Where(u => u.Name == userName).FirstOrDefault();
-
-      user.SetIsWarned();
-
-      return (_context.SaveChanges() != 0);
-    }
-
-    public bool SetIsInBlackMenu(string userName)
-    {
-      var user = _context.violateUsers.Where(u => u.Name == userName).FirstOrDefault();
-
-      user.SetIsInBlackMenu();
-
-      return (_context.SaveChanges() != 0);
-    }
   }
 }

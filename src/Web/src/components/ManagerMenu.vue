@@ -19,13 +19,13 @@ export default {
       control: {
       },
       menuTranslateList: [{
-          label: "违规管理",
-          link: "/Merchant/Operation/EditShop",
+          label: "资质认证",
+          link: "/Manager/IdentityList",
           icon: "shop",
           level: 1
         }, {
-          label: "资质认证",
-          link: "/Merchant/Operation/GBProductOperations",
+          label: "违规管理",
+          link: "/Manager/ViolateManager",
           icon: "gb",
           level: 1
         }]

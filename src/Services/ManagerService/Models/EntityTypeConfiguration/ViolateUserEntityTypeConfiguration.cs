@@ -22,10 +22,6 @@ namespace GB_Project.Services.ManagerService.Models.EntityTypeConfiguration
 
       builder.Property(b => b.Role).HasColumnType("int");
 
-      builder.Property(b => b.IsWarned).HasColumnType("bit");
-
-      builder.Property(b => b.IsInBlackMenu).HasColumnType("bit");
-
       builder.Property(b => b.ManagerId).HasColumnType("Uniqueidentifier");
     }
   }

@@ -6,7 +6,7 @@
       </div>
       <div id="mright__place">
         <div class="formEle_container" style="box-shadow: 3px 3px 3px gray; border: 1px solid gray;">
-          <h2>商户注册</h2>
+          <h2>管理员注册</h2>
           <div class="a-element-a-line">
             <input class="rem15-rem2-input" placeholder="邮箱或电话" v-model="UserName"/>
             <div class="InputError__Mes" v-if="ShowUserNameError">请输入正确的邮箱或电话</div>
@@ -40,7 +40,7 @@
           PhoneNumber: "",
           Password: "",
           ConfirmedPassword: "",
-          Role: "merchant"
+          Role: "manager"
         },
         ShowUserNameError: false,
         ShowPassError: false,
@@ -103,11 +103,11 @@
               PhoneNumber: "",
               Password: "",
               ConfirmedPassword: "",
-              Role: "merchant"
+              Role: "manager"
             }
 
             this.UserName = "";
-            this.$router.push('/Merchant/SignIn');
+            this.$router.push('/Manager/SignIn');
             this.ShopSignUpSuccess = true;
             setTimeout(()=> {
               this.ShopSignUpSuccess = false;

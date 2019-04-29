@@ -30,12 +30,6 @@ namespace ManagerService.Migrations
                     b.Property<string>("Detail")
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<bool>("IsInBlackMenu")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsWarned")
-                        .HasColumnType("bit");
-
                     b.Property<Guid>("ManagerId")
                         .HasColumnType("Uniqueidentifier");
 

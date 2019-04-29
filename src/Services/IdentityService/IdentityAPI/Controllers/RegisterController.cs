@@ -73,12 +73,12 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
         var @event = new MerchantRegisteredIntergrationEvent(gid);
         _eventBusPublisher.Publish(@event);
       }
-      else 
+      else if(model.Role == "customer" || model.Role == "CUSTOMER")
       {
         var @event = new UserRegisteredIntergrationEvent(gid, model.Email);
         _eventBusPublisher.Publish(@event);
       }
-
+      
       return Ok("create successed");
     }
   }    

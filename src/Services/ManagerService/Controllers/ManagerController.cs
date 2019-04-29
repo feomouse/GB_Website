@@ -27,32 +27,14 @@ namespace GB_Project.Services.ManagerService.Controllers
 
         [HttpGet]
         [Route("ViolateUsers")]
-        public ActionResult GetViolateUsers()
+        public ActionResult GetViolateUsers([FromQuery]int page)
         {
-            return Ok(_query.GetViolateUsers());
+            return Ok(_query.GetViolateUsers(page));
         }
 
         [HttpPost]
         [Route("SetViolateUser")]
         public ActionResult SetViolateUser([FromBody]SetViolateUserCommand command)
-        {
-          if(_mediator.Send(command).GetAwaiter().GetResult()) return Ok();
-
-          else return BadRequest(); 
-        }
-
-        [HttpPost]
-        [Route("SetWarn")]
-        public ActionResult SetUserWarn([FromBody]SetUserWarnedCommand command)
-        {
-          if(_mediator.Send(command).GetAwaiter().GetResult()) return Ok();
-
-          else return BadRequest(); 
-        }
-
-        [HttpPost]
-        [Route("SetInBlackMenu")]
-        public ActionResult SetUserInBlackMenu([FromBody]SetUserInBlackMenuCommand command)
         {
           if(_mediator.Send(command).GetAwaiter().GetResult()) return Ok();
 

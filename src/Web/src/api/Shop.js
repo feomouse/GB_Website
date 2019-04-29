@@ -98,3 +98,11 @@ export const GetShopsCount = (province, city, shopType) => {
     return resFail
   })
 }
+
+export const GetShopListByShopIds = (shopIdList) => {
+  return Vue.http.post('/shop/ShopListByShopIdList', shopIdList).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+} 

@@ -218,14 +218,15 @@
                     if(res !== 200) this.$message.error("创建资质失败");
 
                     else {
-                      merchantApi.checkIdentity({
+/*                       merchantApi.checkIdentity({
                         "MerchantId": this.$store.getters.getMerchantId,
                         "CheckResult": true
                       }).then(res => {
                         if(res.status != 200) this.$message.error();
 
                         else this.$router.push('/Merchant/Operation');
-                      })
+                      }) */
+                      this.$router.push('/Merchant/Operation/Welcome');
                     }
                   })
                 }
@@ -234,14 +235,15 @@
             else if(res !== 200) this.$message.error("创建资质失败");
 
             else {
-              merchantApi.checkIdentity({
+/*               merchantApi.checkIdentity({
                 "MerchantId": this.$store.getters.getMerchantId,
                 "CheckResult": true
               }).then(res => {
                 if(res.status != 200) this.$message.error();
 
                 else this.$router.push('/Merchant/Operation');
-              })
+              }) */
+              this.$router.push('/Merchant/Operation/Welcome');
             }
           });
         } else {

@@ -23,19 +23,9 @@ namespace GB_Project.Services.ManagerService.Querys
       return connection.Query<ViolateUser>("select * from [manager].[violateUser] where Name = @Name", new { Name = userName}).FirstOrDefault();
     }
 
-    public IEnumerable<ViolateUser> GetViolateUsers()
+    public IEnumerable<ViolateUser> GetViolateUsers(int page)
     {
-      return connection.Query<ViolateUser>("select * from [manager].[violateUser]");
-    }
-
-    public IEnumerable<ViolateUser> GetViolateUsersIsWarned()
-    {
-      return connection.Query<ViolateUser>("select * from [manager].[violateUser] where IsWarned = true and IsInBlackMenu = false");
-    }
-
-    public IEnumerable<ViolateUser> GetViolateUsersIsInBlackMenu()
-    {
-      return connection.Query<ViolateUser>("select * from [manager].[violateUser] where IsWarned = true and IsInBlackMenu = true");
+      return connection.Query<ViolateUser>("select * from [manager].[violateUser]").Skip((page-1)*10).Take(10);
     }
   }
 }

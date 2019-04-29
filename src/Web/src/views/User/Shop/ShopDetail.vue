@@ -62,7 +62,6 @@
           <el-button type="primary" @click="createGBOrder">创建订单</el-button>
         </div>
       </el-dialog>
-      
     </div>
     <div class="auto_eight" style="margin-top: 3rem;">
       <div class="shop-header">用户点评</div>
@@ -81,6 +80,11 @@
             <img :src="i.img" />
           </div> -->
       </div>
+      <el-pagination
+        layout="prev, pager, next"
+        :total="commentCount"
+        @current-change="changeCommentPage">
+      </el-pagination>
     </div>
     <!--<div @click="test" style="cursor: pointer;">测试</div>-->
   </div>
@@ -120,6 +124,7 @@ export default {
       gbProductDialogVisible: false,
       commentList: [],
       replyList: {},
+      commentCount: 0,
       'cityData': cityData
     }
   },
@@ -161,7 +166,7 @@ export default {
         })
       })
     }),
-    commentApi.getUserCommentsByShopId(this.$store.getters.getShopId).then(res => {
+    commentApi.getUserCommentsByShopId(this.$store.getters.getShopId, 1).then(res => {
       if(res.status == 401) {
         identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
           if(res.status == 400) this.$router.push('/Customer/SignIn');
@@ -170,7 +175,7 @@ export default {
             this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
             this.$store.dispatch('commitToken', res.body.access_token);
 
-            commentApi.getUserCommentsByShopId(this.$store.getters.getShopId).then(res => {
+            commentApi.getUserCommentsByShopId(this.$store.getters.getShopId, 1).then(res => {
               if(res.status != 200) this.$message.error();
 
               else {
@@ -197,6 +202,13 @@ export default {
                   }
                   this.commentList[i].stars = starArr;
                 }
+                commentApi.getUserCommentCount(this.$store.getters.getShopId).then(res => {
+                  if(res.status != 200) this.$message.error('获取评论数量失败');
+
+                  else {
+                    this.commentCount = res.body;
+                  }
+                })
               }
             })
           }
@@ -227,6 +239,11 @@ export default {
           }
           this.commentList[i].stars = starArr;
         }
+        commentApi.getUserCommentCount(this.$store.getters.getShopId).then(res => {
+          if(res.status != 200) this.$message.error('获取评论数量失败');
+
+          else this.commentCount = res.body;
+        })
       }
     })
   },
@@ -282,6 +299,86 @@ export default {
         else this.$message({type: "success", message: "创建订单成功"});
 
         this.gbProductDialogVisible = false;
+      })
+    },
+    changeCommentPage(page) {
+      commentApi.getUserCommentsByShopId(this.$store.getters.getShopId, page).then(res => {
+        if(res.status == 401) {
+          identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+            if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+            else {
+              this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+              this.$store.dispatch('commitToken', res.body.access_token);
+
+              commentApi.getUserCommentsByShopId(this.$store.getters.getShopId, page).then(res => {
+                if(res.status != 200) this.$message.error();
+
+                else {/* 
+                  commentApi.getUserCommentCount(this.$store.getters.getShopId).then(res => {
+                    if(res.status != 200) this.$message.error('获取评论数量失败');
+
+                    else this.commentCount = res.body;
+                  }) */
+                  this.commentList = res.body;
+                  for(let i = 0; i < this.commentList.length; i++) {
+                    if(this.commentList[i].isReply) {
+                      commentApi.getReplyCommentByCommentId(this.commentList[i].pkId).then(res => {
+                        if(res.status != 200) this.$message.error("获取回复失败");
+
+                        else {
+                          this.replyList[this.commentList[i].pkId] = res.body;
+                          this.replyList[this.commentList[i].pkId].date = this.replyList[this.commentList[i].pkId].date.split('T')[0];
+                        }
+                      })
+                    }
+
+                    let dateArr = this.commentList[i].date.split('T');
+                    this.commentList[i].date = dateArr[0];
+
+                    let starsArr = [];
+                    for(let j = 0; j < this.commentList[i].stars; j++)
+                    {
+                      starsArr.push({});
+                    }
+                    this.commentList[i].stars = starArr;
+                  }
+                }
+              })
+            }
+          })
+        }
+        else if(res.status != 200) this.$message.error();
+
+        else {
+/*           commentApi.getUserCommentCount(this.$store.getters.getShopId).then(res => {
+            if(res.status != 200) this.$message.error('获取评论数量失败');
+
+            else this.commentCount = res.body;
+          }) */
+          this.commentList = res.body;
+          for(let i = 0; i < this.commentList.length; i++) {
+            if(this.commentList[i].isReply) {
+              commentApi.getReplyCommentByCommentId(this.commentList[i].pkId).then(res => {
+                if(res.status != 200) this.$message.error("获取回复失败");
+
+                else {
+                  this.replyList[this.commentList[i].pkId] = res.body;
+                  this.replyList[this.commentList[i].pkId].date = this.replyList[this.commentList[i].pkId].date.split('T')[0];
+                }
+              })
+            }
+            let dateArr = this.commentList[i].date.split('T');
+            this.commentList[i].date = dateArr[0];
+
+            let starsArr = [];
+            for(let j = 0; j < this.commentList[i].stars; j++)
+            {
+              starsArr.push({});
+            }
+            this.commentList[i].stars = starArr;
+          }
+        }
       })
     }
   }

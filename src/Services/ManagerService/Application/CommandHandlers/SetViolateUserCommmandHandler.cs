@@ -18,7 +18,7 @@ namespace GB_Project.Services.ManagerService.Application.CommandHandlers
     public Task<bool> Handle(SetViolateUserCommand command, CancellationToken cancellaitonToken)
     {
       return Task.FromResult(_repo.SetViolateUser(new ViolateUser(command.UserName, command.Date, command.Detail,
-                                           command.Role, false, false, new Guid(command.ManagerId))));
+                                           command.Role, new Guid(command.ManagerId))));
     }
   }
 }

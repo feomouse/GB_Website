@@ -13,6 +13,8 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
 
       Shop getShopByMerchantId( string merchantId);
 
+      Shop getShopByShopId(string shopId);
+
       List<GBProduct> getGBProductsByShopName( string shopName, string province, string city);
 
       List<Shop> getShopListByShopTypeAndCity(string province, string city, int shopType, int page);

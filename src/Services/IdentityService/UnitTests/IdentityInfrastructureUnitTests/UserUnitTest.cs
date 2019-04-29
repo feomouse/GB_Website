@@ -21,7 +21,7 @@ namespace GB_Project.Services.IdentityService.UnitTests.IdentityInfrastructureUn
     /// </summary>
     public void TestCreateRoleAsync()
     {
-      var role = new AppRole("customer");
+      var role = new AppRole("Manager");
       IdentityResult result = config.RoleRepository.CreateAsync(role).GetAwaiter().GetResult();
 
       Assert.AreEqual(true, result.Succeeded);

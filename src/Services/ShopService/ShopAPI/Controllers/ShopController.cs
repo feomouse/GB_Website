@@ -103,6 +103,15 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         return new OkObjectResult(merchantShop);
       }
 
+      [HttpGet]
+      [Route("ShopName")]
+      public ActionResult GetShopNameByShopId ([FromHeader] string shopId)
+      {
+        Shop shop = _query.getShopByShopId(shopId);
+        if(shop == null) return BadRequest();
+        else return Ok(shop.Name);
+      }
+
 /*       [HttpGet]
       [Route("ShopLists")]
       public ActionResult GetShopListByShopType([FromQuery] int shopType)
@@ -155,6 +164,21 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         return Ok(shopBasicList);
       }
 
+      [HttpPost]
+      [Route("ShopListByShopIdList")]
+      public ActionResult GetShopListByShopIdList([FromBody] List<GetShopListByShopIdListCommand> shopIdList)
+      {
+        List<ShopNameAndLocationViewModel> result = new List<ShopNameAndLocationViewModel>();
+
+        foreach(var i in shopIdList) 
+        {
+          Shop shop = _query.getShopByShopId(i.ShopId);
+          result.Add(new ShopNameAndLocationViewModel(shop.Name, shop.Province+shop.City+shop.District+shop.Location));
+        }
+
+        return Ok(result);
+      }
+
       [HttpGet]
       [Route("MerchantIfIdentity")]
       public ActionResult JudgeIfIdentity([FromQuery] string shopName)
@@ -189,33 +213,6 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         else return Ok("团购服务申请成功");
       }
 
-/*       [HttpPost]
-      [Route("UploadShopImg")]
-      public ActionResult UploadShopImg()
-      {
-        if(Request.Form.Files.Count != 0)
-        {
-          var stream = Request.Form.Files[0].OpenReadStream();
-
-          byte[] bytes = new byte[stream.Length]; 
-
-          int readNum = stream.Read(bytes, 0, bytes.Length);
-
-          string merchantId = Request.Form["merchantId"];
-
-          string imgLocation = _mediator.Send(new UploadImgCommand(merchantId, Request.Form.Files[0].FileName, bytes)).GetAwaiter().GetResult();
-        
-          if(imgLocation == "")
-          {
-            return new StatusCodeResult(400);
-          }  
-
-          return Ok(imgLocation);
-        }
-
-        return new StatusCodeResult(400);
-      } */
-
       [HttpPost]
       [ProducesResponseType(200)]
       [ProducesResponseType(400)]
@@ -228,21 +225,5 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
 
         return Ok(newShop);
       }
-
-/*       [HttpGet]
-      [Route("Shops")]
-      public ActionResult<List<ShopsViewModel>> GetShops ()
-      {
-        List<ShopsViewModel> shopsModel = new List<ShopsViewModel>();
-        List<Shop> shops = _query.getShops();
-
-        foreach(var shop in shops)
-        {
-          shopsModel.Add(new ShopsViewModel(shop.PkId.ToString(), shop.Name, shop.Province, shop.City, shop.District
-                                             , shop.Location, shop.Type, shop.Tel, shop.RegisterId.ToString(), shop.Pic));
-        }
-
-        return shopsModel;
-      } */
     }
 }

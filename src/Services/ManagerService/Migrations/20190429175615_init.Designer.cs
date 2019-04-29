@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ManagerService.Migrations
 {
     [DbContext(typeof(ManagerDbContext))]
-    [Migration("20190426132849_Create")]
-    partial class Create
+    [Migration("20190429175615_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,12 +31,6 @@ namespace ManagerService.Migrations
 
                     b.Property<string>("Detail")
                         .HasColumnType("nvarchar(150)");
-
-                    b.Property<bool>("IsInBlackMenu")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsWarned")
-                        .HasColumnType("bit");
 
                     b.Property<Guid>("ManagerId")
                         .HasColumnType("Uniqueidentifier");

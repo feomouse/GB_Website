@@ -62,7 +62,7 @@ export default {
     getShopsByCity() {
       this.selectedProvinceName = this.cityData['86'][this.selectedProvince];
       this.selectedCityName = this.cityData[this.selectedProvince][this.selectedCity];
-      shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.selectedProvince], this.cityData[this.selectedProvince][this.selectedCity]).then(res => {
+      shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.selectedProvince], this.cityData[this.selectedProvince][this.selectedCity], 1, 1).then(res => {
         if(res.status != 200) this.$message.error();
 
         else {

@@ -3,6 +3,7 @@ using System;
 using Dapper;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace GB_Project.Services.MerchantService.MerchantAPI.Query
 {
@@ -20,6 +21,21 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Query
     {
 
        return _repo.GetMerhcntBasicByMerchantId(merchantId);
+    }
+
+    public MerchantIdentity GetMerchantIdentityByIdentityId(string identityId)
+    {
+      return _repo.GetMerchantIdentityByIdentityId(identityId);
+    }
+
+    public List<MerchantBasic> GetMerchantBasicListNotChecked(int page)
+    {
+      return _repo.GetMerchantBasicListNotChecked(page);
+    }
+
+    public MerchantIdentity GetMerchantIdentityByMerchantId(string merchantId)
+    {
+      return _repo.GetMerchantIdentityByMerchantId(merchantId);
     }
   }
 }

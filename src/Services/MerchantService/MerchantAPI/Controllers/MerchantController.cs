@@ -43,5 +43,16 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Controllers
 
        return Ok(merchantBasic);
      }
+
+     [HttpGet]
+     [Route("GetMerchantBasicListIsNotChecked")]
+     public ActionResult GetMerchantBasicListIsNotChecked([FromQuery] int page)
+     {
+       var merchantBasics = _query.GetMerchantBasicListNotChecked(page);
+
+       if(merchantBasics == null) return BadRequest();
+
+       else return Ok(merchantBasics);
+     }
   }
 }

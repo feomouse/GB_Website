@@ -5,6 +5,7 @@ using GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel;
 using GB_Project.Services.MerchantService.MerchantInfrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Collections.Generic;
 
 namespace GB_Project.Services.MerchantService.MerchantInfrastructure.Repository
 {
@@ -26,7 +27,7 @@ namespace GB_Project.Services.MerchantService.MerchantInfrastructure.Repository
 
       public Task<int> AddIdentity (MerchantBasic merchantBasic, MerchantIdentity merchantIdentity)
       {
-        merchantBasic.SetIdentity(merchantIdentity);
+        _context.merchantIdentitys.Add(merchantIdentity);
 
         return _context.SaveChangesAsync();
       }
@@ -51,6 +52,21 @@ namespace GB_Project.Services.MerchantService.MerchantInfrastructure.Repository
       {
         var gid = new Guid(merchantId);
         return _context.merchantBasics.Where(m => m.AuthPkId == gid).FirstOrDefault();
+      }
+
+      public MerchantIdentity GetMerchantIdentityByIdentityId (string identityId)
+      {
+        return _context.merchantIdentitys.Where(m => m.PkId.ToString() == identityId).FirstOrDefault();
+      }
+
+      public List<MerchantBasic> GetMerchantBasicListNotChecked(int page)
+      {
+        return _context.merchantBasics.Where(m => m.IsChecked == false).Skip((page-1)*10).Take(10).ToList();
+      }
+
+      public MerchantIdentity GetMerchantIdentityByMerchantId(string merchantId)
+      {
+        return _context.merchantIdentitys.Where(m => m.MerchantId.ToString() == merchantId).FirstOrDefault();
       }
     }
 }

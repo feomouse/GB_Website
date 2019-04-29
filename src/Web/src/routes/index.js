@@ -5,6 +5,7 @@ import Login from './login';
 import Merchant from './merchant';
 import Shop from './shop';
 import User from './user';
+import Manager from './manager';
 
 Vue.use(Router);
 
@@ -13,7 +14,8 @@ var routers = [
   ...Login,
   ...User,
   ...Merchant,
-  ...Shop
+  ...Shop,
+  ...Manager
 ]
 
 var router = new Router({

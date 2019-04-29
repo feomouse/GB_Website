@@ -10,7 +10,7 @@ namespace GB_Project.Services.CommentService.CommentDomin.AggregateModel
 
     List<UserComment> GetUserCommentsByProductId(string productId);
 
-    List<UserComment> GetUserCommentsByShopId(string shopId);
+    List<UserComment> GetUserCommentsByShopId(string shopId, int page);
 
     UserComment GetUserCommentByCommentId(string commentId);
 
@@ -19,5 +19,7 @@ namespace GB_Project.Services.CommentService.CommentDomin.AggregateModel
     int AddReplyComment(ReplyComment comment);
 
     bool SetCommentIsReply(string commentId);
+
+    int GetUserCommentCountByShopId(string shopId);
   }
 }

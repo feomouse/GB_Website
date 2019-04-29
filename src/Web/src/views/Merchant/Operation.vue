@@ -12,6 +12,7 @@ import MerchantMenu from '../../components/MerchantMenu';
 import MerchantBanner from '../../components/MerchantBanner';
 import * as shopApi from '../../api/Shop'; 
 import * as identityApi from '../../api/Identity';
+import * as merchantApi from '../../api/Merchant';
 import cityData from '../../data';
 
 export default {
@@ -26,6 +27,27 @@ export default {
     }
   },
   beforeMount() {
+    merchantApi.ifWriteIdentity(this.$store.getters.getMerchantId).then(res => {
+      if(res.status == 401) {
+        identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
+          if(res.status == 400) this.$router.push('/Customer/SignIn');
+
+          else {
+            this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
+            this.$store.dispatch('commitToken', res.body.access_token);
+
+            merchantApi.ifWriteIdentity(this.$store.getters.getMerchantId).then(res => {
+              if(res.status != 200) this.$message.error("草,错误");
+
+              else if(res.body == false) this.$router.push('/Merchant/CreateIdentity');
+            })
+          }
+        })
+      }
+      else if(res.status != 200) this.$message.error("草,错误");
+
+      else if(res.body == false) this.$router.push('/Merchant/CreateIdentity');
+    }),
     identityApi.GetMerchantNameById(this.$store.getters.getMerchantId).then(res => {
       if(res.status == 401) {
         identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
@@ -63,7 +85,7 @@ export default {
             shopApi.GetShopInfoByMerchantId(this.$store.getters.getMerchantId).then(res => {
               if(res.status != 200) {
                 if(res.status == 400 && res.body == "identity yourself first") {
-                  this.$router.push('/Merchant/CreateIdentity');
+                  //this.$router.push('/Merchant/CreateIdentity');
                 }
               }
               else {
@@ -78,7 +100,7 @@ export default {
       }
       else if(res.status != 200) {
         if(res.status == 400 && res.body == "identity yourself first") {
-          this.$router.push('/Merchant/CreateIdentity');
+          //this.$router.push('/Merchant/CreateIdentity');
         }
       }
       else {
@@ -87,8 +109,8 @@ export default {
         this.$store.dispatch('commitProvinceName', res.body.province);
         this.$store.dispatch('commitCityName', res.body.city);
       }
-    })
-  },
+    }) 
+  }
 }
 </script>
 <style lang="less" scoped>

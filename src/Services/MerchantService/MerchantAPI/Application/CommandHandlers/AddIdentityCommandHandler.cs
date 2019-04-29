@@ -6,7 +6,7 @@ using GB_Project.Services.MerchantService.MerchantAPI.Query;
 
 namespace GB_Project.Services.MerchantService.MerchantAPI.Application.Commands
 {
-  public class AddIdentityCommandHandler : IRequestHandler<AddIdentityCommand, MerchantBasic>
+  public class AddIdentityCommandHandler : IRequestHandler<AddIdentityCommand, MerchantIdentity>
   {
     private IMerchantRepository _repo;
 
@@ -19,19 +19,19 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Application.Commands
       _query = query;
     }
 
-    public Task<MerchantBasic> Handle (AddIdentityCommand command, CancellationToken cancellaitonToken)
+    public Task<MerchantIdentity> Handle (AddIdentityCommand command, CancellationToken cancellaitonToken)
     {
       var merchant = _query.GetMerchantBasicByMerchantId(command.MerchantId);
 
       var merchantIdentity = new MerchantIdentity(command.IdentityName, command.IdentityNum, command.IdentityImgF, command.IdentityImgB, command.LicenseImg, 
                       command.LicenseCode, command.LicenseName, command.LicenseOwner, command.AvailableStartTime, 
-                      command.AvailableTime, command.Tel);
+                      command.AvailableTime, command.Tel, merchant.AuthPkId, merchant);
       if(_repo.AddIdentity(merchant, merchantIdentity).GetAwaiter().GetResult() != 0)
       {
-        return Task.FromResult(merchant);
+        return Task.FromResult(merchantIdentity);
       }
 
-      return Task.FromResult((MerchantBasic)null);
+      return Task.FromResult((MerchantIdentity)null);
     }
   }
 }

@@ -30,9 +30,10 @@ namespace GB_Project.Services.CommentService.CommentInfrastructrue.Repository
       return _context.UserComments.Where(b => b.ProductId.ToString() == productId).ToList();
     }
 
-    public List<UserComment> GetUserCommentsByShopId(string shopId)
+    public List<UserComment> GetUserCommentsByShopId(string shopId, int page)
     {
-      return _context.UserComments.Where(b => b.ShopId.ToString() == shopId).OrderByDescending(b => b.Date).ToList();
+      if((page-1) < 0) return null;
+      return _context.UserComments.Where(b => b.ShopId.ToString() == shopId).Skip((page-1)*10).Take(10).OrderByDescending(b => b.Date).ToList();
     }
 
     public UserComment GetUserCommentByCommentId(string commentId)
@@ -57,6 +58,11 @@ namespace GB_Project.Services.CommentService.CommentInfrastructrue.Repository
       _context.UserComments.Where(u => u.PkId.ToString() == commentId).FirstOrDefault().SetIsReply();
 
       return (_context.SaveChanges() != 0);
+    }
+
+    public int GetUserCommentCountByShopId(string shopId)
+    {
+      return _context.UserComments.Where(u => u.ShopId.ToString() == shopId).ToList().Count;
     }
   }
 }

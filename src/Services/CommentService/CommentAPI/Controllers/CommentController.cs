@@ -6,6 +6,7 @@ using GB_Project.Services.CommentService.CommentDomin.AggregateModel;
 using System.Collections.Generic;
 using GB_Project.EventBus.BasicEventBus.Abstraction;
 using GB_Project.Services.CommentService.CommentAPI.Intergration.Events;
+using System;
 
 namespace GB_Project.Services.CommentService.CommentAPI.Controller
 {
@@ -72,9 +73,9 @@ namespace GB_Project.Services.CommentService.CommentAPI.Controller
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [Route("getUserCommentsByShopId")]
-    public ActionResult GetUserCommentsByShopId([FromHeader] string shopId)
+    public ActionResult GetUserCommentsByShopId([FromHeader] string shopId, [FromQuery]int page)
     {
-      List<UserComment> comments = _query.GetUserCommentsByShopId(shopId);
+      List<UserComment> comments = _query.GetUserCommentsByShopId(shopId, page);
 
       if(comments == null) return BadRequest();
 
@@ -105,6 +106,15 @@ namespace GB_Project.Services.CommentService.CommentAPI.Controller
       if(reply == null) return BadRequest();
 
       else return Ok(reply);
+    }
+
+    [HttpGet]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [Route("getUserCommentCount")]
+    public ActionResult GetUserCommentCountByShopId([FromHeader] string shopId)
+    {
+      return Ok(_query.GetUserCommentCountByShopId(shopId));
     }
   }
 }

@@ -7,10 +7,6 @@ namespace GB_Project.Services.ManagerService.Querys
   {
     ViolateUser GetViolateUserByUserName(string userName);
 
-    IEnumerable<ViolateUser> GetViolateUsers();
-
-    IEnumerable<ViolateUser> GetViolateUsersIsWarned();
-
-    IEnumerable<ViolateUser> GetViolateUsersIsInBlackMenu();
+    IEnumerable<ViolateUser> GetViolateUsers(int page);
   }
 }

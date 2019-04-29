@@ -28,15 +28,30 @@ export const getUserCommentByOrderId = (orderId) => {
   })
 }
 
-export const getUserCommentsByShopId = (shopId) => {
+export const getUserCommentsByShopId = (shopId, page) => {
   return Vue.http.get('/comment/getUserCommentsByShopId', {
     headers: {
-      'shopId': shopId
+      'shopId': shopId,
+    },
+    params: {
+      'page': page
     }
   }, resSuccess => {
     return resSuccess;
   }, resFail => {
     return resFail;
+  })
+}
+
+export const getUserCommentCount = (shopId) => {
+  return Vue.http.get('/comment/getUserCommentCount', {
+    headers: {
+      'shopId': shopId
+    }
+  }, resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
   })
 }
 

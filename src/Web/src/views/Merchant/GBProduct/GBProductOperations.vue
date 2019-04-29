@@ -18,6 +18,7 @@
   import CommentGBProduct from './CommentGBProduct';
   import * as merchantApi from '../../../api/Merchant';
   import * as identityApi from '../../../api/Identity';
+  import * as shopApi from '../../../api/Shop';
 
   export default {
     components : {
@@ -44,7 +45,11 @@
       }
     },
     beforeMount() {
+/*       merchantApi.ifSetGBService(this.$store.getters.getMerchantId).then(res => {
+        if(res.status != 200) this.$message.error("判断是否已申请团购失败");
 
+        else if(res.body == false) this.$router.push("/Merchant/Operation/GBServiceApply");
+      }) */
     },
   }
 </script>

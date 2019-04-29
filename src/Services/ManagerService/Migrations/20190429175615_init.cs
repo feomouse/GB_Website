@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ManagerService.Migrations
 {
-    public partial class Create : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,8 +20,6 @@ namespace ManagerService.Migrations
                     Date = table.Column<DateTime>(type: "datetime", nullable: false),
                     Detail = table.Column<string>(type: "nvarchar(150)", nullable: true),
                     Role = table.Column<int>(type: "int", nullable: false),
-                    IsWarned = table.Column<bool>(type: "bit", nullable: false),
-                    IsInBlackMenu = table.Column<bool>(type: "bit", nullable: false),
                     ManagerId = table.Column<Guid>(type: "Uniqueidentifier", nullable: false)
                 },
                 constraints: table =>

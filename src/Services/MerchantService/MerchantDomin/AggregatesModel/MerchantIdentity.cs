@@ -29,6 +29,9 @@ namespace GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel
 
     public string Tel { get; private set; }
 
+    public Guid MerchantId { get; private set; }
+    public MerchantBasic Merchant { get; private set; }
+
     public MerchantIdentity ()
     {
 
@@ -36,7 +39,7 @@ namespace GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel
 
     public MerchantIdentity ( string identityName, string identityNum, string identityImgF, string identityImgB, string licenseImg, 
                           string licenseCode, string licenseName, string licenseOwner, DateTime availableSatartTime, 
-                          DateTime availableTime, string tel)
+                          DateTime availableTime, string tel, Guid merchantId, MerchantBasic merchant)
     {
       PkId = Guid.NewGuid();
       IdentityName = identityName;
@@ -50,6 +53,13 @@ namespace GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel
       AvailableSatartTime = availableSatartTime;
       AvailableTime = availableTime;
       Tel = tel;
+      MerchantId = merchantId;
+      Merchant = merchant;
+    }
+
+    public void SetMerchantBasic(MerchantBasic basic)
+    {
+      Merchant = basic;
     }
   }   
 }

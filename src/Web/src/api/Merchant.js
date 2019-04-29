@@ -32,18 +32,6 @@ export const getShopTypies = (body) => {
   })
 }
 
-export const uploadShopPic = (formData) => {
-    return Vue.http.post('/shop/UploadShopImg', formData, {
-      headers: {
-        'Content-Type': "multipart/form-data"
-      }
-    }).then(responseSuccess => {
-      return {body: responseSuccess.body, status: responseSuccess.status};
-    }, responseFail => {
-      return {status: responseFail.status};
-    })
-}
-
 export const updateShop = (newShop) => {
   return Vue.http.post('/shop/EditShop', newShop).then(resSucess => {
     return resSucess;
@@ -148,6 +136,18 @@ export const getMerchantBasicByMerchantId = (merchantId) => {
   })
 }
 
+export const getMerchantBasicListNotChecked = (page) => {
+  return Vue.http.get('/merchant/GetMerchantBasicListIsNotChecked', {
+    params: {
+      'page': page
+    }
+  }).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}
+
 export const getGBProductsByProductTypeId = (productTypeId) => {
   return Vue.http.get('/shop/GBProduct/ProductType/GBProducts', {
     headers: {
@@ -170,6 +170,38 @@ export const checkIdentity = (body) => {
 
 export const ifSetGBService = (merchantId) => {
   return Vue.http.get('/shop/IfSetGB', {
+    headers: {
+      'merchantId': merchantId
+    }
+  }).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}
+
+export const getMerchantsName = (merchantIdList) => {
+  return Vue.http.post('/identity/merchantInfoList', merchantIdList).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+} 
+
+export const ifWriteIdentity = (merchantId) => {
+  return Vue.http.get('/merchant/IfWriteIdentity', {
+    headers: {
+      'merchantId' : merchantId
+    }
+  }).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}
+
+export const getMerchantIdentityByMerchantId = (merchantId) => {
+  return Vue.http.get('/merchant/GetMerchantIdentityByMerchantId', {
     headers: {
       'merchantId': merchantId
     }

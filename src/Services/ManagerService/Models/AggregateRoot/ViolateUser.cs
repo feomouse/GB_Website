@@ -15,50 +15,32 @@ namespace GB_Project.Services.ManagerService.Models.AggregateRoot
 
     public int Role { get; private set; }
 
-    public bool IsWarned { get; private set; }
-
-    public bool IsInBlackMenu { get; private set; }
-
     public Guid ManagerId { get; private set; }
 
     public ViolateUser(string name, DateTime date, string detail, 
-                       int role, bool isWarned, bool isInBlackMenu, Guid managerId)
+                       int role, Guid managerId)
     {
       Name = name;
       Date = date;
       Detail = detail;
       Role = role;
-      IsWarned = isWarned;
-      IsInBlackMenu = isInBlackMenu;
       ManagerId = managerId;
     }
 
     public ViolateUser(Guid pkId, string name, DateTime date, string detail, 
-                       int role, bool isWarned, bool isInBlackMenu, Guid managerId)
+                       int role, Guid managerId)
     {
       PkId = pkId;
       Name = name;
       Date = date;
       Detail = detail;
       Role = role;
-      IsWarned = isWarned;
-      IsInBlackMenu = isInBlackMenu;
       ManagerId = managerId;
     }
 
     public void SetManagerId(Guid managerId) 
     {
       ManagerId = managerId;
-    }
-
-    public void SetIsWarned()
-    {
-      IsWarned = true;
-    }
-
-    public void SetIsInBlackMenu()
-    {
-      IsInBlackMenu = true;
     }
   }
 }

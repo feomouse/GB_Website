@@ -73,5 +73,38 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Controllers
 
       else return new BadRequestObjectResult("check fail");
     }
+
+    [HttpGet]
+    [Route("GetMerchantIdentity")]
+    public ActionResult GetMerchantIdentity([FromHeader]string identityId)
+    {
+      MerchantIdentity identity = _query.GetMerchantIdentityByIdentityId(identityId);
+
+      if(identity == null) return BadRequest();
+
+      else return Ok(identity);
+    }
+
+    [HttpGet]
+    [Route("GetMerchantIdentityByMerchantId")]
+    public ActionResult GetMerchantIdentityByMerchantId([FromHeader]string merchantId)
+    {
+      MerchantIdentity identity =  _query.GetMerchantIdentityByMerchantId(merchantId);
+
+      if(identity == null) return BadRequest();
+
+      else return Ok(identity);
+    }
+
+    [HttpGet]
+    [Route("IfWriteIdentity")]
+    public ActionResult IfWriteIdentity([FromHeader]string merchantId)
+    {
+      MerchantIdentity mer = _query.GetMerchantIdentityByMerchantId(merchantId);
+
+      if(mer == null) return Ok(false);
+         
+      else return Ok(true);
+    }
   }
 }

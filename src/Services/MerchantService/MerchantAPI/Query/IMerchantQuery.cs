@@ -13,5 +13,7 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Query
     MerchantIdentity GetMerchantIdentityByMerchantId(string merchantId);
 
     List<MerchantBasic> GetMerchantBasicListNotChecked(int page);
+
+    List<MerchantBasic> GetMerchantBasics(int page);
   }
 }

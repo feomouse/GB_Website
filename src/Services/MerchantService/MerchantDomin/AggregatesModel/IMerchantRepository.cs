@@ -22,5 +22,7 @@ namespace GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel
     List<MerchantBasic> GetMerchantBasicListNotChecked(int page);
 
     MerchantIdentity GetMerchantIdentityByMerchantId(string merchantId);
+
+    List<MerchantBasic> GetMerchantBasics(int page);
   }
 }

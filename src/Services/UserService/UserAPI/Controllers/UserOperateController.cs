@@ -115,5 +115,16 @@ namespace GB_Project.Services.UserService.UserAPI.Controllers
       
       return Ok(result);
     }
+
+    [HttpGet]
+    [Route("GetUsers")]
+    public ActionResult GetUsers([FromQuery] int page)
+    {
+      var users = _query.GetUsers(page);
+
+      if(users == null) return BadRequest();
+
+      else return Ok(users);
+    }
   }
 }

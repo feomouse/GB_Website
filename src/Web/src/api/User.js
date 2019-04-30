@@ -49,3 +49,15 @@ export const setCustomerImg = (userId, fileName) => {
     return responseFail;
   })
 }
+
+export const getCustomers = (page) => {
+  return Vue.http.get("/user/GetUsers", {
+    params: {
+      'page': page
+    }
+  }).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}

@@ -1,4 +1,5 @@
 using GB_Project.Services.UserService.UserDomin.UserAggregateModel;
+using System.Collections.Generic;
 
 namespace GB_Project.Services.UserService.UserAPI.Query
 {
@@ -14,6 +15,11 @@ namespace GB_Project.Services.UserService.UserAPI.Query
     public User GetUserByUserId(string userId)
     {
       return _repo.GetUserByUserId(userId);
+    }
+
+    public List<User> GetUsers(int page)
+    {
+      return _repo.GetUsers(page);
     }
   }
 }

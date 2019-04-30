@@ -31,6 +31,7 @@
 <script>
 import * as SignInReq from '../../api/Identity';
 import * as MerchantApi from '../../api/Merchant';
+import * as ManagerApi from '../../api/Manager';
 
 export default {
   data() {
@@ -44,7 +45,8 @@ export default {
       ShowPassError: false,
       ShowSignInError: false,
       ShopSignInSuccess: false,
-      UserName: ""
+      UserName: "",
+      ifInBlack: false
     }
   },
   methods: {
@@ -96,12 +98,23 @@ export default {
             this.ShopSignInSuccess = false;
           }, 2000);
 
-          MerchantApi.getMerchantBasicByMerchantId(this.$store.getters.getMerchantId).then(res => {
-            if(res.status != 200) this.$message.error("获取商户信息出错");
+          ManagerApi.ifViolateUser(this.UserName).then(res => {
+            if(res.status != 200) {
+              this.$message.error("检测是否在黑名单失败");
+            }
 
-            if(res.body.shopId == "00000000-0000-0000-0000-000000000000") this.$router.push('/Merchant/CreateShop');
-            else {
-              this.$router.push('/Merchant/Operation/Welcome');
+            else if(res.body == true) {
+              this.$message.error("对不起, 您被加入黑名单中");
+              this.ifInBlack = true
+            } else if(res.body == false) {
+              MerchantApi.getMerchantBasicByMerchantId(this.$store.getters.getMerchantId).then(res => {
+                if(res.status != 200) this.$message.error("获取商户信息出错");
+
+                if(res.body.shopId == "00000000-0000-0000-0000-000000000000") this.$router.push('/Merchant/CreateShop');
+                else {
+                  this.$router.push('/Merchant/Operation/Welcome');
+                }
+              })
             }
           })
         }

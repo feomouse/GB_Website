@@ -1,6 +1,6 @@
 <template>
   <div>
-    <tabs :tabs="tabLabels" :tabLabelNow="tabLabels[0].label" activeIndex='1'>
+    <tabs :tabs="tabLabels" :tabLabelNow="tabLabels[0].label" activeIndex='0'>
       <template v-slot:violate>
         <vio></vio>
       </template>
@@ -13,24 +13,27 @@
 <script>
 import Tabs from '../../../components/Tabs';
 import ViolateList from './ViolateList';
-import OkMerchantList from './OkMerchantList';
+import OkList from './OkList';
 
 export default {
   components: {
     'tabs': Tabs,
     'vio': ViolateList,
-    'ok': OkMerchantList
+    'ok': OkList
   },
   data() {
     return {
-      tabLabels: [ {
-          label : "商户名单",
-          link : "ok"
-        }, {
+      tabLabels: [  {
           label : "黑名单",
           link : "violate"
+        }, {
+          label : "用户名单",
+          link : "ok"
         }]
     }
+  },
+  beforeMount() {
+
   }
 }
 </script>

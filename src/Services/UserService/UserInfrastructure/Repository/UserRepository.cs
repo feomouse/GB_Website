@@ -3,6 +3,7 @@ using GB_Project.Services.UserService.UserInfrastructure.Context;
 using System.Linq;
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 namespace GB_Project.Services.UserService.UserInfrastructure.Repository
 {
@@ -55,6 +56,11 @@ namespace GB_Project.Services.UserService.UserInfrastructure.Repository
     public User GetUserByUserId(string userId)
     {
       return _context.user.Where(u => u.PkId == new Guid(userId)).FirstOrDefault();
+    }
+
+    public List<User> GetUsers(int page)
+    {
+      return _context.user.Skip((page-1)*10).Take(10).ToList();
     }
   } 
 }

@@ -32,6 +32,7 @@
 <script>
 import * as SignInReq from '../../api/Identity';
 import * as UserReq from '../../api/User';
+import * as ManagerApi from '../../api/Manager';
 
 export default {
   data() {
@@ -45,7 +46,8 @@ export default {
       ShowPassError: false,
       ShowSignInError: false,
       ShopSignInSuccess: false,
-      UserName: ""
+      UserName: "",
+      ifInBlack: false
     }
   },
   methods: {
@@ -101,24 +103,36 @@ export default {
           return 200;
         }
       }).then(status => {
-        if(status == 200) {
-          UserReq.getUserBasicMessage(this.$store.getters.userId).then(res => {
-            if(res.status != 200)
-            {
-              this.$message.error('请求用户数据失败');
-            }
-            else if(res.status == 200)
-            {
-              this.$store.dispatch('commitSetUser', res.body);
-   
-              this.$router.push({path: "/Customer/Basic"});
-            }
-          })
-        }
-        else if(status == 400)
-        {
-          this.$message.error('登陆失败');
-        }
+          if(status == 200) {
+            ManagerApi.ifViolateUser(this.UserName).then(res => {
+              if(res.status != 200) {
+                this.$message.error("检测是否在黑名单失败");
+              }
+
+              else if(res.body == true) {
+                this.$message.error("对不起, 您被加入黑名单中");
+                this.ifInBlack = true
+              } else if(res.body == false)
+              {
+                UserReq.getUserBasicMessage(this.$store.getters.userId).then(res => {
+                  if(res.status != 200)
+                  {
+                    this.$message.error('请求用户数据失败');
+                  }
+                  else if(res.status == 200)
+                  {
+                    this.$store.dispatch('commitSetUser', res.body);
+        
+                    this.$router.push({path: "/Customer/Basic"});
+                  }
+                })
+              }
+            })
+          }
+          else if(status == 400)
+          {
+            this.$message.error('登陆失败');
+          }
       })
     },
     redirectToRegister() {

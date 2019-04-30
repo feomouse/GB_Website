@@ -54,5 +54,16 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Controllers
 
        else return Ok(merchantBasics);
      }
+
+     [HttpGet]
+     [Route("GetMerchantList")]
+     public ActionResult GetMerchantList([FromQuery] int page)
+     {
+        var merchants = _query.GetMerchantBasics(page);
+
+        if(merchants == null) return BadRequest();
+
+        else return Ok(merchants);
+     }
   }
 }

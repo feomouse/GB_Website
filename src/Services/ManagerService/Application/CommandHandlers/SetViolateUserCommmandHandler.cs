@@ -5,19 +5,26 @@ using System.Threading.Tasks;
 using GB_Project.Services.ManagerService.Services;
 using GB_Project.Services.ManagerService.Models.AggregateRoot;
 using System;
-
+using GB_Project.Services.ManagerService.Querys;
 namespace GB_Project.Services.ManagerService.Application.CommandHandlers
 {
   public class SetViolateUserCommandHandler : IRequestHandler<SetViolateUserCommand, bool>
   {
     private IManagerRepository _repo;
-    public SetViolateUserCommandHandler(IManagerRepository repo)
+    private IManagerQuery _query;
+    public SetViolateUserCommandHandler(IManagerRepository repo, IManagerQuery query)
     {
       _repo = repo;
+      _query = query;
     }
     public Task<bool> Handle(SetViolateUserCommand command, CancellationToken cancellaitonToken)
     {
-      return Task.FromResult(_repo.SetViolateUser(new ViolateUser(command.UserName, command.Date, command.Detail,
+      if(_query.GetViolateUserByUserName(command.UserName) != null)
+      {
+        return Task.FromResult(false);
+      }
+
+      else return Task.FromResult(_repo.SetViolateUser(new ViolateUser(command.UserName, command.Date, command.Detail,
                                            command.Role, new Guid(command.ManagerId))));
     }
   }

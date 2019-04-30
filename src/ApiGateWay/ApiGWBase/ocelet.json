@@ -115,6 +115,20 @@
         "AuthenticationProviderKey": "TokenKey",
         "AllowedScopes": []
       }
+    },
+    {
+      "DownstreamPathTemplate": "/v1/api/manager/{everything}",
+      "DownStreamScheme": "http",
+      "DownstreamHostAndPorts": [{
+        "Host": "localhost",
+        "Port": 50009
+      }],
+      "UpstreamPathTemplate": "/manager/{everything}",
+      "UpstreamHttpMethod": ["Get", "Post", "Delete"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TokenKey",
+        "AllowedScopes": []
+      }
     }
   ],
   "GlobalConfiguration": {

@@ -68,5 +68,10 @@ namespace GB_Project.Services.MerchantService.MerchantInfrastructure.Repository
       {
         return _context.merchantIdentitys.Where(m => m.MerchantId.ToString() == merchantId).FirstOrDefault();
       }
+
+      public List<MerchantBasic> GetMerchantBasics(int page)
+      {
+        return _context.merchantBasics.Skip((page-1) * 10).Take(10).ToList();
+      }
     }
 }

@@ -10,7 +10,7 @@ using MediatR;
 
 namespace GB_Project.Services.ManagerService.Controllers
 {
-    [Route("v1/api/Manager")]
+    [Route("v1/api/manager")]
     [ApiController]
     public class ManagerController : ControllerBase
     {
@@ -36,9 +36,18 @@ namespace GB_Project.Services.ManagerService.Controllers
         [Route("SetViolateUser")]
         public ActionResult SetViolateUser([FromBody]SetViolateUserCommand command)
         {
-          if(_mediator.Send(command).GetAwaiter().GetResult()) return Ok();
+          if(_mediator.Send(command).GetAwaiter().GetResult()) return StatusCode(201);
 
           else return BadRequest(); 
+        }
+
+        [HttpGet]
+        [Route("IfInVioList")]
+        public ActionResult IfInVioList([FromQuery]string userName) 
+        {
+            if(_query.GetViolateUserByUserName(userName) == null) return Ok(false);
+
+            else return Ok(true);
         }
     }
 }

@@ -1,7 +1,7 @@
 import Operation from '../views/Manager/Operation';
 import IdentityList from '../views/Manager/CheckIdentityManage/IdentityList';
 import IdentityDetail from '../views/Manager/CheckIdentityManage/IdentityDetail';
-import ViolateList from '../views/Manager/ViolateManage/ViolateList';
+import VioTab from '../views/Manager/ViolateManage/VioTab';
 
 export default [{
   path: "/Manager",
@@ -14,6 +14,6 @@ export default [{
     component: IdentityDetail
   },{
     path: "ViolateManager",
-    component: ViolateList
+    component: VioTab
   }]
 }]

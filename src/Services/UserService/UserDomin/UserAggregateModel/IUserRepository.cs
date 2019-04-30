@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace GB_Project.Services.UserService.UserDomin.UserAggregateModel
 {
   public interface IUserRepository
@@ -11,5 +13,7 @@ namespace GB_Project.Services.UserService.UserDomin.UserAggregateModel
       int SetUserName(User user, string userName);
 
       User GetUserByUserId(string userId);
+
+      List<User> GetUsers(int page);
   }
 }

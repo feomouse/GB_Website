@@ -37,5 +37,10 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Query
     {
       return _repo.GetMerchantIdentityByMerchantId(merchantId);
     }
+
+    public List<MerchantBasic> GetMerchantBasics(int page)
+    {
+      return _repo.GetMerchantBasics(page);
+    }
   }
 }

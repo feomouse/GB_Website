@@ -211,3 +211,15 @@ export const getMerchantIdentityByMerchantId = (merchantId) => {
     return resFail
   })
 }
+
+export const getMerchantBasics = (page) => {
+  return Vue.http.get('/merchant/GetMerchantList', {
+    params: {
+      "page": page
+    }
+  }).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}

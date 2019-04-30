@@ -10,7 +10,7 @@
         width="180">
       </el-table-column>
       <el-table-column
-        :prop="roles[role]"
+        prop="role"
         label="角色"
         width="180">
       </el-table-column>
@@ -23,19 +23,10 @@ import * as managerApi from '../../../api/Manager';
 export default {
   data() {
     return {
-      violateList: [{
-        "pkId": "",
-        "name": "",
-        "date": "",
-        "detail": "",
-        "role": 1,
-        "isWarned": true,
-        "isInBlackMenu": true,
-        "managerId": ""
-      }],
+      violateList: [],
       roles: {
-        1: "商户",
-        2: "顾客"
+        1: "顾客",
+        2: "商户"
       }
     }
   },
@@ -43,9 +34,15 @@ export default {
     managerApi.getViolateUsers(1).then(res => {
       if(res.status != 200) this.$message.error();
 
-      else this.violateList = res.body
+      else {
+        this.violateList = res.body
+
+        for(let i = 0; i < this.violateList.length; i++) {
+          this.violateList[i].role = this.violateList[i].role == 1 ? "顾客" : "商户";
+        }
+      }
     })
-  }
+  },
   methods: {
   }
 }

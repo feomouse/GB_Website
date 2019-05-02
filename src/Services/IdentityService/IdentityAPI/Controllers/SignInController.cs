@@ -104,7 +104,7 @@ namespace GB_Project.Services.IdentityService.IdentityAPI.Controllers
 
       private async Task<TokenViewModel> GenerateToken(AppUser user)
       {
-        var expireTime = DateTime.Now.AddMinutes(Convert.ToDouble(5));
+        var expireTime = DateTime.Now.AddMinutes(Convert.ToDouble(10));
         var notBefore = DateTime.Now;
 
         var claims = new List<Claim>(){

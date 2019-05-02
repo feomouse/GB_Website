@@ -53,7 +53,7 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
         List<GBProduct> GetGBProductsByProductId (string productTypeId);
 
-        bool IncreGBPayAmount (string gbProductName, string shopName, int itemCost);
+        bool IncreGBPayAmount (string gbProductName, string shopName, int itemCost, int number);
 
         int GetShopsTotalCount(string province, string city, int shopType);
     } 

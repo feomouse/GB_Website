@@ -133,9 +133,9 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
       ProductType = type;
     }
 
-    public void IncreMSellNum()
+    public void IncreMSellNum(int num)
     {
-      MSellNum++;
+      MSellNum += num;
     }
   }
 }

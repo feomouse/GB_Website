@@ -15,7 +15,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.IntergrationEvents.EventHandle
 
     public Task Handle(IncreOrderSellIntergrationEvent @eventName)
     {
-      return Task.FromResult(_repo.IncreGBPayAmount(@eventName.GBProductName, @eventName.ShopName, @eventName.ItemCost));
+      return Task.FromResult(_repo.IncreGBPayAmount(@eventName.GBProductName, @eventName.ShopName, @eventName.ItemCost, @eventName.Number));
     }
   }
 }

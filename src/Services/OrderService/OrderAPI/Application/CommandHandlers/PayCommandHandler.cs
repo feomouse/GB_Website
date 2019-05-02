@@ -41,7 +41,7 @@ namespace GB_Project.Services.OrderService.OrderAPI.Application.CommandHandlers
 
           var order = _query.getGBOrderByOrderId(command.OrderId);
           
-          IncreOrderSellIntergrationEvent @event = new IncreOrderSellIntergrationEvent(order.GroupProductName, order.SName, order.TotalCost/order.Number);
+          IncreOrderSellIntergrationEvent @event = new IncreOrderSellIntergrationEvent(order.GroupProductName, order.SName, order.TotalCost/order.Number, order.Number);
           _pub.Publish(@event);
 
           return Task.FromResult(true);

@@ -227,7 +227,7 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         return _context.shops.Where(t => (t.Province == province && t.City == city)).ToList();
       }
 
-      public bool IncreGBPayAmount (string gbProductName, string shopName, int itemCost)
+      public bool IncreGBPayAmount (string gbProductName, string shopName, int itemCost, int number)
       {
         var tempGB = _context.gbproduct.Where(b => (b.ProductName == gbProductName && b.Price == itemCost)).ToList();
 
@@ -235,7 +235,7 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         {
           if(_context.shops.Where(b => b.PkId == (_context.producttypes.Where(c => c.PkId == i.ProductTypeId).FirstOrDefault().ShopId)).FirstOrDefault().Name == shopName)
           {
-            i.IncreMSellNum();
+            i.IncreMSellNum(number);
             return (_context.SaveChanges() != 0);
           }
         }

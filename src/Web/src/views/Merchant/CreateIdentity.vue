@@ -199,6 +199,15 @@
       },
 
       sendIdentity() {
+        if(this.identity.MerchantId == "" || this.identity.IdentityName == "" || this.identity.IdentityNum == "" ||
+           this.identity.IdentityImgF == "" || this.identity.IdentityImgB == "" || this.identity.LicenseImg == "" ||
+           this.identity.LicenseCode == "" || this.identity.LicenseName == "" || this.identity.LicenseOwner == "" ||
+           this.identity.AvailableStartTime == "" || this.identity.AvailableTime == "" || this.identity.Tel == "") {
+           this.$message.error("信息未填写完整，请填写完整");
+           
+           return;
+        }
+
         if(/^[A-Za-z\u4e00-\u9fa5]{1,10}$/.test(this.identity.IdentityName) &&
            /^[0-9]{18}$/.test(this.identity.IdentityNum) && 
            /^[0-9A-Za-z]{15}$/.test(this.identity.LicenseCode) &&

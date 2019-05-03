@@ -58,7 +58,11 @@
         })
       },
       failCheck() {
-
+        this.$message({
+          type: 'warning',
+          message: '未通过商户资质信息'
+        })
+        this.$router.push('/Manager/IdentityList');
       }
     }
   }

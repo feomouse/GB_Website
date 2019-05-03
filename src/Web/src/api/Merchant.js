@@ -24,11 +24,11 @@ export const createShop = (body) => {
   })
 }
 
-export const getShopTypies = (body) => {
+export const getShopTypies = () => {
   return Vue.http.get('/shop/ShopTypies').then(responseSuccess => {
-    return {body : responseSuccess.body, status: responseSuccess.status}
+    return responseSuccess
   }, responseFail => {
-    return {status : responseFail.status}
+    return responseFail
   })
 }
 

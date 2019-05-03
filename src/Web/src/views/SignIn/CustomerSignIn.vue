@@ -80,16 +80,26 @@ export default {
       }
       
       SignInReq.SignInRequest(this.SignIn).then(res => {
-        if(res.status != 200) 
+        console.log(res)
+        if(res.status == 401) 
         {
           this.ShowSignInError = true;
           setTimeout(()=> {
             this.ShowSignInError = false;
           }, 2000);
 
-          return 400;
-          
+          return 401;
         }
+
+        else if(res.status == 403)
+        {
+          this.ShowSignInError = true;
+          setTimeout(()=> {
+            this.ShowSignInError = false;
+          }, 2000);
+          return 403
+        }
+
         else if(res.status == 200) 
         { 
           this.$store.dispatch('commitToken',res.body.token.access_token);
@@ -129,9 +139,13 @@ export default {
               }
             })
           }
-          else if(status == 400)
+          else if(status == 401)
           {
-            this.$message.error('登陆失败');
+            this.$message.error('您还未注册，请先注册');
+          }
+          else if(status == 403) 
+          {
+            this.$message.error('您的密码输入错误，请重新输入密码');
           }
       })
     },

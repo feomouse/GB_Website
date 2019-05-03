@@ -7,7 +7,7 @@
           <el-input placeholder="请输入" v-model="newShop.name"></el-input>
         </el-form-item>
         <el-form-item label="省: ">
-          <el-select v-model="newShop.province">
+          <el-select v-model="newShop.province" @change="provinceChange">
             <el-option v-for="(i, k) of dataMap['86']" 
                     v-bind:key="k" 
                     v-bind:value="k"
@@ -17,7 +17,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="市: ">
-          <el-select v-model="newShop.city">
+          <el-select v-model="newShop.city" @change="cityChange">
             <el-option v-for="(i, k) of dataMap[newShop.province]" 
                     v-bind:key="k" 
                     v-bind:value="k"
@@ -40,7 +40,13 @@
           <el-input placeholder="请输入" v-model="newShop.location"></el-input>
         </el-form-item>
         <el-form-item label="类型: " style="width: 30%;">
-           <el-input placeholder="请输入" v-model="newShop.type"></el-input>
+           <el-select v-model="newShop.type">
+             <el-option v-for="i of shopTypes"
+                        v-bind:key="i.id"
+                        v-bind:value="i.id"
+                        :label="i.name">
+             </el-option>
+           </el-select>
         </el-form-item>
         <el-form-item label="电话: " style="width: 40%;">
           <el-input placeholder="请输入" v-model="newShop.tel"></el-input>
@@ -81,7 +87,8 @@ export default {
       tempProvince: '',
       tempCity: '',
       tempDistrict: '',
-      dataMap: map
+      dataMap: map,
+      shopTypes: []
     }
   },
   beforeMount() {
@@ -97,6 +104,11 @@ export default {
               if(res.status == 400) this.$message.error();
               else {
                 this.newShop = res.body;
+                merchantApi.getShopTypies().then(res => {
+                  if(res.status != 200) this.$message.error("获取门店类型出错");
+
+                  else this.shopTypes = res.body;
+                })
               }
             })
           }
@@ -105,6 +117,11 @@ export default {
       else if(res.status == 400) this.$message.error();
       else {
         this.newShop = res.body;
+        merchantApi.getShopTypies().then(res => {
+          if(res.status != 200) this.$message.error("获取门店类型出错");
+
+          else this.shopTypes = res.body;
+        })
       }
     })
   },
@@ -122,6 +139,13 @@ export default {
     }
   },
   methods: {
+    provinceChange() {
+      this.newShop.city = ""
+      this.newShop.district = ""
+    },
+    cityChange() {
+      this.newShop.district = ""
+    },
     beforeAvatarUpload(file) {
         const is = file.type === 'image/jpeg' || file.type === 'image/png';
 
@@ -154,6 +178,11 @@ export default {
         return is;
     },
     updateShop() {
+      if(this.newShop.city == "" || this.newShop.district == "") {
+        this.$message.error("请在重新选择省份后，重新选择城市与区域");
+        
+        return
+      }
       var shop = {
         "PkId": this.newShop.pkId,
         "Name": this.newShop.name,
@@ -183,6 +212,8 @@ export default {
                     type: 'success',
                     message:'更新成功'
                   });
+
+                  this.$store.dispatch('commitSetShopName', this.newShop.name);
                 }
               })
             }
@@ -195,6 +226,7 @@ export default {
             type: 'success',
             message:'更新成功'
           });
+          this.$store.dispatch('commitSetShopName', this.newShop.name);
         }
       })
     }

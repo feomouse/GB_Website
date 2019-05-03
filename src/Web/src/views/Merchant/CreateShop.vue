@@ -174,6 +174,13 @@ export default {
       this.shop.City = this.mapData[this.tempLocation.provinceCode][this.tempLocation.cityCode];
       this.shop.District = this.mapData[this.tempLocation.cityCode][this.tempLocation.districtCode];
 
+      if(this.shop.Name == "" || this.shop.Province == "" || this.shop.City == "" || this.shop.District == "" ||
+         this.shop.Location == "" || this.shop.Type == "" || this.shop.Tel == "" || this.shop.Manager == "" ||
+         this.shop.Pic == "") {
+           this.$message.error("请将门店信息全部添齐");
+
+           return
+      }
       merchantApi.createShop(this.shop).then(result => {
         if(result.status == 401) {
           identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {

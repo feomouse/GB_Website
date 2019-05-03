@@ -2,7 +2,7 @@
   <div id="mholder__SignIn">
     <div class="auto_eight">
       <div id="mleft__place">
-        <img src="../../static/imgs/spring.jpg" alt="春天到了，去踏青吧" style="width: 80%; height: 30rem; margin-top: 5rem;"/>
+        <img src="../../static/imgs/building2.jpg" alt="春天到了，去踏青吧" style="width: 80%; height: 30rem; margin-top: 5rem;"/>
       </div>
       <div id="mright__place">
         <div class="formEle_container" style="box-shadow: 3px 3px 3px gray; border: 1px solid gray;">
@@ -77,12 +77,25 @@ export default {
       }
       
       SignInReq.SignInRequest(this.SignIn).then(res => {
-        if(res.status != 200) {
+        if(res.status == 401) {
           this.ShowSignInError = true;
 
           setTimeout(()=> {
             this.ShowSignInError = false;
           }, 2000);
+
+          this.$message.error('您还未注册，请先注册');
+        }
+
+        else if(res.status == 403) 
+        {
+          this.ShowSignInError = true;
+
+          setTimeout(()=> {
+            this.ShowSignInError = false;
+          }, 2000);
+
+          this.$message.error('密码输入错误，请重新输入密码'); 
         }
         else if(res.status == 200)
         { 

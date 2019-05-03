@@ -2,7 +2,7 @@
   <div id="holderMSignUp__place">
     <div class="auto_eight">
       <div id="mleft__place">
-        <img src="../../static/imgs/autumn.jpg" alt="秋天到了，去捡落叶吧吧" style="width: 80%; height: 30rem; margin-top: 5rem;"/>
+        <img src="../../static/imgs/building.jpg" alt="秋天到了，去捡落叶吧吧" style="width: 80%; height: 30rem; margin-top: 5rem;"/>
       </div>
       <div id="mright__place">
         <div class="formEle_container" style="box-shadow: 3px 3px 3px gray; border: 1px solid gray;">
@@ -89,15 +89,27 @@
           return;
         }
         
-        SignUpReq.SignUpRequest(this.SignUp).then(status => {
-          if(status == 400) {
+        SignUpReq.SignUpRequest(this.SignUp).then(res => {
+          if(res.status == 400) {
+            if(res.body == 'Already exist') this.$message.error("用户名已被注册");
+
             this.ShowSignUpError = true;
             setTimeout(()=> {
               this.ShowSignUpError = false;
             }, 2000);
+
+            this.SignUp = {
+              Email: "",
+              PhoneNumber: "",
+              Password: "",
+              ConfirmedPassword: "",
+              Role: "manager"
+            }
+
+            this.UserName = "";
           }
 
-          else if(status == 200) {
+          else if(res.status == 200) {
             this.SignUp = {
               Email: "",
               PhoneNumber: "",

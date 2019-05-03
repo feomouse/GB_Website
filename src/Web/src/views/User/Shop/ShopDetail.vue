@@ -75,7 +75,7 @@
           </div>
           <div style="text-align: right;">日期: {{i.date}}</div>
           <div style="margin: 3rem 0 3rem 0;">{{i.comment}}</div>
-          <div style="color: green; margin-bottom: 2rem;">商家回复: {{replyList[i.pkId].reply}}</div>
+          <div style="color: green; margin-bottom: 2rem;" v-if="typeof replyList[i.pkId] != 'undefined'">商家回复: {{replyList[i.pkId].reply}}</div>
 <!--           <div>
             <img :src="i.img" />
           </div> -->

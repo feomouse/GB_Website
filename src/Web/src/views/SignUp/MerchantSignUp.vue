@@ -89,15 +89,27 @@
           return;
         }
         
-        SignUpReq.SignUpRequest(this.SignUp).then(status => {
-          if(status == 400) {
+        SignUpReq.SignUpRequest(this.SignUp).then(res => {
+          if(res.status == 400) {
+            if(res.body == 'Already exist') this.$message.error("用户名已被注册");
+
             this.ShowSignUpError = true;
             setTimeout(()=> {
               this.ShowSignUpError = false;
             }, 2000);
+
+            this.SignUp = {
+              Email: "",
+              PhoneNumber: "",
+              Password: "",
+              ConfirmedPassword: "",
+              Role: "merchant"
+            }
+
+            this.UserName = "";
           }
 
-          else if(status == 200) {
+          else if(res.status == 200) {
             this.SignUp = {
               Email: "",
               PhoneNumber: "",

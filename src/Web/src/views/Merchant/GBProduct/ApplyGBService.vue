@@ -1,6 +1,10 @@
 <template>
   <div class="auto_ten">
     <div style="font-size: 2rem; color: lightgray; font-weight: bold; margin: 10rem 0 2rem 0;">申请团购</div>
+    <div style="font-size: 1rem; 
+                color: lightgray; 
+                font-weight: bold;
+                margin: 10rem 0 2rem 0;">资质信息提交一个星期后还未通过的，账号将会注销，到时请重新注册并填写相关信息</div>
     <el-button type="primary" @click="apply">申请</el-button>
   </div>
 </template>

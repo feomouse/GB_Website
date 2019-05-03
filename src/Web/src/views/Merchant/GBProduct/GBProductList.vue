@@ -119,10 +119,10 @@
       </div>
     </div>
     <div v-for="(i,index) in gbProducts" v-bind:key="i.productName" class="list_item">
-      <div style="float:left; line-height: 4rem;">
-        <img :src="i.img" style="float: left; width: 8rem; height: 8rem; padding: 1rem;"/>
+      <div style="float:left; line-height: 8rem;">
+        <img :src="i.img" style="float: left; width: 10rem; height: 8rem; padding: 1rem;"/>
         <div style="float: left; margin: 0 0 0 2rem;">
-          <h3>{{i.productName}}</h3>
+          <h2>{{i.productName}}</h2>
         </div>
       </div>
       <div style="margin: 2rem 2rem 0 0; float:right; line-height: 4rem;">
@@ -339,6 +339,15 @@ export default {
   },
   methods: {
     createGBProduct() {
+      if(this.newGBProduct.productName == "" || this.newGBProduct.orinPrice == 0 || this.newGBProduct.price == 0 ||
+         this.newGBProduct.quantity == "" || this.newGBProduct.vailSDate == "" || this.newGBProduct.vailEDate == "" ||
+         this.newGBProduct.vailTime == "" || this.newGBProduct.img == "" || this.newGBProduct.remark == "" || 
+         this.newGBProduct.isDisplay == null || this.newGBProduct.productTypeId == "") {
+         this.$message.error("请填齐团购产品信息");
+
+         return
+      }
+
       merchantApi.addGBProduct(this.newGBProduct).then(res => {
         if(res.status == 401) {
           identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
@@ -390,6 +399,16 @@ export default {
       for(let i of this.productTypes) {
         if(i.name == this.editGBProduct.productTypeId) this.editGBProduct.productTypeId = i.pkId;
       }
+
+      if(this.editGBProduct.productName == "" || this.editGBProduct.orinPrice == 0 || this.editGBProduct.price == 0 ||
+         this.editGBProduct.quantity == "" || this.editGBProduct.vailSDate == "" || this.editGBProduct.vailEDate == "" ||
+         this.editGBProduct.vailTime == "" || this.editGBProduct.img == "" || this.editGBProduct.remark == "" || 
+         this.editGBProduct.productTypeId == "") {
+         this.$message.error("请填齐团购产品信息");
+
+         return
+      }
+
       var newEditGBProduct = {
         "GBProductId" : this.editGBProduct.pkId,
         "ProductTypeId" : this.editGBProduct.productTypeId,
@@ -494,6 +513,11 @@ export default {
       })
     },
     addProductType() {
+      if(this.productTypeForm.TypeName == "") {
+        this.$message.error("请填写团购活动类型");
+        
+        return;
+      }
       merchantApi.createProductType(this.productTypeForm).then(res => {
         if(res.status == 401) {
           identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
@@ -544,6 +568,12 @@ export default {
       })
     },
     delProductType() {
+      if(this.delProductTypeId == "") {
+        this.$message.error("请先选择需要删除的团购产品类型");
+
+        return
+      }
+
       merchantApi.getGBProductsByProductTypeId(this.selectedProductType).then(res => {
         if(res.status == 401) {
           identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
@@ -714,5 +744,5 @@ export default {
   @import '../../../less/formEle';
   @import '../../../less/ele-ui';
 
-  @list_item_height : 10rem;
+  @list_item_height : 11rem;
 </style>

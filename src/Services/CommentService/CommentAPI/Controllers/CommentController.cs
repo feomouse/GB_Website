@@ -116,5 +116,14 @@ namespace GB_Project.Services.CommentService.CommentAPI.Controller
     {
       return Ok(_query.GetUserCommentCountByShopId(shopId));
     }
+
+    [HttpPost]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [Route("getReplyComments")]
+    public ActionResult GetReplyComments([FromBody] List<string> commentIds)
+    {
+      return Ok(_query.GetReplyCommentsByCommentIds(commentIds));
+    }
   }
 }

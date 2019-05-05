@@ -14,5 +14,7 @@ namespace GB_Project.Services.CommentService.CommentAPI.CommentQuery
     ReplyComment GetReplyCommentByCommentId(string commentId);
 
     int GetUserCommentCountByShopId(string shopId);
+
+    List<ReplyComment> GetReplyCommentsByCommentIds(List<string> commentIds);
   }
 }

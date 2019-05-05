@@ -66,3 +66,11 @@ export const getReplyCommentByCommentId = (commentId) => {
     return resFail;
   })
 }
+
+export const getReplyCommentsByCommentIds = (commentIds) => {
+  return Vue.http.post('/comment/getReplyComments', commentIds).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}

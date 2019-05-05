@@ -64,5 +64,16 @@ namespace GB_Project.Services.CommentService.CommentInfrastructrue.Repository
     {
       return _context.UserComments.Where(u => u.ShopId.ToString() == shopId).ToList().Count;
     }
+
+    public List<ReplyComment> GetReplyCommentsByCommentIds(List<string> commentIds)
+    {
+      List<ReplyComment> rcomments = new List<ReplyComment>();
+
+      foreach(string i in commentIds)
+      {
+        rcomments.Add(_context.ReplyComments.Where(r => r.CommentId.ToString() == i).FirstOrDefault());
+      }
+      return rcomments;
+    }
   }
 }

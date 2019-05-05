@@ -21,5 +21,7 @@ namespace GB_Project.Services.CommentService.CommentDomin.AggregateModel
     bool SetCommentIsReply(string commentId);
 
     int GetUserCommentCountByShopId(string shopId);
+
+    List<ReplyComment> GetReplyCommentsByCommentIds(List<string> commentIds);
   }
 }

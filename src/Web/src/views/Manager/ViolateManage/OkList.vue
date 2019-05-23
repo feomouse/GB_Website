@@ -32,6 +32,12 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :total="10"
+      current-change="changeList">
+    </el-pagination>
     <el-dialog title="加入黑名单" :visible.sync="showAddToBlackDialog" style="text-align:left;">
       <div>确认将{{selectedItemName}}加入黑名单?</div>
       <div style="margin-top: 2rem;">原因: <el-input v-model="vioMemberData.Detail" placeholder="请输入加入黑名单原因"></el-input></div>
@@ -183,6 +189,54 @@ export default{
       } else if (role == 'merchant') {
         this.okList = []
         merchantApi.getMerchantBasics(1).then(res => {
+          if(res.status != 200) this.$message.error();
+
+          else this.merchantList = res.body;
+
+          return
+        }).then(() => {
+          for(let i of this.merchantList) {
+            this.merchantIdList.push({
+              "Id": i.authPkId
+            });
+          }
+          merchantApi.getMerchantsName(this.merchantIdList).then(res => {
+            if(res.status != 200) this.$message.error("出错");
+
+            else {
+              this.merchantNameList = res.body
+              this.okList = [];
+              for(let i of this.merchantNameList)
+              {
+                this.okList.push({
+                  'name': i
+                })
+              }
+            }
+          })
+        })
+      }
+    },
+    changeList(curPage) {
+      if(this.selectedRole == "customer") {
+        this.okList = []
+        customerApi.getCustomers(curPage).then(res => {
+          if(res.status != 200) this.$message.error();
+
+          else {
+            this.customerList = res.body;
+
+            for(let i of this.customerList)
+            {
+              this.okList.push({
+                'name': i.email
+              })
+            }
+          }
+        })
+      } else if(this.selectedRole == "merchant") {
+        this.okList = []
+        merchantApi.getMerchantBasics(curPage).then(res => {
           if(res.status != 200) this.$message.error();
 
           else this.merchantList = res.body;

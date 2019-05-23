@@ -15,6 +15,12 @@
         width="180">
       </el-table-column>
     </el-table>
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :total="10"
+      current-change="changeList">
+    </el-pagination>
   </div>
 </template>
 <script>
@@ -44,6 +50,19 @@ export default {
     })
   },
   methods: {
+    changeList(curPage) {
+      managerApi.getViolateUsers(curPage).then(res => {
+        if(res.status != 200) this.$message.error();
+
+        else {
+          this.violateList = res.body
+
+          for(let i = 0; i < this.violateList.length; i++) {
+            this.violateList[i].role = this.violateList[i].role == 1 ? "顾客" : "商户";
+          }
+        }
+      })
+    }
   }
 }
 </script>

@@ -17,7 +17,12 @@ namespace GB_Project.Services.CommentService.CommentAPI.Application.CommandsHand
     }
     public Task<int> Handle (AddReplyCommentCommand command, CancellationToken ct)
     {
-      ReplyComment RComment = new ReplyComment(command.Reply, Convert.ToDateTime(command.Date));
+      DateTime dt = DateTime.Now;
+      if(!DateTime.TryParse(command.Date, out dt))
+      {
+        dt = DateTime.Now;
+      }
+      ReplyComment RComment = new ReplyComment(command.Reply, dt);
 
       RComment.SetUserComment(_repo.GetUserCommentByCommentId(command.CommentId));
 

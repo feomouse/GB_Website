@@ -1,7 +1,7 @@
 import Vue from 'vue';
 
 export const addUserComment = (userComment) => {
-  return Vue.http.post('/comment/addUserComment', userComment, resSuccess => {
+  return Vue.http.post('comment/addUserComment', userComment, resSuccess => {
     return resSuccess;
   }, resFail => {
     return resFail;
@@ -9,7 +9,7 @@ export const addUserComment = (userComment) => {
 }
 
 export const addReplyComment = (replyComment) => {
-  return Vue.http.post('/comment/addReplyComment', replyComment, resSuccess => {
+  return Vue.http.post('comment/addReplyComment', replyComment, resSuccess => {
     return resSuccess;
   }, resFail => {
     return resFail;
@@ -17,7 +17,7 @@ export const addReplyComment = (replyComment) => {
 }
 
 export const getUserCommentByOrderId = (orderId) => {
-  return Vue.http.get('/comment/getUserCommentByOrderId', {
+  return Vue.http.get('comment/getUserCommentByOrderId', {
     headers: {
       'orderId': orderId
     }
@@ -29,7 +29,7 @@ export const getUserCommentByOrderId = (orderId) => {
 }
 
 export const getUserCommentsByShopId = (shopId, page) => {
-  return Vue.http.get('/comment/getUserCommentsByShopId', {
+  return Vue.http.get('comment/getUserCommentsByShopId', {
     headers: {
       'shopId': shopId,
     },
@@ -44,7 +44,7 @@ export const getUserCommentsByShopId = (shopId, page) => {
 }
 
 export const getUserCommentCount = (shopId) => {
-  return Vue.http.get('/comment/getUserCommentCount', {
+  return Vue.http.get('comment/getUserCommentCount', {
     headers: {
       'shopId': shopId
     }
@@ -68,7 +68,7 @@ export const getReplyCommentByCommentId = (commentId) => {
 }
 
 export const getReplyCommentsByCommentIds = (commentIds) => {
-  return Vue.http.post('/comment/getReplyComments', commentIds).then(resSuccess => {
+  return Vue.http.post('comment/getReplyComments', commentIds).then(resSuccess => {
     return resSuccess
   }, resFail => {
     return resFail

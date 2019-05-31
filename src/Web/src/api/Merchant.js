@@ -1,7 +1,7 @@
 import Vue from 'vue';
 
 export const attachShop = (body) => {
-  return Vue.http.post('/merchant/AttachShop', body).then(responseSuccess => {
+  return Vue.http.post('merchant/AttachShop', body).then(responseSuccess => {
     return responseSuccess.status;
   }, responseFail => {
     return responseFail.status;
@@ -9,7 +9,7 @@ export const attachShop = (body) => {
 }
 
 export const addIdentity = (body) => {
-  return Vue.http.post('/merchant/AddIdentity', body).then(responseSuccess => {
+  return Vue.http.post('merchant/AddIdentity', body).then(responseSuccess => {
     return responseSuccess.status;
   }, responseFail => {
     return responseFail.status;
@@ -17,7 +17,7 @@ export const addIdentity = (body) => {
 }
 
 export const createShop = (body) => {
-  return Vue.http.post('/shop/Create', body).then(responseSuccess => {
+  return Vue.http.post('shop/Create', body).then(responseSuccess => {
     return {body : responseSuccess.body, status : responseSuccess.status} 
   }, responseFail => {
     return {status: responseFail.status}
@@ -25,7 +25,7 @@ export const createShop = (body) => {
 }
 
 export const getShopTypies = () => {
-  return Vue.http.get('/shop/ShopTypies').then(responseSuccess => {
+  return Vue.http.get('shop/ShopTypies').then(responseSuccess => {
     return responseSuccess
   }, responseFail => {
     return responseFail
@@ -33,7 +33,7 @@ export const getShopTypies = () => {
 }
 
 export const updateShop = (newShop) => {
-  return Vue.http.post('/shop/EditShop', newShop).then(resSucess => {
+  return Vue.http.post('shop/EditShop', newShop).then(resSucess => {
     return resSucess;
   }, resFail => {
     return resFail;
@@ -41,7 +41,7 @@ export const updateShop = (newShop) => {
 }
 
 export const createProductType = (newType) => {
-  return Vue.http.post('/shop/productType/add', newType).then(resSuccess => {
+  return Vue.http.post('shop/productType/add', newType).then(resSuccess => {
     return resSuccess;
   }, resFail => {
     return resFail;
@@ -49,7 +49,7 @@ export const createProductType = (newType) => {
 }
 
 export const getProductTypeByShopName = (shopName, province, city) => {
-  return Vue.http.get('/shop/productType/getProductTypes', {
+  return Vue.http.get('shop/productType/getProductTypes', {
     params: {'shopName': shopName, 'province': province, 'city': city}
   }).then(resSuccess => {
     return resSuccess;
@@ -59,7 +59,7 @@ export const getProductTypeByShopName = (shopName, province, city) => {
 }
 
 export const deleteProductType = (productTypeId) => {
-  return Vue.http.delete('/shop/productType/delete',{
+  return Vue.http.delete('shop/productType/delete',{
     body: {
       'ProductTypePkId': productTypeId
     }
@@ -71,7 +71,7 @@ export const deleteProductType = (productTypeId) => {
 }
 
 export const addGBProduct = (GBProduct) => {
-  return Vue.http.post('/shop/GBProduct/add', GBProduct).then(resSuccess => {
+  return Vue.http.post('shop/GBProduct/add', GBProduct).then(resSuccess => {
     return resSuccess;
   }, resFail => {
     return resFail;
@@ -79,7 +79,7 @@ export const addGBProduct = (GBProduct) => {
 }
 
 export const getGBProductByShopName = (shopName, province, city) => {
-  return Vue.http.get('/shop/GBProduct/GBProducts', {
+  return Vue.http.get('shop/GBProduct/GBProducts', {
     params: {
       'shopName': shopName,
       'province': province,
@@ -93,7 +93,7 @@ export const getGBProductByShopName = (shopName, province, city) => {
 }
 
 export const getGBProductKeyByProductName = (productName) => {
-  return Vue.http.get('/shop/GBProduct/GBProductKey', {
+  return Vue.http.get('shop/GBProduct/GBProductKey', {
     params: {
       'productName': productName
     }
@@ -105,7 +105,7 @@ export const getGBProductKeyByProductName = (productName) => {
 } 
 
 export const updateGBProduct = (gbProduct) => {
-  return Vue.http.post('/shop/GBProduct/Update', gbProduct).then(resSuccess => {
+  return Vue.http.post('shop/GBProduct/Update', gbProduct).then(resSuccess => {
     return resSuccess;
   }, resFail => {
     return resFail;
@@ -113,7 +113,7 @@ export const updateGBProduct = (gbProduct) => {
 }
 
 export const deleteGBProduct = (gbProductName) => {
-  return Vue.http.delete('/shop/GBProduct/Delete', {
+  return Vue.http.delete('shop/GBProduct/Delete', {
     params: {
       gbProduct: gbProductName
     }
@@ -125,7 +125,7 @@ export const deleteGBProduct = (gbProductName) => {
 }
 
 export const getMerchantBasicByMerchantId = (merchantId) => {
-  return Vue.http.get('/merchant/GetMerchantBasic', {
+  return Vue.http.get('merchant/GetMerchantBasic', {
     headers: {
       'merchantId': merchantId
     }
@@ -137,7 +137,7 @@ export const getMerchantBasicByMerchantId = (merchantId) => {
 }
 
 export const getMerchantBasicListNotChecked = (page) => {
-  return Vue.http.get('/merchant/GetMerchantBasicListIsNotChecked', {
+  return Vue.http.get('merchant/GetMerchantBasicListIsNotChecked', {
     params: {
       'page': page
     }
@@ -149,7 +149,7 @@ export const getMerchantBasicListNotChecked = (page) => {
 }
 
 export const getGBProductsByProductTypeId = (productTypeId) => {
-  return Vue.http.get('/shop/GBProduct/ProductType/GBProducts', {
+  return Vue.http.get('shop/GBProduct/ProductType/GBProducts', {
     headers: {
       'productTypeId': productTypeId
     }
@@ -161,7 +161,7 @@ export const getGBProductsByProductTypeId = (productTypeId) => {
 }
 
 export const checkIdentity = (body) => {
-  return Vue.http.post('/merchant/CheckIdentity', body).then(resSuccess => {
+  return Vue.http.post('merchant/CheckIdentity', body).then(resSuccess => {
     return resSuccess;
   }, resFail => {
     return resFail;
@@ -169,7 +169,7 @@ export const checkIdentity = (body) => {
 }
 
 export const ifSetGBService = (merchantId) => {
-  return Vue.http.get('/shop/IfSetGB', {
+  return Vue.http.get('shop/IfSetGB', {
     headers: {
       'merchantId': merchantId
     }
@@ -181,7 +181,7 @@ export const ifSetGBService = (merchantId) => {
 }
 
 export const getMerchantsName = (merchantIdList) => {
-  return Vue.http.post('/identity/merchantInfoList', merchantIdList).then(resSuccess => {
+  return Vue.http.post('identity/merchantInfoList', merchantIdList).then(resSuccess => {
     return resSuccess
   }, resFail => {
     return resFail
@@ -189,7 +189,7 @@ export const getMerchantsName = (merchantIdList) => {
 } 
 
 export const ifWriteIdentity = (merchantId) => {
-  return Vue.http.get('/merchant/IfWriteIdentity', {
+  return Vue.http.get('merchant/IfWriteIdentity', {
     headers: {
       'merchantId' : merchantId
     }
@@ -201,7 +201,7 @@ export const ifWriteIdentity = (merchantId) => {
 }
 
 export const getMerchantIdentityByMerchantId = (merchantId) => {
-  return Vue.http.get('/merchant/GetMerchantIdentityByMerchantId', {
+  return Vue.http.get('merchant/GetMerchantIdentityByMerchantId', {
     headers: {
       'merchantId': merchantId
     }
@@ -213,7 +213,7 @@ export const getMerchantIdentityByMerchantId = (merchantId) => {
 }
 
 export const getMerchantBasics = (page) => {
-  return Vue.http.get('/merchant/GetMerchantList', {
+  return Vue.http.get('merchant/GetMerchantList', {
     params: {
       "page": page
     }

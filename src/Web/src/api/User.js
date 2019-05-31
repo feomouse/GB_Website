@@ -3,7 +3,7 @@ import Vue from 'vue';
 export const getUserBasicMessage = (UserId) => {
 /*   var body = JSON.stringify(UserId); */
 
-  return Vue.http.get('/user/userMessage', {
+  return Vue.http.get('user/userMessage', {
       headers: {
         'Content-Type': 'application/json',
         'UserId': UserId
@@ -16,7 +16,7 @@ export const getUserBasicMessage = (UserId) => {
 }
 
 export const setCustomerUserName = (body) => {
-  return Vue.http.post('/user/SetUserName', body, {
+  return Vue.http.post('user/SetUserName', body, {
     headers: {
       'Content-Type': 'application/json'
     }
@@ -28,7 +28,7 @@ export const setCustomerUserName = (body) => {
 }
 
 export const setCustomerAddress = (body) => {
-  return Vue.http.post('/user/SetAddress', body, {
+  return Vue.http.post('user/SetAddress', body, {
     headers: {
       'Content-Type': 'application/json'
     }
@@ -40,7 +40,7 @@ export const setCustomerAddress = (body) => {
 }
 
 export const setCustomerImg = (userId, fileName) => {
-  return Vue.http.post('/user/SetImg', {
+  return Vue.http.post('user/SetImg', {
     'UserId': userId,
     'FileName': fileName
   }).then(responseSuccess => {
@@ -51,7 +51,7 @@ export const setCustomerImg = (userId, fileName) => {
 }
 
 export const getCustomers = (page) => {
-  return Vue.http.get("/user/GetUsers", {
+  return Vue.http.get("user/GetUsers", {
     params: {
       'page': page
     }

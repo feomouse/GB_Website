@@ -1,8 +1,10 @@
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
+  //mode: "production",
   mode: "development",
   entry: {
     index: "./src/main"
@@ -13,7 +15,7 @@ module.exports = {
 
     filename: "[name].js"
   },
-  devtool: 'inline-source-map',
+  //devtool: 'source-map',
 
   module: {
     rules: [
@@ -80,14 +82,19 @@ module.exports = {
       filename: "index.html",
       template: "index.html",
       inject: 'true'
+    }),
+    new UglifyJSPlugin({
+      sourceMap: true
     })
   ],
   resolve: {
     extensions: [".js", ".vue", ".less"],
     alias: {
       'vue$': 'vue/dist/vue.esm.js'
+      //'vue$': 'vue/dist/vue.min.js'
     }
   },
+  
   devServer: {
     contentBase: path.join(__dirname, "../../"),
     compress: true,
@@ -96,7 +103,7 @@ module.exports = {
     hot: true,
     proxy: {
       "/": {
-        target: "https://localhost:5000/",
+        target: "http://localhost:5000/",
         secure: false
       }
     }

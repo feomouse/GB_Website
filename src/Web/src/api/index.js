@@ -4,6 +4,9 @@ import store from '../store/index';
 
 Vue.use(Resource);
 
+//Vue.http.options.root = '/api'
+//Vue.resource('/api');
+
 Vue.http.interceptors.push(function (req) {
 /*   if (req.url != "/Customer/SignUp" && req.url != "/Merchant/SignUp" &&
     req.url != "/Customer/SignIn" && req.url != "/Merchant/SignIn") { */

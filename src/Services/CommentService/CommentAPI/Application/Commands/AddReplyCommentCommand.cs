@@ -9,9 +9,9 @@ namespace GB_Project.Services.CommentService.CommentAPI.Application.Commands
 
     public string Reply { get; set; }
 
-    public DateTime Date { get; set; }
+    public string Date { get; set; }
 
-    public AddReplyCommentCommand(string commentId, string reply, DateTime date)
+    public AddReplyCommentCommand(string commentId, string reply, string date)
     {
       CommentId = commentId;
       Reply = reply;

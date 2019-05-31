@@ -14,9 +14,9 @@ namespace GB_Project.Services.ManagerService.Models.EntityTypeConfiguration
 
       builder.HasIndex(b => b.Name).IsUnique();
 
-      builder.Property(b => b.Name).HasColumnType("nvarchar(10)");
+      builder.Property(b => b.Name).HasColumnType("nvarchar(30)");
 
-      builder.Property(b => b.Date).HasColumnType("datetime");
+      builder.Property(b => b.Date).HasColumnType("date");
 
       builder.Property(b => b.Detail).HasColumnType("nvarchar(150)");
 

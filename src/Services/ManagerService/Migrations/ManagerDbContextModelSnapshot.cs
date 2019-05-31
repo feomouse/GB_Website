@@ -25,7 +25,7 @@ namespace ManagerService.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime");
+                        .HasColumnType("date");
 
                     b.Property<string>("Detail")
                         .HasColumnType("nvarchar(150)");
@@ -34,7 +34,7 @@ namespace ManagerService.Migrations
                         .HasColumnType("Uniqueidentifier");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("Role")
                         .HasColumnType("int");

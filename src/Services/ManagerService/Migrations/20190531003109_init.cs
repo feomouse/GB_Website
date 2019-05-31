@@ -16,8 +16,8 @@ namespace ManagerService.Migrations
                 columns: table => new
                 {
                     PkId = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(10)", nullable: true),
-                    Date = table.Column<DateTime>(type: "datetime", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(30)", nullable: true),
+                    Date = table.Column<DateTime>(type: "date", nullable: false),
                     Detail = table.Column<string>(type: "nvarchar(150)", nullable: true),
                     Role = table.Column<int>(type: "int", nullable: false),
                     ManagerId = table.Column<Guid>(type: "Uniqueidentifier", nullable: false)

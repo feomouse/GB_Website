@@ -7,7 +7,7 @@ namespace GB_Project.Services.CommentService.CommentAPI.Application.Commands
   {
     public string Comment { get; set; }
 
-    public DateTime Date { get; set; }
+    public string Date { get; set; }
 
     public int Stars { get; set; }
 
@@ -21,7 +21,7 @@ namespace GB_Project.Services.CommentService.CommentAPI.Application.Commands
 
     public string UserName { get; set; }
 
-    public AddUserCommentCommand(string comment, DateTime date, int stars,
+    public AddUserCommentCommand(string comment, string date, int stars,
                                  string img, string orderId, string productId, string shopId, string userName)
     {
       Comment = comment;

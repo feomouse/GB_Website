@@ -19,12 +19,17 @@ namespace GB_Project.Services.ManagerService.Application.CommandHandlers
     }
     public Task<bool> Handle(SetViolateUserCommand command, CancellationToken cancellaitonToken)
     {
+      DateTime dt = DateTime.Now;
+      if(!DateTime.TryParse(command.Date, out dt))
+      {
+        dt = DateTime.Now;
+      }
       if(_query.GetViolateUserByUserName(command.UserName) != null)
       {
         return Task.FromResult(false);
       }
 
-      else return Task.FromResult(_repo.SetViolateUser(new ViolateUser(command.UserName, command.Date, command.Detail,
+      else return Task.FromResult(_repo.SetViolateUser(new ViolateUser(command.UserName, dt, command.Detail,
                                            command.Role, new Guid(command.ManagerId))));
     }
   }

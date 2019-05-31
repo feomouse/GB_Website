@@ -1,7 +1,7 @@
 import Vue from 'vue';
 
 export const getViolateUsers = (page) => {
-  return Vue.http.get('/Manager/ViolateUsers', {
+  return Vue.http.get('Manager/ViolateUsers', {
     params: {
       'page': page
     }
@@ -13,7 +13,7 @@ export const getViolateUsers = (page) => {
 }
 
 export const setViolateUser = (vioUser) => {
-  return Vue.http.post('/manager/SetViolateUser',vioUser).then(resSuccess => {
+  return Vue.http.post('manager/SetViolateUser',vioUser).then(resSuccess => {
     return resSuccess
   }, resFail => {
     return resFail
@@ -21,7 +21,7 @@ export const setViolateUser = (vioUser) => {
 }
 
 export const ifViolateUser = (userName) => {
-  return Vue.http.get('/manager/IfInVioList',{
+  return Vue.http.get('manager/IfInVioList',{
     params: {
       'userName': userName
     }

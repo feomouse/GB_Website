@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ManagerService.Migrations
 {
     [DbContext(typeof(ManagerDbContext))]
-    [Migration("20190429175615_init")]
+    [Migration("20190531003109_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,7 +27,7 @@ namespace ManagerService.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime");
+                        .HasColumnType("date");
 
                     b.Property<string>("Detail")
                         .HasColumnType("nvarchar(150)");
@@ -36,7 +36,7 @@ namespace ManagerService.Migrations
                         .HasColumnType("Uniqueidentifier");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("Role")
                         .HasColumnType("int");

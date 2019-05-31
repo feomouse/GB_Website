@@ -17,7 +17,12 @@ namespace GB_Project.Services.CommentService.CommentAPI.Application.CommandsHand
     }
     public Task<int> Handle(AddUserCommentCommand command, CancellationToken ct)
     {
-      return Task.FromResult(_repo.AddUserComment(new UserComment(command.Comment, command.Date, 
+      DateTime dt = DateTime.Now;
+      if(!DateTime.TryParse(command.Date, out dt))
+      {
+        dt = DateTime.Now;
+      }
+      return Task.FromResult(_repo.AddUserComment(new UserComment(command.Comment, dt, 
                            command.Stars, command.Img, new Guid(command.OrderId), 
                            new Guid(command.ProductId), new Guid(command.ShopId), command.UserName)));
     }

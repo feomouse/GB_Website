@@ -7,7 +7,7 @@ namespace GB_Project.Services.ManagerService.Application.Commands
   {
     public string UserName { get; set; }
 
-    public DateTime Date { get; set; }
+    public string Date { get; set; }
 
     public string Detail { get; set; }
 
@@ -15,7 +15,7 @@ namespace GB_Project.Services.ManagerService.Application.Commands
 
     public string ManagerId { get; set; }
 
-    public SetViolateUserCommand(string userName, DateTime date, string detail,
+    public SetViolateUserCommand(string userName, string date, string detail,
                                  int role, string managerId)
     {
       UserName = userName;

@@ -1,7 +1,7 @@
 import Vue from 'vue';
 
 export const GetShopTypes = () => {
-  return Vue.http.get('/shop/ShopTypies').then(resSuccess => {
+  return Vue.http.get('shop/ShopTypies').then(resSuccess => {
     return resSuccess;
   }, resFail => {
     return resFail;
@@ -9,7 +9,7 @@ export const GetShopTypes = () => {
 }
 
 export const GetShopInfoByMerchantId = (merchantId) => {
-  return Vue.http.get('/shop/ShopInfo', {
+  return Vue.http.get('shop/ShopInfo', {
     headers: {
       'Content-Type': 'application/json',
       'merchantId': merchantId
@@ -22,7 +22,7 @@ export const GetShopInfoByMerchantId = (merchantId) => {
 }
 
 export const GetShopInfoByShopNameAndCity = (shopName, province, city) => {
-  return Vue.http.get('/shop/SearchShop', {
+  return Vue.http.get('shop/SearchShop', {
     params: {
       name : shopName,
       'province': province,
@@ -36,7 +36,7 @@ export const GetShopInfoByShopNameAndCity = (shopName, province, city) => {
 }
 
 export const GetShopBasicListByShopType = (shopType) => {
-  return Vue.http.get('/shop/ShopBasicList', {
+  return Vue.http.get('shop/ShopBasicList', {
     params: {
       'shopType': shopType
     }
@@ -48,7 +48,7 @@ export const GetShopBasicListByShopType = (shopType) => {
 }
 
 export const GetShopListByShopTypeAndCity = (province, city, shopType, page) => {
-  return Vue.http.get('/shop/ShopBasicList', {
+  return Vue.http.get('shop/ShopBasicList', {
     params: {
       'province': province,
       'city': city,
@@ -63,7 +63,7 @@ export const GetShopListByShopTypeAndCity = (province, city, shopType, page) => 
 }
 
 export const GetShopListByCity = (province, city) => {
-  return Vue.http.get('/shop/ShopListOfCity', {
+  return Vue.http.get('shop/ShopListOfCity', {
     params: {
       'province': province,
       'city': city
@@ -76,7 +76,7 @@ export const GetShopListByCity = (province, city) => {
 }
 
 export const SetGroupBuying = (shopId) => {
-  return Vue.http.post('/shop/SetGroupBuying', {
+  return Vue.http.post('shop/SetGroupBuying', {
     'ShopId': shopId
   }).then(resSuccess => {
     return resSuccess;
@@ -86,7 +86,7 @@ export const SetGroupBuying = (shopId) => {
 }
 
 export const GetShopsCount = (province, city, shopType) => {
-  return Vue.http.get('/shop/TotalShopsCount', {
+  return Vue.http.get('shop/TotalShopsCount', {
     params: {
       'province': province,
       'city': city,
@@ -100,7 +100,7 @@ export const GetShopsCount = (province, city, shopType) => {
 }
 
 export const GetShopListByShopIds = (shopIdList) => {
-  return Vue.http.post('/shop/ShopListByShopIdList', shopIdList).then(resSuccess => {
+  return Vue.http.post('shop/ShopListByShopIdList', shopIdList).then(resSuccess => {
     return resSuccess
   }, resFail => {
     return resFail

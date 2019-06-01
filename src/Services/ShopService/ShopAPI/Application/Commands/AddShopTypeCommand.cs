@@ -5,19 +5,17 @@ using System;
 namespace GB_Project.Services.ShopService.ShopAPI.Application.Commands
 {
   [DataContract]
-  public class AddProductTypeCommand : IRequest<int>
+  public class AddShopTypeCommand : IRequest<int>
   {
-     
-    [DataMember]
-    public string ShopId { get; private set; }
-
     [DataMember]
     public string TypeName { get; private set; }
 
-    public AddProductTypeCommand ( string shopId, string typeName)
+    public string Img { get; private set; }
+
+    public AddShopTypeCommand ( string typeName, string img)
     {
-      ShopId = shopId;
       TypeName = typeName;
+      Img = img;
     }
   }
 }

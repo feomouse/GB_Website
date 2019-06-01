@@ -1,6 +1,9 @@
 var state = {
   merchantId : "",
-  merchantName : "" 
+  merchantName : "",
+  merchantShopId: "",
+  merchantShops: [],
+  merchantCurrentShop: {}
 };
 
 var getters = {
@@ -9,6 +12,15 @@ var getters = {
   },
   getMerchantName: function(state) {
     return state.merchantName
+  },
+  getMerchantShopId: function(state) {
+    return state.merchantShopId
+  },
+  getMerchantShops: function(state) {
+    return state.merchantShops
+  },
+  getMerchantCurrentShop: function(state) {
+    return state.merchantCurrentShop
   }
 }
 
@@ -18,6 +30,15 @@ var mutations = {
   },
   setMerchantName : function(state, name) {
     state.merchantName = name
+  },
+  setMerchantShopId: function(state, shopId) {
+    state.merchantShopId = shopId
+  },
+  setMerchantShops: function(state, shops) {
+    state.merchantShops = shops
+  },
+  setMerchantCurrentShop: function(state, shop) {
+    state.merchantCurrentShop = shop
   }
 }
 
@@ -27,6 +48,15 @@ var actions = {
   },
   commitSetMerchantUserName : function({commit}, name) {
     commit('setMerchantName', name)
+  },
+  commitSetMerchantShopId : function({commit}, shopId) {
+    commit('setMerchantShopId', shopId)
+  },
+  commitSetMerchantShops: function({commit}, shops) {
+    commit('setMerchantShops', shops)
+  },
+  commitSetMerchantCurrentShop: function({commit}, shop) {
+    commit('setMerchantCurrentShop', shop)
   }
 }
 

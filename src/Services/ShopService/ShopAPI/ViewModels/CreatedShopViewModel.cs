@@ -4,12 +4,9 @@ namespace GB_Project.Services.ShopService.ShopAPI.ViewModels
   {
     public string PkId { get; set; }
 
-    public string RegisterId { get; set; }
-
-    public CreatedShopViewModel(string pkId, string registerId)
+    public CreatedShopViewModel(string pkId)
     {
       PkId = pkId;
-      RegisterId = registerId;
     }
   }
 }

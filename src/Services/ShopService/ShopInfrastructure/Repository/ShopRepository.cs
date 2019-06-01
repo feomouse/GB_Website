@@ -25,16 +25,35 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         }
       }
 
-      public Dictionary<int, string> GetShopTypeInfo()
+      public int CreateShopType(ShopType shopType)
       {
-         var dic = new Dictionary<int, string>();
+         _context.shopTypes.Add(shopType);
 
-         dic.Add(ShopType.beauty.Id, ShopType.beauty.Name);
-         dic.Add(ShopType.entertain.Id, ShopType.entertain.Name);
-         dic.Add(ShopType.food.Id, ShopType.food.Name);
-         dic.Add(ShopType.livingPlace.Id, ShopType.livingPlace.Name);
+         return _context.SaveChanges();
+      }
 
-         return dic;
+      public IList<ShopType> GetShopTypeInfo()
+      {
+         return _context.shopTypes.ToList();
+      }
+
+      public ShopType EditShopType(ShopType newShopType)
+      {
+        var type = _context.shopTypes.Where(st => st.PkId == newShopType.PkId).FirstOrDefault();
+        type.SetName(newShopType.Name);
+        type.SetImg(newShopType.Img);
+
+        if(_context.SaveChanges() != 0)
+        {
+          return newShopType;
+        }
+
+        return null;
+      }
+
+      public ShopType GetShopTypeByPkId(string pkId)
+      {
+        return _context.shopTypes.Where(st => st.PkId.ToString() == pkId).FirstOrDefault();
       }
 
       public int CreateShop(Shop newShop)
@@ -42,6 +61,30 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         _context.shops.Add(newShop);
 
         return _context.SaveChanges();
+      }
+      
+      public int AddShopToShopType(string shopTypeId, Shop shop)
+      {
+        _context.shopTypes.Where(st => st.PkId.ToString() == shopTypeId).FirstOrDefault().Shops.Add(shop);
+
+        return _context.SaveChanges();
+      }
+
+      public IList<Shop> GetShopsByNameAndCity(string shopName, string province, string city)
+      {
+        return _context.shops.Where(s => (s.Name.Contains(shopName) && s.Province == province && s.City == city)).ToList();
+      }
+
+      public IList<Shop> GetShopsByMerchantIds(IList<string> merchantIds)
+      {
+        IList<Shop> shops = new List<Shop>();
+
+        foreach(var i in merchantIds)
+        {
+          shops.Add(_context.shops.Where(s => s.RegisterId.ToString() == i).FirstOrDefault());
+        }
+
+        return shops;
       }
 
       public Shop GetShopByName(string shopName)
@@ -59,7 +102,7 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         return _context.shops.Where(s => s.PkId.ToString() == shopId).FirstOrDefault();
       }
 
-      public List<Shop> GetShopListByShopTypeAndCity(string province, string city, int shopType, int page)
+      public List<Shop> GetShopListByShopTypeAndCity(string province, string city, ShopType shopType, int page)
       {
         return _context.shops.Where(s => (s.Type == shopType && s.Province == province && s.City == city)).Skip((page-1)*10).Take(10).ToList();
       }
@@ -159,22 +202,6 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         return _context.SaveChanges();
       }
 
-      public string UploadShopImg(Shop shop, string imgName, byte[] imgData)
-      {
-          File.WriteAllBytes("D:\\nginx-1.12.2\\nginx-1.12.2\\IMGS\\shops\\" + imgName, imgData);
-
-          string imgLocation = "http://localhost:50020/ShopImgs/" + imgName;
-
-          shop.SetPic(imgLocation);
-
-          if(_context.SaveChanges() == 0)
-          {
-            return "";
-          }
-
-          return imgLocation;
-      }
-
       public List<ProductType> GetShopProductTypesByShopName(string shopName, string province, string city)
       {
         var shop = _context.shops.Where(b => (b.Name == shopName && b.Province == province && b.City == city)).FirstOrDefault();
@@ -201,7 +228,6 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         oldShop.SetLocation(shop.Location);
         oldShop.SetType(shop.Type);
         oldShop.SetTel(shop.Tel);
-        oldShop.SetPic(shop.Pic);
 
         _context.SaveChanges();
 
@@ -242,9 +268,21 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         return false;
       }
 
-      public int GetShopsTotalCount(string province, string city, int shopType)
+      public int GetShopsTotalCount(string province, string city, ShopType shopType)
       {
         return _context.shops.Where(s => (s.Province == province && s.City == city && s.Type == shopType)).ToList().Count;
+      }
+
+      public int SetMerchantToShop(Guid shopId, Guid merchantId)
+      {
+        _context.shops.Where(s => s.PkId.ToString() == shopId.ToString()).FirstOrDefault().SetRegisterId(merchantId);
+
+        return _context.SaveChanges();
+      }
+
+      public IList<Shop> GetShopsByMerchantId(string merchantId)
+      {
+        return _context.shops.Where(s => s.RegisterId.ToString() == merchantId).ToList();
       }
     }
 }

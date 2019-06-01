@@ -1,20 +1,18 @@
 using MediatR;
+using GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel;
 
 namespace GB_Project.Services.MerchantService.MerchantAPI.Application.Commands
 {
-  public class CheckIdentityCommand : IRequest<int>
+  public class BindShopCommand : IRequest<int>
   {
     public string MerchantId { get; set; }
 
     public string ShopId { get; set; }
 
-    public bool CheckResult { get; set; }
-
-    public CheckIdentityCommand(string merchantId, string shopId, bool checkResult)
+    public BindShopCommand(string merchantId, string shopId)
     {
       MerchantId = merchantId;
       ShopId = shopId;
-      CheckResult = checkResult;
     }
   }
 }

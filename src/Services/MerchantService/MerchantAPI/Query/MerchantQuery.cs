@@ -28,12 +28,12 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Query
       return _repo.GetMerchantIdentityByIdentityId(identityId);
     }
 
-    public List<MerchantBasic> GetMerchantBasicListNotChecked(int page)
+    public List<MerchantShop> GetMerchantShopListNotChecked(int page)
     {
-      return _repo.GetMerchantBasicListNotChecked(page);
+      return _repo.GetMerchantShopListNotChecked(page);
     }
 
-    public MerchantIdentity GetMerchantIdentityByMerchantId(string merchantId)
+    public IList<MerchantIdentity> GetMerchantIdentityByMerchantId(string merchantId)
     {
       return _repo.GetMerchantIdentityByMerchantId(merchantId);
     }
@@ -41,6 +41,21 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Query
     public List<MerchantBasic> GetMerchantBasics(int page)
     {
       return _repo.GetMerchantBasics(page);
+    }
+
+    public IList<MerchantShop> GetMerchantShops(string merchantId)
+    {
+      return _repo.GetMerchantShopList(new Guid(merchantId));
+    }
+
+    public MerchantShop GetMerchantShop(string merchantId, string shopId)
+    {
+      return _repo.GetMerchantShop(merchantId, shopId);
+    }
+
+    public MerchantIdentity GetMerchantIdentityByMIdAndSId(string merchantId, string shopId)
+    {
+      return _repo.GetMerchantIdentityByMIdAndSId(merchantId, shopId);
     }
   }
 }

@@ -8,25 +8,24 @@ using GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries;
 
 namespace GB_Project.Services.ShopService.ShopAPI.Application.CommandsHandler
 {
-    public class AddProductTypeCommandHandler : IRequestHandler<AddProductTypeCommand, int>
+    public class AddShopTypeCommandHandler : IRequestHandler<AddShopTypeCommand, int>
     {
       private IShopRepository _repository;
 
       private IShopQuery _query;
 
-      public AddProductTypeCommandHandler ( IShopRepository repository, IShopQuery query )
+      public AddShopTypeCommandHandler ( IShopRepository repository, IShopQuery query )
       {
         _repository = repository;
 
         _query = query;
       }
 
-      public Task<int> Handle(AddProductTypeCommand request, CancellationToken cancellationToken)
+      public Task<int> Handle(AddShopTypeCommand request, CancellationToken cancellationToken)
       {
-        var shop = _query.getShopByShopId(request.ShopId);
-        ProductType productType = new ProductType(shop, request.TypeName);
+        ShopType productType = new ShopType(request.TypeName, request.Img);
 
-        return Task.FromResult(_repository.CreateShopProductType(productType));      
+        return Task.FromResult(_repository.CreateShopType(productType));      
       }
     }
 }

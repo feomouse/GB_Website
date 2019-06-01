@@ -130,7 +130,7 @@ namespace MerchantAPI {
 
       var eventBusSubscriber = app.ApplicationServices.GetRequiredService<IEventBusSubscriber> ();
       eventBusSubscriber.Subscribe<MerchantRegisteredIntergrationEvent, MerchantRegisteredIntergrationEventHandler> ();
-      eventBusSubscriber.Subscribe<ShopIsCreatedIntergrationEvent, ShopIsCreatedIntergrationEventHandler>();
+      //eventBusSubscriber.Subscribe<ShopIsCreatedIntergrationEvent, ShopIsCreatedIntergrationEventHandler>();
     }
   }
 }

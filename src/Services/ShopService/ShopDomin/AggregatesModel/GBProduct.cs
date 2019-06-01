@@ -35,6 +35,8 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
     public ProductType ProductType { get; private set; } 
 
+    public List<GBProductImg> Imgs { get; private set; }
+
     public GBProduct () {
 
     }

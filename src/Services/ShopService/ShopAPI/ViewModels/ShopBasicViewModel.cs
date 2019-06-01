@@ -13,9 +13,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.ViewModels
 
     public string Location { get; set; }
 
-    public string Img { get; set; }
-
-    public ShopBasicViewModel(string pkId, string name, string province, string city, string district, string location, string img)
+    public ShopBasicViewModel(string pkId, string name, string province, string city, string district, string location)
     {
       PkId = pkId;
       Name = name;
@@ -23,7 +21,6 @@ namespace GB_Project.Services.ShopService.ShopAPI.ViewModels
       City = city;
       District = district;
       Location = location;
-      Img = img;
     }
   }
 }

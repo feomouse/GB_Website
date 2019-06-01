@@ -12,10 +12,6 @@ namespace GB_Project.Services.MerchantService.MerchantInfrastructure.EntityConfi
         builder.ToTable("MerchantBasic", schema: mySchema);
 
         builder.HasKey(c => c.AuthPkId);
-
-        builder.Property(b => b.ShopId).HasColumnType("uniqueidentifier");
-        
-        builder.Property(b => b.IsChecked).HasColumnType("bit");
       }
     }
 }

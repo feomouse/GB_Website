@@ -8,6 +8,22 @@ export const GetShopTypes = () => {
   })
 }
 
+export const AddShopTypes = (shopType) => {
+  return Vue.http.post('shop/AddShopType', shopType).then(resSuccess => {
+    return resSuccess;
+  }, resFail => {
+    return resFail
+  })
+}
+
+export const SetShopType = (shopType) => {
+  return Vue.http.post('shop/SetShopType', shopType).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}
+
 export const GetShopInfoByMerchantId = (merchantId) => {
   return Vue.http.get('shop/ShopInfo', {
     headers: {
@@ -25,6 +41,20 @@ export const GetShopInfoByShopNameAndCity = (shopName, province, city) => {
   return Vue.http.get('shop/SearchShop', {
     params: {
       name : shopName,
+      'province': province,
+      'city': city
+    }
+  }).then(successRes => {
+    return successRes;
+  }, errorRes => {
+    return errorRes;
+  })
+}
+
+export const GetShopsInfoByShopNameAndCity = (shopName, province, city) => {
+  return Vue.http.get('shop/GetShops', {
+    params: {
+      name: shopName,
       'province': province,
       'city': city
     }
@@ -106,3 +136,23 @@ export const GetShopListByShopIds = (shopIdList) => {
     return resFail
   })
 } 
+
+export const GetShopsByMerchantIds = (merchantIds) => {
+  return Vue.http.post('shop/GetShopsByMerchantIds', merchantIds).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}
+
+export const GetShopsByMerchantId = (merchantId) => {
+  return Vue.http.get('shop/GetShopsByMerchantId', {
+    headers: {
+      'merchantId': merchantId
+    }
+  }).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}

@@ -1,5 +1,34 @@
 <template>
   <div class="auto_ten">
+    <div>
+      <el-button type="primary" @click="goBindShop"  style="float: right;">绑定门店</el-button>
+      <el-button type="primary" @click="selectShopDialogShow = true" style="float: right;margin-right: 2rem;">选择门店</el-button>
+      <el-dialog title="选择门店" :visible.sync="selectShopDialogShow">
+        <el-row :gutter="20">
+          <el-col :span="6">
+            <el-select v-model="selectedShopId" placeholder="请选择门店" @change="selectedShopChange">
+              <el-option
+                v-for="item in merchantShops"
+                :key="item.pkId"
+                :label="item.name"
+                :value="item.pkId">
+              </el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="18">
+            <el-card style="text-align: left;">
+              <div>店名: {{selectedShop.name}}</div>
+              <div>地点: {{selectedShop.province + selectedShop.city + selectedShop.district + selectedShop.location}}</div>
+              <div>电话: {{selectedShop.tel}}</div>
+            </el-card>
+          </el-col>
+        </el-row>
+        <span slot="footer">
+          <el-button @click="selectShopDialogShow = false">取 消</el-button>
+          <el-button type="primary" @click="selectShop">提交</el-button>
+        </span>
+      </el-dialog>
+    </div>
     <div style="font-size: 2rem; border-bottom: 2px solid lightgray; color: lightgray;">门店基本信息</div>
     <div class="left-eight" style="text-align:left; background: #eff7f2; box-shadow: 3px 3px 3px lightgray; margin-top: 1rem;">
       <el-form label-width="100px">
@@ -81,17 +110,25 @@ import * as identityApi from '../../../api/Identity';
 export default {
   data() {
     return {
-      newShop: {
-
-      },
+      newShop: this.$store.getters.getMerchantCurrentShop,
       tempProvince: '',
       tempCity: '',
       tempDistrict: '',
       dataMap: map,
-      shopTypes: []
+      shopTypes: [],
+      selectShopDialogShow: false,
+      selectedShopId: '',
+      selectedShop: this.$store.getters.getMerchantCurrentShop,
+      merchantShops: this.$store.getters.getMerchantShops
     }
   },
   beforeMount() {
+    merchantApi.getShopTypies().then(res => {
+      if(res.status != 200) this.$message.error("获取门店类型出错");
+
+      else this.shopTypes = res.body;
+    })
+    /*
     shopApi.GetShopInfoByMerchantId(this.$store.getters.getMerchantId).then(res => {
       if(res.status == 401) {
         identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
@@ -124,6 +161,7 @@ export default {
         })
       }
     })
+    */
   },
   updated() {
     for(let i in map['86']) {
@@ -139,6 +177,20 @@ export default {
     }
   },
   methods: {
+    goBindShop() {
+      this.$router.push('/Merchant/CreateShop')
+    },
+    selectedShopChange(v) {
+      for(var i of this.merchantShops) {
+        if(i.pkId == v) this.selectedShop = i
+      }
+    },
+    selectShop() {
+      this.$store.dispatch('commitSetShopId', this.selectedShopId);
+      this.$store.dispatch('commitSetMerchantCurrentShop', this.selectedShop);
+      this.newShop = this.selectedShop;
+      this.selectShopDialogShow = false
+    },
     provinceChange() {
       this.newShop.city = ""
       this.newShop.district = ""

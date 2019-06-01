@@ -24,12 +24,6 @@ namespace MerchantAPI.Migrations
                     b.Property<Guid>("AuthPkId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool>("IsChecked")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("ShopId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("AuthPkId");
 
                     b.ToTable("MerchantBasic","merchant");
@@ -70,25 +64,46 @@ namespace MerchantAPI.Migrations
                     b.Property<string>("LicenseOwner")
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<Guid>("MerchantId");
+                    b.Property<Guid?>("MShopId");
 
                     b.Property<string>("Tel")
                         .HasColumnType("varchar(11)");
 
                     b.HasKey("PkId");
 
-                    b.HasIndex("MerchantId")
-                        .IsUnique();
-
                     b.ToTable("MerchantIdentity","merchant");
                 });
 
-            modelBuilder.Entity("GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel.MerchantIdentity", b =>
+            modelBuilder.Entity("GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel.MerchantShop", b =>
                 {
-                    b.HasOne("GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel.MerchantBasic", "Merchant")
-                        .WithOne("Identity")
-                        .HasForeignKey("GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel.MerchantIdentity", "MerchantId")
+                    b.Property<Guid>("MBasicId");
+
+                    b.Property<Guid>("ShopId");
+
+                    b.Property<bool>("IsChecked")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("MIdentityId");
+
+                    b.HasKey("MBasicId", "ShopId");
+
+                    b.HasIndex("MIdentityId")
+                        .IsUnique()
+                        .HasFilter("[MIdentityId] IS NOT NULL");
+
+                    b.ToTable("MerchantShops","merchant");
+                });
+
+            modelBuilder.Entity("GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel.MerchantShop", b =>
+                {
+                    b.HasOne("GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel.MerchantBasic", "MBasic")
+                        .WithMany("Shops")
+                        .HasForeignKey("MBasicId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel.MerchantIdentity", "MIdentity")
+                        .WithOne("MShop")
+                        .HasForeignKey("GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel.MerchantShop", "MIdentityId");
                 });
 #pragma warning restore 612, 618
         }

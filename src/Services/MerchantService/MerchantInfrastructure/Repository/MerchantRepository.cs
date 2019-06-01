@@ -18,6 +18,20 @@ namespace GB_Project.Services.MerchantService.MerchantInfrastructure.Repository
         _context = context;
       }
 
+      public int BindShopToMerchant (string merchantId, string shopId)
+      {
+        var mBasic = _context.merchantBasics.Where(m => m.AuthPkId.ToString() == merchantId).FirstOrDefault();
+        if(mBasic.Shops == null)  mBasic.SetShops();
+        mBasic.Shops.Add(new MerchantShop(mBasic, new Guid(shopId)));
+
+        return _context.SaveChanges();
+      }
+
+      public IList<MerchantShop> GetMerchantShopList (Guid merchantId)
+      {
+        return _context.merchantShops.Where(s => s.MBasicId.ToString() == merchantId.ToString()).ToList();
+      }
+
       public Task<int> CreateMerchantBasic (MerchantBasic merchantBasic)
       {
         _context.merchantBasics.Add(merchantBasic);
@@ -25,7 +39,7 @@ namespace GB_Project.Services.MerchantService.MerchantInfrastructure.Repository
         return _context.SaveChangesAsync();
       }
 
-      public Task<int> AddIdentity (MerchantBasic merchantBasic, MerchantIdentity merchantIdentity)
+      public Task<int> AddIdentity (MerchantIdentity merchantIdentity)
       {
         _context.merchantIdentitys.Add(merchantIdentity);
 
@@ -34,16 +48,16 @@ namespace GB_Project.Services.MerchantService.MerchantInfrastructure.Repository
 
       public Task<int> AddShopIdToMerchant (MerchantBasic merchantBasic,  Guid shopId)
       {
-         _context.merchantBasics.Where(m => m == merchantBasic).First().SetShopId(shopId);
+         _context.merchantShops.Add(new MerchantShop(merchantBasic.AuthPkId, shopId));
 
          return _context.SaveChangesAsync();
       }
 
-      public Task<int> CheckMerchantIdentity (string merchantAuthId, bool result)
+      public Task<int> CheckMerchantIdentity (string merchantAuthId, string shopId, bool result)
       {
-        var merchantBasic = _context.merchantBasics.Where(b => b.AuthPkId.ToString() == merchantAuthId).FirstOrDefault();
+        var merchantShop = _context.merchantShops.Where(b => (b.MBasicId.ToString() == merchantAuthId && b.ShopId.ToString() == shopId)).FirstOrDefault();
       
-        merchantBasic.SetIsChecked(result);
+        merchantShop.SetIsChecked(result);
 
         return _context.SaveChangesAsync();
       }
@@ -59,19 +73,32 @@ namespace GB_Project.Services.MerchantService.MerchantInfrastructure.Repository
         return _context.merchantIdentitys.Where(m => m.PkId.ToString() == identityId).FirstOrDefault();
       }
 
-      public List<MerchantBasic> GetMerchantBasicListNotChecked(int page)
+      public List<MerchantShop> GetMerchantShopListNotChecked(int page)
       {
-        return _context.merchantBasics.Where(m => m.IsChecked == false).Skip((page-1)*10).Take(10).ToList();
+        return _context.merchantShops.Where(m => m.IsChecked == false).Skip((page-1)*10).Take(10).ToList();
       }
 
-      public MerchantIdentity GetMerchantIdentityByMerchantId(string merchantId)
+      public IList<MerchantIdentity> GetMerchantIdentityByMerchantId(string merchantId)
       {
-        return _context.merchantIdentitys.Where(m => m.MerchantId.ToString() == merchantId).FirstOrDefault();
+        return _context.merchantShops.Where(m => m.MBasicId.ToString() == merchantId).Select(i => i.MIdentity).ToList();
       }
 
       public List<MerchantBasic> GetMerchantBasics(int page)
       {
         return _context.merchantBasics.Skip((page-1) * 10).Take(10).ToList();
+      }
+
+      public MerchantShop GetMerchantShop(string merchantId, string shopId)
+      {
+        return _context.merchantShops.Where(ms => (ms.MBasicId.ToString() == merchantId && ms.ShopId.ToString() == shopId)).FirstOrDefault();
+      }
+
+      public MerchantIdentity GetMerchantIdentityByMIdAndSId(string merchantId, string shopId)
+      {
+        var ms = GetMerchantShop(merchantId, shopId);
+        if(ms == null) return default(MerchantIdentity);
+
+        else return ms.MIdentity;
       }
     }
 }

@@ -13,6 +13,7 @@ import * as shopApi from '../../../api/Shop';
 
 export default {
   beforeMount() {
+    /*
     shopApi.GetShopInfoByMerchantId(this.$store.getters.getMerchantId).then(res => {
       if(res.status == 401) {
         identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
@@ -50,6 +51,7 @@ export default {
         this.$store.dispatch('commitCityName', res.body.city);
       }
     })
+    */
   },
   data() {
     return {

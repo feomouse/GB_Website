@@ -94,6 +94,7 @@ namespace ShopAPI
 
             services.AddTransient<MerchantIsIdentitiedIntergrationEventHandler>();
             services.AddTransient<IncreOrderSellIntergrationEventHandler>();
+            services.AddTransient<BindShopIntergrationEventHandler>();
 
             services.AddSingleton<IShopQuery, ShopQuery>();
             services.AddSingleton<IShopRepository, ShopRepository>();
@@ -130,6 +131,7 @@ namespace ShopAPI
             var sub = app.ApplicationServices.GetRequiredService<IEventBusSubscriber>();
             sub.Subscribe<MerchantIsIdentitiedIntergrationEvent, MerchantIsIdentitiedIntergrationEventHandler>();
             sub.Subscribe<IncreOrderSellIntergrationEvent, IncreOrderSellIntergrationEventHandler>();
+            sub.Subscribe<BindShopIntergrationEvent, BindShopIntergrationEventHandler>();
         }
     }
 }

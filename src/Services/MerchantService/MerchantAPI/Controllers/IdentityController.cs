@@ -7,6 +7,7 @@ using System;
 using MediatR;
 using GB_Project.Services.MerchantService.MerchantAPI.Application.Commands;
 using System.Threading;
+using System.Collections.Generic;
 using GB_Project.EventBus.BasicEventBus.Abstraction;
 using GB_Project.Services.MerchantService.MerchantAPI.IntergrationEvents.Events;
 
@@ -44,7 +45,7 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Controllers
 
       if(resultCreate != null)
       {
-        return Ok(resultCreate);
+        return Ok("true");
       } 
 
       return BadRequest("create error");
@@ -89,7 +90,7 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Controllers
     [Route("GetMerchantIdentityByMerchantId")]
     public ActionResult GetMerchantIdentityByMerchantId([FromHeader]string merchantId)
     {
-      MerchantIdentity identity =  _query.GetMerchantIdentityByMerchantId(merchantId);
+      IList<MerchantIdentity> identity =  _query.GetMerchantIdentityByMerchantId(merchantId);
 
       if(identity == null) return BadRequest();
 
@@ -98,9 +99,9 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Controllers
 
     [HttpGet]
     [Route("IfWriteIdentity")]
-    public ActionResult IfWriteIdentity([FromHeader]string merchantId)
+    public ActionResult IfWriteIdentity([FromHeader]string merchantId, string shopId)
     {
-      MerchantIdentity mer = _query.GetMerchantIdentityByMerchantId(merchantId);
+      MerchantIdentity mer = _query.GetMerchantIdentityByMIdAndSId(merchantId, shopId);
 
       if(mer == null) return Ok(false);
          

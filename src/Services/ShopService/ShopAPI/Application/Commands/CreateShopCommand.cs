@@ -24,22 +24,16 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.Commands
     public string Location { get; private set; }
 
     [DataMember]
-    public int Type { get; private set; }
+    public string Type { get; private set; }
 
     [DataMember]
     public string Tel { get; private set; }
-
-    [DataMember]
-    public string Manager { get; private set; }
-
-    [DataMember]
-    public string Pic { get; private set; }
 
     public CreateShopCommand()
     {
 
     }
-    public CreateShopCommand (string name, string province, string city, string district, string location, int type, string tel, string manager, string pic)
+    public CreateShopCommand (string name, string province, string city, string district, string location, string type, string tel)
     {
       Name = name;
       Province = province;
@@ -48,8 +42,6 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.Commands
       Location = location;
       Type = type;
       Tel = tel;
-      Manager = manager;
-      Pic = pic;
     }
   }
 }

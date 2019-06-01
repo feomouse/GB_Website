@@ -15,9 +15,7 @@ namespace MerchantAPI.Migrations
                 schema: "merchant",
                 columns: table => new
                 {
-                    AuthPkId = table.Column<Guid>(nullable: false),
-                    ShopId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IsChecked = table.Column<bool>(type: "bit", nullable: false)
+                    AuthPkId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -41,36 +39,63 @@ namespace MerchantAPI.Migrations
                     AvailableSatartTime = table.Column<DateTime>(type: "date", nullable: false),
                     AvailableTime = table.Column<DateTime>(type: "date", nullable: false),
                     Tel = table.Column<string>(type: "varchar(11)", nullable: true),
-                    MerchantId = table.Column<Guid>(nullable: false)
+                    MShopId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MerchantIdentity", x => x.PkId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MerchantShops",
+                schema: "merchant",
+                columns: table => new
+                {
+                    MBasicId = table.Column<Guid>(nullable: false),
+                    ShopId = table.Column<Guid>(nullable: false),
+                    MIdentityId = table.Column<Guid>(nullable: true),
+                    IsChecked = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MerchantShops", x => new { x.MBasicId, x.ShopId });
                     table.ForeignKey(
-                        name: "FK_MerchantIdentity_MerchantBasic_MerchantId",
-                        column: x => x.MerchantId,
+                        name: "FK_MerchantShops_MerchantBasic_MBasicId",
+                        column: x => x.MBasicId,
                         principalSchema: "merchant",
                         principalTable: "MerchantBasic",
                         principalColumn: "AuthPkId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MerchantShops_MerchantIdentity_MIdentityId",
+                        column: x => x.MIdentityId,
+                        principalSchema: "merchant",
+                        principalTable: "MerchantIdentity",
+                        principalColumn: "PkId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_MerchantIdentity_MerchantId",
+                name: "IX_MerchantShops_MIdentityId",
                 schema: "merchant",
-                table: "MerchantIdentity",
-                column: "MerchantId",
-                unique: true);
+                table: "MerchantShops",
+                column: "MIdentityId",
+                unique: true,
+                filter: "[MIdentityId] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "MerchantIdentity",
+                name: "MerchantShops",
                 schema: "merchant");
 
             migrationBuilder.DropTable(
                 name: "MerchantBasic",
+                schema: "merchant");
+
+            migrationBuilder.DropTable(
+                name: "MerchantIdentity",
                 schema: "merchant");
         }
     }

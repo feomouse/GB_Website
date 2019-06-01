@@ -17,17 +17,22 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
     public string Location { get; private set; }
 
-    public int Type { get; private set; }
+    public Guid ShopTypePkId { get; private set; }
+    public ShopType Type { get; private set; }
 
     public string Tel { get; private set; }
 
     public Guid RegisterId { get; private set; }
 
-    public string Pic { get; private set; }
-
     public bool IsIdentitied { get; private set; }
 
     public bool GroupBuying { get; private set; }
+
+    public int OwnMoney { get; private set; }
+
+    public string WorkingTime { get; private set; }
+
+    public List<ShopImg> Imgs { get; private set; }
 
 /*     public List<ProductType> _producttype { get; set; } */
 
@@ -35,7 +40,7 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
     }
 
-    public Shop(string name, string province, string city, string district, string location, int type, string tel, Guid registerId, string pic)
+    public Shop(string name, string province, string city, string district, string location, string tel)
     {
        PkId = new Guid();
        Name = name;
@@ -43,12 +48,10 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
        City = city;
        District = district;
        Location = location;
-       Type = type;
        Tel = tel;
-       RegisterId = registerId;
-       Pic = pic;
        IsIdentitied = false;
        GroupBuying = false;
+       OwnMoney = 0;
     }
 
     public void SetPkId(Guid pkId)
@@ -81,7 +84,7 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
       Location = location;
     }
 
-    public void SetType(int type)
+    public void SetType(ShopType type)
     {
       Type = type;
     }
@@ -96,14 +99,24 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
       IsIdentitied = isIdentitied;
     }
 
-    public void SetPic(string img)
-    {
-      Pic = img;
-    }
-
     public void SetGroupBuying(bool result)
     {
       GroupBuying = result;
+    }
+
+    public void SetOwnMoney(int money)
+    {
+      OwnMoney = money;
+    }
+
+    public void SetWorkingTime(string time)
+    {
+      WorkingTime = time;
+    }
+
+    public void SetRegisterId(Guid id)
+    {
+      RegisterId = id;
     }
   }
 }

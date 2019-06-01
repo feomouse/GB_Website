@@ -7,22 +7,30 @@ namespace GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel
 {
   public interface IMerchantRepository : IRepository
   {
+    int BindShopToMerchant (string merchantId, string shopId);
+
+    IList<MerchantShop> GetMerchantShopList (Guid merchantId); 
+
     Task<int> CreateMerchantBasic (MerchantBasic merchantBasic);
 
-    Task<int> AddIdentity (MerchantBasic merchantBasic, MerchantIdentity merchantIdentity);
+    Task<int> AddIdentity (MerchantIdentity merchantIdentity);
 
     Task<int> AddShopIdToMerchant (MerchantBasic merchantBasic, Guid shopId);
 
-    Task<int> CheckMerchantIdentity (string merchantAuthId, bool result);
+    Task<int> CheckMerchantIdentity (string merchantAuthId, string shopId, bool result);
 
     MerchantBasic GetMerhcntBasicByMerchantId (string merchantId);
 
     MerchantIdentity GetMerchantIdentityByIdentityId (string identityId);
 
-    List<MerchantBasic> GetMerchantBasicListNotChecked(int page);
+    List<MerchantShop> GetMerchantShopListNotChecked(int page);
 
-    MerchantIdentity GetMerchantIdentityByMerchantId(string merchantId);
+    IList<MerchantIdentity> GetMerchantIdentityByMerchantId(string merchantId);
 
     List<MerchantBasic> GetMerchantBasics(int page);
+
+    MerchantShop GetMerchantShop(string merchantId, string shopId);
+
+    MerchantIdentity GetMerchantIdentityByMIdAndSId(string merchantId, string shopId);
   }
 }

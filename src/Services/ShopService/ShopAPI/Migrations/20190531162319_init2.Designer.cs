@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ShopAPI.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    [Migration("20190330085404_initCreate")]
-    partial class initCreate
+    [Migration("20190531162319_init2")]
+    partial class init2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -27,7 +27,7 @@ namespace ShopAPI.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Img")
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<bool>("IsDisplay")
                         .HasColumnType("bit");
@@ -73,41 +73,21 @@ namespace ShopAPI.Migrations
                     b.ToTable("GBProduct","shop");
                 });
 
-            modelBuilder.Entity("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.GBProductItem", b =>
+            modelBuilder.Entity("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.GBProductImg", b =>
                 {
-                    b.Property<Guid>("PkId")
+                    b.Property<Guid>("GBProductPkId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("GbItemImg");
+                    b.Property<Guid?>("GBProductPkId1");
 
-                    b.Property<string>("GbItemName");
+                    b.Property<string>("Img")
+                        .HasColumnType("nvarchar(150)");
 
-                    b.Property<int>("GbItemPrice");
+                    b.HasKey("GBProductPkId");
 
-                    b.Property<Guid>("GbProductId");
+                    b.HasIndex("GBProductPkId1");
 
-                    b.HasKey("PkId");
-
-                    b.HasIndex("GbProductId");
-
-                    b.ToTable("GBProductItem","shop");
-                });
-
-            modelBuilder.Entity("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.GBRule", b =>
-                {
-                    b.Property<Guid>("PkId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<Guid>("GBProductId");
-
-                    b.HasKey("PkId");
-
-                    b.HasIndex("GBProductId");
-
-                    b.ToTable("GBRule","shop");
+                    b.ToTable("gbProductImg","shop");
                 });
 
             modelBuilder.Entity("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.ProductType", b =>
@@ -150,8 +130,8 @@ namespace ShopAPI.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<string>("Pic")
-                        .HasColumnType("varchar(50)");
+                    b.Property<int>("OwnMoney")
+                        .HasColumnType("int");
 
                     b.Property<string>("Province")
                         .HasColumnType("nvarchar(10)");
@@ -159,15 +139,52 @@ namespace ShopAPI.Migrations
                     b.Property<Guid>("RegisterId")
                         .HasColumnType("Uniqueidentifier");
 
+                    b.Property<Guid>("ShopTypePkId");
+
                     b.Property<string>("Tel")
                         .HasColumnType("varchar(11)");
 
-                    b.Property<short>("Type")
-                        .HasColumnType("smallint");
+                    b.Property<string>("WorkingTime")
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("PkId");
 
+                    b.HasIndex("ShopTypePkId");
+
                     b.ToTable("shop","shop");
+                });
+
+            modelBuilder.Entity("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.ShopImg", b =>
+                {
+                    b.Property<Guid>("ShopPkId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Img")
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<Guid?>("ShopPkId1");
+
+                    b.HasKey("ShopPkId");
+
+                    b.HasIndex("ShopPkId1");
+
+                    b.ToTable("shopImg","shop");
+                });
+
+            modelBuilder.Entity("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.ShopType", b =>
+                {
+                    b.Property<Guid>("PkId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Img")
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(10)");
+
+                    b.HasKey("PkId");
+
+                    b.ToTable("shopType","shop");
                 });
 
             modelBuilder.Entity("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.GBProduct", b =>
@@ -178,20 +195,11 @@ namespace ShopAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.GBProductItem", b =>
+            modelBuilder.Entity("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.GBProductImg", b =>
                 {
-                    b.HasOne("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.GBProduct", "GBProduct")
-                        .WithMany("Items")
-                        .HasForeignKey("GbProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.GBRule", b =>
-                {
-                    b.HasOne("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.GBProduct", "_GBProduct")
-                        .WithMany("GbRule")
-                        .HasForeignKey("GBProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.GBProduct")
+                        .WithMany("Imgs")
+                        .HasForeignKey("GBProductPkId1");
                 });
 
             modelBuilder.Entity("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.ProductType", b =>
@@ -200,6 +208,21 @@ namespace ShopAPI.Migrations
                         .WithMany()
                         .HasForeignKey("ShopId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.Shop", b =>
+                {
+                    b.HasOne("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.ShopType", "Type")
+                        .WithMany("Shops")
+                        .HasForeignKey("ShopTypePkId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.ShopImg", b =>
+                {
+                    b.HasOne("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.Shop")
+                        .WithMany("Imgs")
+                        .HasForeignKey("ShopPkId1");
                 });
 #pragma warning restore 612, 618
         }

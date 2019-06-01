@@ -27,7 +27,8 @@ export default {
     }
   },
   beforeMount() {
-    merchantApi.ifWriteIdentity(this.$store.getters.getMerchantId).then(res => {
+    /*
+    merchantApi.ifWriteIdentity(this.$store.getters.getMerchantId, this.$store.getters.getMerchantShopId).then(res => {
       if(res.status == 401) {
         identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
           if(res.status == 400) this.$router.push('/Customer/SignIn');
@@ -36,7 +37,7 @@ export default {
             this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
             this.$store.dispatch('commitToken', res.body.access_token);
 
-            merchantApi.ifWriteIdentity(this.$store.getters.getMerchantId).then(res => {
+            merchantApi.ifWriteIdentity(this.$store.getters.getMerchantId, this.$store.getters.getMerchantShopId).then(res => {
               if(res.status != 200) this.$message.error("草,错误");
 
               else if(res.body == false) this.$router.push('/Merchant/CreateIdentity');
@@ -47,7 +48,7 @@ export default {
       else if(res.status != 200) this.$message.error("草,错误");
 
       else if(res.body == false) this.$router.push('/Merchant/CreateIdentity');
-    }),
+    }),*/
     identityApi.GetMerchantNameById(this.$store.getters.getMerchantId).then(res => {
       if(res.status == 401) {
         identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
@@ -73,7 +74,7 @@ export default {
         this.$store.dispatch('commitSetMerchantUserName', res.body.name);
       }
     }),
-    shopApi.GetShopInfoByMerchantId(this.$store.getters.getMerchantId).then(res => {
+    shopApi.GetShopsByMerchantId(this.$store.getters.getMerchantId).then(res => {
       if(res.status == 401) {
         identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
           if(res.status == 400) this.$router.push('/Customer/SignIn');
@@ -82,17 +83,19 @@ export default {
             this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
             this.$store.dispatch('commitToken', res.body.access_token);
             
-            shopApi.GetShopInfoByMerchantId(this.$store.getters.getMerchantId).then(res => {
+            shopApi.GetShopsByMerchantId(this.$store.getters.getMerchantId).then(res => {
               if(res.status != 200) {
                 if(res.status == 400 && res.body == "identity yourself first") {
                   //this.$router.push('/Merchant/CreateIdentity');
                 }
               }
               else {
-                this.$store.dispatch('commitSetShopId', res.body.pkId);
-                this.$store.dispatch('commitSetShopName', res.body.name);
-                this.$store.dispatch('commitProvinceName', res.body.province);
-                this.$store.dispatch('commitCityName', res.body.city);
+                this.$store.dispatch('commitSetShopId', res.body[0].pkId);
+                this.$store.dispatch('commitSetShopName', res.body[0].name);
+                this.$store.dispatch('commitProvinceName', res.body[0].province);
+                this.$store.dispatch('commitCityName', res.body[0].city);
+                this.$store.dispatch('commitSetMerchantShops', res.body);
+                this.$store.dispatch('commitSetMerchantCurrentShop', res.body[0])
               }
             })
           }
@@ -104,10 +107,12 @@ export default {
         }
       }
       else {
-        this.$store.dispatch('commitSetShopId', res.body.pkId);
-        this.$store.dispatch('commitSetShopName', res.body.name);
-        this.$store.dispatch('commitProvinceName', res.body.province);
-        this.$store.dispatch('commitCityName', res.body.city);
+        this.$store.dispatch('commitSetShopId', res.body[0].pkId);
+        this.$store.dispatch('commitSetShopName', res.body[0].name);
+        this.$store.dispatch('commitProvinceName', res.body[0].province);
+        this.$store.dispatch('commitCityName', res.body[0].city);
+        this.$store.dispatch('commitSetMerchantShops', res.body);
+        this.$store.dispatch('commitSetMerchantCurrentShop', res.body[0]);
       }
     }) 
   }

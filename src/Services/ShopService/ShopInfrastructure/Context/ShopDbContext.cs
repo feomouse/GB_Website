@@ -15,6 +15,12 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Context
 
       public DbSet<GBProduct> gbproduct { get; set; }
 
+      public DbSet<ShopType> shopTypes { get; set; }
+
+      public DbSet<ShopImg> shopImgs { get; set; }
+
+      public DbSet<GBProductImg> gbProductImg { get; set; }
+
       public ShopDbContext (DbContextOptions<ShopDbContext> options) : base (options)
       {
 
@@ -30,6 +36,9 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Context
         modelBuilder.ApplyConfiguration(new ShopEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new ProductTypeEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new GBProductEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new ShopTypeEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new ShopImgEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new GBProductImgEntityTypeConfiguration());
       }
     }
 }

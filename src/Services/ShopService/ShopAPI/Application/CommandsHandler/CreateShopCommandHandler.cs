@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using GB_Project.Services.ShopService.ShopDomin.AggregatesModel;
 using GB_Project.Services.ShopService.ShopAPI.Application.Commands;
+using GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries;
 
 namespace GB_Project.Services.ShopService.ShopAPI.Application.CommandsHandler
 {
@@ -11,20 +12,27 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.CommandsHandler
     {
       private IShopRepository _repository;
 
+      private IShopQuery _query; 
+
       public CreateShopCommandHandler ()
       {
 
       } 
-      public CreateShopCommandHandler ( IShopRepository repository )
+      public CreateShopCommandHandler ( IShopRepository repository, IShopQuery query )
       {
         _repository = repository;
+
+        _query = query;
       }
       public Task<Shop> Handle(CreateShopCommand request, CancellationToken cancellationToken)
       {
-        Shop shop = new Shop(request.Name, request.Province, request.City, request.District, request.Location, request.Type, request.Tel, new Guid(request.Manager), request.Pic);
+        Shop shop = new Shop(request.Name, request.Province, request.City, request.District, request.Location, request.Tel);
+
+        shop.SetType(_query.getShopTypeByPkId(request.Type));
 
         if(_repository.CreateShop(shop) != 0)
         {
+         // _repository.AddShopToShopType(request.Type, shop);
           return Task.FromResult(shop);
         }
 

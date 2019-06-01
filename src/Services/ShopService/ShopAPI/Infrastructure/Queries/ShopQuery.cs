@@ -32,12 +32,27 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
       return _repo.GetShopByShopId(shopId);
     }
 
+    public ShopType getShopTypeByPkId(string pkId)
+    {
+      return _repo.GetShopTypeByPkId(pkId);
+    }
+
+    public IList<Shop> getShopsByMerchantId(string merchantId)
+    {
+      return _repo.GetShopsByMerchantId(merchantId);
+    }
+
+    public IList<Shop> getShopsByMerchantIds(IList<string> merchantIds)
+    {
+      return _repo.GetShopsByMerchantIds(merchantIds);
+    }
+
     public List<GBProduct> getGBProductByProductTypeId(string productTypeId)
     {
       return _repo.GetGBProductsByProductId(productTypeId);
     }
 
-    public List<Shop> getShopListByShopTypeAndCity(string province, string city, int shopType, int page)
+    public List<Shop> getShopListByShopTypeAndCity(string province, string city, ShopType shopType, int page)
     {
       return _repo.GetShopListByShopTypeAndCity(province, city, shopType, page);
     }
@@ -67,9 +82,19 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
       return _repo.GetShopByNameAndCity(name, province, city);
     }
 
-    public int getShopsTotalCount(string province, string city, int shopType)
+    public int getShopsTotalCount(string province, string city, ShopType shopType)
     {
       return _repo.GetShopsTotalCount(province, city, shopType);
+    }
+
+    public IList<Shop> getShopsByNameAndCity(string shopName, string province, string city)
+    {
+       return _repo.GetShopsByNameAndCity(shopName, province, city);
+    }
+
+    public IList<ShopType> getShopTypes()
+    {
+      return _repo.GetShopTypeInfo();
     }
 /* 
     public Product getProductByName(string name) 

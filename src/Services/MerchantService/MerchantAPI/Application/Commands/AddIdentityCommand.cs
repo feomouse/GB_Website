@@ -30,9 +30,11 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Application.Commands
 
     public string Tel { get; set; }
 
+    public string ShopId { get; set; }
+
     public AddIdentityCommand(string merchantId, string identityName, string identityNum, string identityImgF,
                              string identityImgB, string licenseImg, string licenseCode, string licenseName,
-                             string licenseOwner, DateTime availableStartTime, DateTime availableTime, string tel)
+                             string licenseOwner, DateTime availableStartTime, DateTime availableTime, string tel, string shopId)
     { 
       MerchantId = merchantId;
       IdentityName = identityName;
@@ -46,6 +48,7 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Application.Commands
       AvailableStartTime = availableStartTime;
       AvailableTime = availableTime;
       Tel = tel;
+      ShopId = shopId;
     }
   }
 }

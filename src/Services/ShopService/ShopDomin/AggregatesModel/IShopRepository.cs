@@ -7,7 +7,30 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 {
     public interface IShopRepository : IRepository
     {
-        Dictionary<int, string> GetShopTypeInfo();
+        IList<ShopType> GetShopTypeInfo();
+/*
+        bool CreateShopType();
+
+        bool CreateShopImg();
+
+        IList<ShopImg> GetShopImgs();
+
+        bool CreateGBProductImg();
+
+        IList<GBProductImg> GetGBProductImg();
+ */
+
+        int CreateShopType(ShopType shopType);
+
+        ShopType EditShopType(ShopType newShopType);
+
+        ShopType GetShopTypeByPkId(string pkId);
+
+        int AddShopToShopType(string shopTypeId, Shop shop);
+
+        IList<Shop> GetShopsByNameAndCity(string shopName, string province, string city);
+      
+        IList<Shop> GetShopsByMerchantIds(IList<string> merchantIds);
 
         Shop GetShopByName(string shopName);
 
@@ -15,7 +38,7 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
         Shop GetShopByShopId(string shopId);
 
-        List<Shop> GetShopListByShopTypeAndCity(string province, string city, int shopType, int page);
+        List<Shop> GetShopListByShopTypeAndCity(string province, string city, ShopType shopType, int page);
 
         List<Shop> GetShopListByCity(string province, string city);
 
@@ -28,8 +51,6 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
         int IdentityMerchantOfShop(string merchantId, bool isChecked);
 
         int SetGB(string shopId);
-
-        string UploadShopImg(Shop shop, string imgName, byte[] imgData);
         
         int CreateShopProductType(ProductType type);
 
@@ -55,6 +76,10 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
         bool IncreGBPayAmount (string gbProductName, string shopName, int itemCost, int number);
 
-        int GetShopsTotalCount(string province, string city, int shopType);
+        int GetShopsTotalCount(string province, string city, ShopType shopType);
+
+        int SetMerchantToShop(Guid shopId, Guid merchantId);
+
+        IList<Shop> GetShopsByMerchantId(string merchantId);
     } 
 }

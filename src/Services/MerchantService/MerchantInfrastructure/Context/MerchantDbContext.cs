@@ -11,6 +11,8 @@ namespace GB_Project.Services.MerchantService.MerchantInfrastructure.Context
 
       public DbSet<MerchantIdentity> merchantIdentitys { get; set; }
 
+      public DbSet<MerchantShop> merchantShops { get; set; }
+
       public IConfiguration _configuration { get; }
 
       public MerchantDbContext (DbContextOptions<MerchantDbContext> options) : base (options)
@@ -24,6 +26,7 @@ namespace GB_Project.Services.MerchantService.MerchantInfrastructure.Context
       {
         modelBuilder.ApplyConfiguration(new MerchantBasicEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new MerchantIdentityEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new MerchantShopEntityTypeConfiguration());
       }
     }
 }

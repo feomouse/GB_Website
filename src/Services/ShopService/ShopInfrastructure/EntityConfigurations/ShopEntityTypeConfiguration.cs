@@ -23,17 +23,17 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.EntityConfiguration
 
         shopConfiguration.Property(b => b.Location).HasColumnType("nvarchar(30)");
 
-        shopConfiguration.Property(b => b.Type).HasColumnType("smallint");
-
         shopConfiguration.Property(b => b.RegisterId).HasColumnType("Uniqueidentifier");
 
         shopConfiguration.Property(b => b.Tel).HasColumnType("varchar(11)");
 
-        shopConfiguration.Property(b => b.Pic).HasColumnType("varchar(100)");
-
         shopConfiguration.Property(b => b.IsIdentitied).HasColumnType("bit");
 
         shopConfiguration.Property(b => b.GroupBuying).HasColumnType("bit");
+
+        shopConfiguration.Property(b => b.OwnMoney).HasColumnType("int");
+                
+        shopConfiguration.Property(b => b.WorkingTime).HasColumnType("nvarchar(30)");
 
       }
     }

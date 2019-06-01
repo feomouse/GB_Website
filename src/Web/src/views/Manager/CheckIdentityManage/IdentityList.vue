@@ -57,9 +57,6 @@ export default {
         this.merchantIdList.push({
           "Id": i.authPkId
         });
-        this.merchantShopIdList.push({
-          "ShopId": i.shopId
-        });
       }
       merchantApi.getMerchantsName(this.merchantIdList).then(res => {
         if(res.status != 200) this.$message.error("出错");
@@ -72,7 +69,11 @@ export default {
               "location": ""
             })
           }
-          shopApi.GetShopListByShopIds(this.merchantShopIdList).then(res => {
+          var merchantIds = []
+          for(var i =0 ; i< this.merchantIdList.length; i++) {
+            merchantIds[i] = this.merchantIdList[i].Id
+          }
+          shopApi.GetShopsByMerchantIds(merchantIds).then(res => {
             if(res.status != 200) this.$message.error("出错");
           
             else {

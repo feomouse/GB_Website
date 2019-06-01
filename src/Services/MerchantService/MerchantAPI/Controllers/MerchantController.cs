@@ -48,7 +48,7 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Controllers
      [Route("GetMerchantBasicListIsNotChecked")]
      public ActionResult GetMerchantBasicListIsNotChecked([FromQuery] int page)
      {
-       var merchantBasics = _query.GetMerchantBasicListNotChecked(page);
+       var merchantBasics = _query.GetMerchantShopListNotChecked(page);
 
        if(merchantBasics == null) return BadRequest();
 

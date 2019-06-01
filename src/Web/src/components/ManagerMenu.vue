@@ -28,6 +28,11 @@ export default {
           link: "/Manager/ViolateManager",
           icon: "gb",
           level: 1
+        }, {
+          label: "门店类型",
+          link: "/Manager/SetShopType",
+          icon: "shopType",
+          level: 1
         }]
     }
   },

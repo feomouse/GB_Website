@@ -31,7 +31,7 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
-        <el-form-item label="营业执照正面照:" style="width: 30%;">
+        <el-form-item label="营业执照照片:" style="width: 30%;">
           <el-upload
             class="avatar-uploader"
             action=""
@@ -94,7 +94,8 @@
           LicenseOwner: "",
           AvailableStartTime: "",
           AvailableTime: "",
-          Tel: ""
+          Tel: "",
+          ShopId: this.$store.getters.getMerchantShopId
         }
       }
     },

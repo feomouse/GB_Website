@@ -12,6 +12,7 @@ using GB_Project.Services.ShopService.ShopAPI.ViewModels;
 using GB_Project.EventBus.BasicEventBus.Abstraction;
 using GB_Project.Services.ShopService.ShopAPI.IntergrationEvents.Events;
 using System.Threading;
+using System.Linq;
 
 namespace GB_Project.Services.ShopService.ShopAPI.Controllers
 {
@@ -32,17 +33,32 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
 
       [HttpGet]
       [Route("ShopTypies")]
-      public ActionResult<List<ShopTypesViewModel>> GetShopTypies ()
+      public ActionResult<IList<ShopType>> GetShopTypies ()
       {
-        var shopTypes = new List<ShopTypesViewModel>();
-        shopTypes.Add(new ShopTypesViewModel(ShopType.beauty.Id, ShopType.beauty.Name, ShopType.beauty.Img));
-        shopTypes.Add(new ShopTypesViewModel(ShopType.entertain.Id, ShopType.entertain.Name, ShopType.entertain.Img));
-        shopTypes.Add(new ShopTypesViewModel(ShopType.food.Id, ShopType.food.Name, ShopType.food.Img));
-        shopTypes.Add(new ShopTypesViewModel(ShopType.livingPlace.Id, ShopType.livingPlace.Name, ShopType.livingPlace.Img));
-        shopTypes.Add(new ShopTypesViewModel(ShopType.learning.Id, ShopType.learning.Name, ShopType.learning.Img));
-        
-        return shopTypes;
+        return Ok( _query.getShopTypes().Select(t => new {PkId = t.PkId, Name = t.Name, Img = t.Img}));
       }  
+
+      [HttpPost]
+      [Route("AddShopType")]
+      public ActionResult AddShopType([FromBody] AddShopTypeCommand command)
+      {
+        return Ok(_mediator.Send(command).GetAwaiter().GetResult());
+      }
+
+      [HttpPost]
+      [Route("SetShopType")]
+      public ActionResult SetShopType([FromBody] EditShopTypeCommand command)
+      {
+        return Ok(_mediator.Send(command).GetAwaiter().GetResult());
+      }
+
+      [HttpPost]
+      [Route("GetShopsByMerchantIds")]
+      public ActionResult GetShopsByMerchantIds([FromBody] IList<string> merchantIds)
+      {
+        return Ok(_query.getShopsByMerchantIds(merchantIds));
+      }
+
       [HttpPost]
       [ProducesResponseType(201)]
       [ProducesResponseType(400)]
@@ -61,9 +77,23 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
           return new StatusCodeResult(400);
         }
 
-        _publisher.Publish(new ShopIsCreatedIntergrationEvent(createdShop.PkId, new Guid(shop.Manager)));
+        //_publisher.Publish(new ShopIsCreatedIntergrationEvent(createdShop.PkId, new Guid(shop.Manager)));
 
-        return new CreatedResult("", new CreatedShopViewModel(createdShop.PkId.ToString(), createdShop.RegisterId.ToString()));
+        return new CreatedResult("", new CreatedShopViewModel(createdShop.PkId.ToString()));
+      }
+
+      [HttpGet]
+      [Route("GetShops")]
+      public ObjectResult GetShopsByNameAndCity ([FromQuery] string name, string province, string city)
+      {
+        IList<Shop> shops = _query.getShopsByNameAndCity(name, province ,city);
+
+        if(shops == null)
+        {
+          return new BadRequestObjectResult("no shop");
+        }
+
+        return new OkObjectResult(shops.Select(shop => new {PkId=shop.PkId.ToString(), Name=shop.Name, Province=shop.Province, City=shop.City, District=shop.District, Location=shop.Location, Tel=shop.Tel, RegisterId=shop.RegisterId.ToString()}));
       }
 
       [HttpGet]
@@ -77,7 +107,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
           return new BadRequestObjectResult("no shop");
         }
 
-        var result = new SearchShopViewModel(shop.PkId.ToString(), shop.Name, shop.Province, shop.City, shop.District, shop.Location, shop.Pic, shop.Tel , shop.Type, shop.RegisterId.ToString());
+        var result = new SearchShopViewModel(shop.PkId.ToString(), shop.Name, shop.Province, shop.City, shop.District, shop.Location, shop.Tel , shop.Type, shop.RegisterId.ToString());
         return new OkObjectResult(result);
       }
 
@@ -98,7 +128,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         }
 
         var merchantShop = new MerchantShopViewModel(shop.PkId.ToString(), shop.Name, shop.Province, shop.City, shop.District, shop.Location,
-                                  shop.Type, shop.Tel, shop.RegisterId.ToString(), shop.Pic, shop.IsIdentitied);
+                                  shop.Type, shop.Tel, shop.RegisterId.ToString(), shop.IsIdentitied);
       
         return new OkObjectResult(merchantShop);
       }
@@ -122,7 +152,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
 
         else return Ok(shopList);
       } */
-
+/* 
       [HttpGet]
       [Route("ShopBasicList")]
       public ActionResult GetShopBasicListByShopTypeAndCity([FromQuery]string province, string city, int shopType, int page)
@@ -134,7 +164,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         List<ShopBasicViewModel> shopBasicList = new List<ShopBasicViewModel>();
 
         foreach(var i in shopList) {
-          shopBasicList.Add(new ShopBasicViewModel(i.PkId.ToString(), i.Name, i.Province, i.City, i.District, i.Location, i.Pic));
+          shopBasicList.Add(new ShopBasicViewModel(i.PkId.ToString(), i.Name, i.Province, i.City, i.District, i.Location));
         }
 
         return Ok(shopBasicList);
@@ -146,7 +176,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
       {
         return Ok(_query.getShopsTotalCount(province, city, shopType));
       }
-
+*/
       [HttpGet]
       [Route("ShopListOfCity")]
       public ActionResult GetShopListOfCity([FromQuery]string province, string city)
@@ -158,7 +188,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         List<ShopBasicViewModel> shopBasicList = new List<ShopBasicViewModel>();
 
         foreach(var i in shopList) {
-          shopBasicList.Add(new ShopBasicViewModel(i.PkId.ToString(), i.Name, i.Province, i.City, i.District, i.Location, i.Pic));
+          shopBasicList.Add(new ShopBasicViewModel(i.PkId.ToString(), i.Name, i.Province, i.City, i.District, i.Location));
         }
 
         return Ok(shopBasicList);
@@ -224,6 +254,16 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         if(newShop == null) return BadRequest();
 
         return Ok(newShop);
+      }
+
+      [HttpGet]
+      [Route("GetShopsByMerchantId")]
+      public ActionResult GetShopsByMerchantId ([FromHeader] string merchantId)
+      {
+        var shops = _query.getShopsByMerchantId(merchantId);
+        return Ok(shops.Select(s => new {pkId= s.PkId, name= s.Name, province= s.Province, 
+                     city= s.City, district= s.District, location= s.Location, tel= s.Tel, isIdentitied= s.IsIdentitied, groupBuying= s.GroupBuying,
+                     ownMoney= s.OwnMoney, workingTime= s.WorkingTime}));
       }
     }
 }

@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System;
 using GB_Project.Services.ShopService.ShopDomin.AggregatesModel;
-
+/* 
 namespace GB_Project.Services.ShopService.ShopAPI.Application.CommandsHandler
 {
   public class EditShopCommandHandler : IRequestHandler<EditShopCommand, Shop>
@@ -24,4 +24,4 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.CommandsHandler
       return Task.FromResult(_repo.UpdateShop(newshop));
     }
   }
-}
+}*/

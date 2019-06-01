@@ -21,12 +21,12 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Application.Commands
 
     public Task<MerchantIdentity> Handle (AddIdentityCommand command, CancellationToken cancellaitonToken)
     {
-      var merchant = _query.GetMerchantBasicByMerchantId(command.MerchantId);
+      var merchantShop = _query.GetMerchantShop(command.MerchantId, command.ShopId);
 
       var merchantIdentity = new MerchantIdentity(command.IdentityName, command.IdentityNum, command.IdentityImgF, command.IdentityImgB, command.LicenseImg, 
                       command.LicenseCode, command.LicenseName, command.LicenseOwner, command.AvailableStartTime, 
-                      command.AvailableTime, command.Tel, merchant.AuthPkId, merchant);
-      if(_repo.AddIdentity(merchant, merchantIdentity).GetAwaiter().GetResult() != 0)
+                      command.AvailableTime, command.Tel, merchantShop);
+      if(_repo.AddIdentity(merchantIdentity).GetAwaiter().GetResult() != 0)
       {
         return Task.FromResult(merchantIdentity);
       }

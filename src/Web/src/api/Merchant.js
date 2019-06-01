@@ -8,6 +8,26 @@ export const attachShop = (body) => {
   })
 }
 
+export const bindShop = (body) => {
+  return Vue.http.post('merchant/BindShop', body).then(resSuccess => {
+    return resSuccess;
+  }, resFail => {
+    return resFail
+  })
+}
+
+export const getShops = (merchantId) => {
+  return Vue.http.get('merchant/GetShops', {
+    headers: {
+      'merchantId': merchantId
+    }
+  }).then(res => {
+    return res;
+  }, resFail => {
+    return resFail
+  })
+}
+
 export const addIdentity = (body) => {
   return Vue.http.post('merchant/AddIdentity', body).then(responseSuccess => {
     return responseSuccess.status;
@@ -188,10 +208,11 @@ export const getMerchantsName = (merchantIdList) => {
   })
 } 
 
-export const ifWriteIdentity = (merchantId) => {
+export const ifWriteIdentity = (merchantId, shopId) => {
   return Vue.http.get('merchant/IfWriteIdentity', {
     headers: {
-      'merchantId' : merchantId
+      'merchantId' : merchantId,
+      'shopId': shopId
     }
   }).then(resSuccess => {
     return resSuccess

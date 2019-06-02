@@ -2,7 +2,7 @@
   <div class="auto_ten">
     <div>
       <el-button type="primary" @click="goBindShop"  style="float: right;">绑定门店</el-button>
-      <el-button type="primary" @click="selectShopDialogShow = true" style="float: right;margin-right: 2rem;">选择门店</el-button>
+      <el-button type="primary" @click="goChooseShop" style="float: right;margin-right: 2rem;">选择门店</el-button>
       <el-dialog title="选择门店" :visible.sync="selectShopDialogShow">
         <el-row :gutter="20">
           <el-col :span="6">
@@ -69,10 +69,10 @@
           <el-input placeholder="请输入" v-model="newShop.location"></el-input>
         </el-form-item>
         <el-form-item label="类型: " style="width: 30%;">
-           <el-select v-model="newShop.type">
-             <el-option v-for="i of shopTypes"
-                        v-bind:key="i.id"
-                        v-bind:value="i.id"
+           <el-select v-model="newShop.type" disabled>
+             <el-option v-for="i in shopTypes"
+                        v-bind:key="i.pkid"
+                        v-bind:value="i.pkid"
                         :label="i.name">
              </el-option>
            </el-select>
@@ -86,17 +86,32 @@
       </div>
     </div>
     <div style="float: right; width: 18rem; padding-top: 10rem;">      
-      <div style="height: 100%;">
-        <el-upload
-          class="avatar-uploader"
-          action=""
-          :show-file-list="false"
-          :before-upload="beforeAvatarUpload">
-          <img v-if="newShop.pic" :src="newShop.pic" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
-      </div>
-      <div>门店图像</div>
+      <div style="margin-bottom:2rem;"><el-button type="success" @click="lookShopImgs">查看门店图片</el-button></div>
+      <div><el-button type="success" @click="setShopImgsDialogShow = true">新增门店图片</el-button></div>
+      <el-dialog title="查看门店图片" :visible.sync="getShopImgsDialogShow">
+        <el-carousel :interval="4000" type="card" height="200px">
+          <el-carousel-item v-for="item in shopImgs" :key="item.pkId">
+            <img :src="item.img" style="width: 150px; height: 150px;" />
+          </el-carousel-item>
+        </el-carousel>
+      </el-dialog>
+      <el-dialog title="新增门店图片" :visible.sync="setShopImgsDialogShow">
+        <div style="height: 100%;">
+          <el-upload
+            class="avatar-uploader"
+            action=""
+            :show-file-list="false"
+            :before-upload="beforeAvatarUpload">
+            <img v-if="tempShopImg" :src="tempShopImg" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </div>
+        <div>门店图像</div>
+        <div slot="footer">
+          <el-button @click="setShopImgsDialogShow = false">取 消</el-button>
+          <el-button type="primary" @click="ensureAddShopImg">确 定</el-button>
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -110,15 +125,19 @@ import * as identityApi from '../../../api/Identity';
 export default {
   data() {
     return {
-      newShop: this.$store.getters.getMerchantCurrentShop,
+      newShop: {},
       tempProvince: '',
       tempCity: '',
       tempDistrict: '',
       dataMap: map,
       shopTypes: [],
       selectShopDialogShow: false,
+      getShopImgsDialogShow: false,
+      setShopImgsDialogShow: false,
+      tempShopImg: '',
+      shopImgs: [],
       selectedShopId: '',
-      selectedShop: this.$store.getters.getMerchantCurrentShop,
+      selectedShop: {},
       merchantShops: this.$store.getters.getMerchantShops
     }
   },
@@ -126,8 +145,31 @@ export default {
     merchantApi.getShopTypies().then(res => {
       if(res.status != 200) this.$message.error("获取门店类型出错");
 
-      else this.shopTypes = res.body;
+      else {
+        this.shopTypes = res.body;
+
+        this.selectedShop = this.$store.getters.getMerchantCurrentShop;
+        let mid = {};
+        this._.assign(mid, this.selectedShop);
+        this.newShop = mid;
+
+        for(let i of this.shopTypes) {
+          if(i.pkId == this.newShop.type) this.newShop.type = i.name
+        }
+        for(let i in map['86']) {
+          if(map['86'][i] == this.newShop.province)  this.newShop.province = i;
+        }
+
+        for(let i in map[this.newShop.province]) {
+          if(map[this.newShop.province][i] == this.newShop.city) this.newShop.city = i;
+        }
+
+        for(let i in map[this.newShop.city]) {
+          if(map[this.newShop.city][i] == this.newShop.district) this.newShop.district = i;
+        }
+      }
     })
+
     /*
     shopApi.GetShopInfoByMerchantId(this.$store.getters.getMerchantId).then(res => {
       if(res.status == 401) {
@@ -163,7 +205,17 @@ export default {
     })
     */
   },
+  mounted() {/*
+    shopApi.GetShopImgs(this.selectedShop.pkId).then(res => {
+      if(res.status == 400) this.$message.error('获取门店图片失败');
+
+      else {
+        this.shopImgs = res.body
+      }
+    })*/
+  },
   updated() {
+    /*
     for(let i in map['86']) {
       if(map['86'][i] == this.newShop.province)  this.newShop.province = i;
     }
@@ -174,11 +226,14 @@ export default {
 
     for(let i in map[this.newShop.city]) {
       if(map[this.newShop.city][i] == this.newShop.district) this.newShop.district = i;
-    }
+    }*/
   },
   methods: {
     goBindShop() {
       this.$router.push('/Merchant/CreateShop')
+    },
+    goChooseShop() {
+      this.selectShopDialogShow = true
     },
     selectedShopChange(v) {
       for(var i of this.merchantShops) {
@@ -187,8 +242,25 @@ export default {
     },
     selectShop() {
       this.$store.dispatch('commitSetShopId', this.selectedShopId);
+      this.$store.dispatch('commitSetMerchantShopId', this.selectedShopId);
       this.$store.dispatch('commitSetMerchantCurrentShop', this.selectedShop);
-      this.newShop = this.selectedShop;
+      let mid = {};
+      this._.assign(mid, this.selectedShop);
+      this.newShop = mid;
+      for(let i of this.shopTypes) {
+        if(i.pkId == this.newShop.type) this.newShop.type = i.name
+      }
+      for(let i in map['86']) {
+        if(map['86'][i] == this.newShop.province)  this.newShop.province = i;
+      }
+
+      for(let i in map[this.newShop.province]) {
+        if(map[this.newShop.province][i] == this.newShop.city) this.newShop.city = i;
+      }
+
+      for(let i in map[this.newShop.city]) {
+        if(map[this.newShop.city][i] == this.newShop.district) this.newShop.district = i;
+      }
       this.selectShopDialogShow = false
     },
     provinceChange() {
@@ -219,15 +291,39 @@ export default {
                 this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
 
                 imgApi.ImgUpload(form).then(data => {
-                  this.newShop.pic = data.body;
+                  this.tempShopImg = data.body;
                 })
               }
             })
           }
-          this.newShop.pic = data.body;
+          this.tempShopImg = data.body;
         })
 
         return is;
+    },
+    ensureAddShopImg() {
+      shopApi.AddShopImg({'ShopId': this.selectedShop.pkId, 'Img': this.tempShopImg}).then(res => {
+        if(res.status == 400) this.$message.error('设置门店图片失败');
+
+        else {
+          this.$message({
+            type: 'success',
+            message: '新增门店图片成功'
+          })
+          this.setShopImgsDialogShow = false
+          this.tempShopImg = ''
+        }
+      })
+    },
+    lookShopImgs() {
+      shopApi.GetShopImgs(this.selectedShop.pkId).then(res => {
+        if(res.status == 400) this.$message.error('获取门店图片失败');
+
+        else {
+          this.shopImgs = res.body
+        }
+      })
+      this.getShopImgsDialogShow = true;
     },
     updateShop() {
       if(this.newShop.city == "" || this.newShop.district == "") {
@@ -242,10 +338,7 @@ export default {
         "City": this.dataMap[this.newShop.province][this.newShop.city],
         "District": this.dataMap[this.newShop.city][this.newShop.district],
         "Location": this.newShop.location,
-        "Type": this.newShop.type,
-        "Tel": this.newShop.tel,
-        "Manager": this.newShop.registerId,
-        "Pic": this.newShop.pic
+        "Tel": this.newShop.tel
       }
       merchantApi.updateShop(shop).then(res => {
         if(res.status == 401) {
@@ -264,7 +357,7 @@ export default {
                     type: 'success',
                     message:'更新成功'
                   });
-
+                  this.$store.dispatch('commitSetMerchantCurrentShop', res.body)
                   this.$store.dispatch('commitSetShopName', this.newShop.name);
                 }
               })
@@ -278,6 +371,7 @@ export default {
             type: 'success',
             message:'更新成功'
           });
+          this.$store.dispatch('commitSetMerchantCurrentShop', res.body)
           this.$store.dispatch('commitSetShopName', this.newShop.name);
         }
       })

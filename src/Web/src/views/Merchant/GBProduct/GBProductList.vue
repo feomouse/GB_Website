@@ -51,16 +51,6 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="图片" label-width="5rem">
-            <el-upload
-              class="avatar-uploader"
-              action=""
-              :show-file-list="false"
-              :before-upload="beforeCreateAvatarUpload">
-              <img v-if="newGBProduct.img" :src="newGBProduct.img" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
-          </el-form-item>
         </el-form>
         <div slot="footer">
           <el-button @click="createGBDialogVisible = false">取 消</el-button>
@@ -118,6 +108,7 @@
         </el-dialog>
       </div>
     </div>
+    <!--
     <div v-for="(i,index) in gbProducts" v-bind:key="i.productName" class="list_item">
       <div style="float:left; line-height: 8rem;">
         <img :src="i.img" style="float: left; width: 10rem; height: 8rem; padding: 1rem;"/>
@@ -127,86 +118,142 @@
       </div>
       <div style="margin: 2rem 2rem 0 0; float:right; line-height: 4rem;">
         <el-button style="display:inline-block;" type="success" @click="showUpdateGBProduct(index)">编辑</el-button>
-        <el-dialog title="产品详情" :visible.sync="detailGBDialogVisible">
-          <el-form :model="editGBProduct">
-            <el-form-item label="产品名称: " label-width="5rem">
-              <el-input v-model="editGBProduct.productName" auto-complete="off" style="width: 10rem"></el-input>
-            </el-form-item>
-            <el-form-item label="产品原价" label-width="5rem">
-              <el-input v-model="editGBProduct.orinPrice" auto-complete="off" style="width: 10rem"></el-input>
-            </el-form-item>
-            <el-form-item label="产品现价" label-width="5rem">
-              <el-input v-model="editGBProduct.price" auto-complete="off" style="width: 10rem"></el-input>
-            </el-form-item>
-            <el-form-item label="产品规格" label-width="5rem">
-              <el-input v-model="editGBProduct.quantity" auto-complete="off" style="width: 10rem"></el-input>
-            </el-form-item>
-            <el-form-item label="开始时间" label-width="5rem">
-              <el-date-picker
-                v-model="editGBProduct.vailSDate"
-                type="datetime"
-                placeholder="选择日期时间">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="截止时间" label-width="5rem">
-              <el-date-picker
-                v-model="editGBProduct.vailEDate"
-                type="datetime"
-                placeholder="选择日期时间">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="有效时间" label-width="5rem">
-              <el-input v-model="editGBProduct.vailTime" auto-complete="off" style="width: 10rem"></el-input>
-            </el-form-item>
-            <el-form-item label="备注" label-width="5rem">
-              <el-input v-model="editGBProduct.remark" type="textarea" autosize auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="是否显示" label-width="5rem">
-              <el-radio v-model="editGBProduct.isDisplay" label="true">显示</el-radio>
-              <el-radio v-model="editGBProduct.isDisplay" label="false">不显示</el-radio>
-            </el-form-item>
-            <el-form-item label="类型" label-width="5rem">
-              <el-select v-model="editGBProduct.productTypeId" placeholder="请选择">
-                <el-option
-                  v-for="item in productTypes"
-                  :key="item.name"
-                  :label="item.name"
-                  :value="item.pkId">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="图片" label-width="5rem">
-              <el-upload
-                class="avatar-uploader"
-                action=""
-                :show-file-list="false"
-                :before-upload="beforeUpdateAvatarUpload">
-                <img v-if="editGBProduct.img" :src="editGBProduct.img" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-              </el-upload>
-            </el-form-item>
-          </el-form>
-          <div slot="footer">
-            <el-button @click="detailGBDialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="updateGBProduct">确 定</el-button>
-          </div>
-        </el-dialog>
+ 
         <el-button style="display:inline-block;"
                 type="success"
                 @click="showDeleteGBProduct(index)">删除</el-button>
-        <el-dialog title="删除团购产品" :visible.sync="deleteDialogVisible">
-          <h2 style="margin-left: 2rem;">确认删除?</h2>
-          <div slot="footer">
-            <el-button @click="deleteDialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="deleteGBProduct()">确 定</el-button>
-          </div>
-        </el-dialog>
+
       </div>
+    </div>-->
+    <div>
+      <el-table
+        :data="gbProducts"
+        style="width: 100%">
+        <el-table-column
+          label="团购名称"
+          width="180">
+          <template slot-scope="scope">
+            <span style="margin-left: 10px">{{ scope.row.productName }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="日期"
+          width="180">
+          <template slot-scope="scope">
+            <span style="margin-left: 10px">{{ scope.row.vailEDate }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="价格"
+          width="180">
+          <template slot-scope="scope">
+            <span style="margin-left: 10px">{{ scope.row.price }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              @click="showUpdateGBProduct(scope.$index)">编辑</el-button>
+            <el-button
+              size="mini"
+              @click="shopEditGBProductImg(scope.$index, scope.row)">图片</el-button>
+            <el-button
+              size="mini"
+              type="danger"
+              @click="showDeleteGBProduct(scope.$index)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
+    <el-dialog title="产品详情" :visible.sync="detailGBDialogVisible">
+      <el-form :model="editGBProduct">
+        <el-form-item label="产品名称: " label-width="5rem">
+          <el-input v-model="editGBProduct.productName" auto-complete="off" style="width: 10rem"></el-input>
+        </el-form-item>
+        <el-form-item label="产品原价" label-width="5rem">
+          <el-input v-model="editGBProduct.orinPrice" auto-complete="off" style="width: 10rem"></el-input>
+        </el-form-item>
+        <el-form-item label="产品现价" label-width="5rem">
+          <el-input v-model="editGBProduct.price" auto-complete="off" style="width: 10rem"></el-input>
+        </el-form-item>
+        <el-form-item label="产品规格" label-width="5rem">
+          <el-input v-model="editGBProduct.quantity" auto-complete="off" style="width: 10rem"></el-input>
+        </el-form-item>
+        <el-form-item label="开始时间" label-width="5rem">
+          <el-date-picker
+            v-model="editGBProduct.vailSDate"
+            type="datetime"
+            placeholder="选择日期时间">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="截止时间" label-width="5rem">
+          <el-date-picker
+            v-model="editGBProduct.vailEDate"
+            type="datetime"
+            placeholder="选择日期时间">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="有效时间" label-width="5rem">
+          <el-input v-model="editGBProduct.vailTime" auto-complete="off" style="width: 10rem"></el-input>
+        </el-form-item>
+        <el-form-item label="备注" label-width="5rem">
+          <el-input v-model="editGBProduct.remark" type="textarea" autosize auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="是否显示" label-width="5rem">
+          <el-radio v-model="editGBProduct.isDisplay" label="true">显示</el-radio>
+          <el-radio v-model="editGBProduct.isDisplay" label="false">不显示</el-radio>
+        </el-form-item>
+        <el-form-item label="类型" label-width="5rem">
+          <el-select v-model="editGBProduct.productTypeId" placeholder="请选择">
+            <el-option
+              v-for="item in productTypes"
+              :key="item.name"
+              :label="item.name"
+              :value="item.pkId">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button @click="detailGBDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="updateGBProduct">确 定</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog title="编辑团购产品图片" :visible.sync="editImgDialogVisible">
+      <el-carousel :interval="4000" type="card" height="200px">
+        <el-carousel-item v-for="item in selectedGBProductImgs" :key="item">
+          <img :src="item.img" style="width:150px; height: 150px;" />
+        </el-carousel-item>
+      </el-carousel>
+      <div style="text-align: center;">
+        <label>新建团购产品图片: </label>
+        <el-upload
+          class="avatar-uploader"
+          action=""
+          :show-file-list="false"
+          :before-upload="beforeCreateAvatarUpload">
+          <img v-if="tempGBProductImg" :src="tempGBProductImg" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+      </div>
+      <div slot="footer">
+        <el-button @click="editImgDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="setGBProductImg">确 定</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog title="删除团购产品" :visible.sync="deleteDialogVisible">
+      <h2 style="margin-left: 2rem;">确认删除?</h2>
+      <div slot="footer">
+        <el-button @click="deleteDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="deleteGBProduct()">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
 import * as merchantApi from '../../../api/Merchant';
+import * as shopApi from '../../../api/Shop';
 import * as orderApi from '../../../api/Order';
 import * as imgApi from '../../../api/img';
 import * as identityApi from '../../../api/Identity';
@@ -261,11 +308,16 @@ export default {
       addProductTypeDialogVisible: false,
       delProductTypeDialogVisible: false,
       payDialogVisible: false,
-      orderCode: ""
+      editImgDialogVisible: false,
+      orderCode: "",
+      selectedGBProductId: "",
+      delGBProductId: "",
+      tempGBProductImg: "",
+      selectedGBProductImgs: []
     }
   },
   beforeCreate() {
-    merchantApi.ifSetGBService(this.$store.getters.getMerchantId).then(res => {
+    merchantApi.ifSetGBService(this.$store.getters.getMerchantShopId).then(res => {
       if(res.status == 401) {
         identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
           if(res.status == 400) this.$router.push('/Customer/SignIn');
@@ -274,7 +326,7 @@ export default {
             this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
             this.$store.dispatch('commitToken', res.body.access_token);
 
-            merchantApi.ifSetGBService(this.$store.getters.getMerchantId).then(res => {
+            merchantApi.ifSetGBService(this.$store.getters.getMerchantShopId).then(res => {
               if(res.status != 200) {
                 this.$message.error('不存在');
               }
@@ -283,9 +335,9 @@ export default {
                 this.$router.push('/Merchant/Operation/GBServiceApply');
               }
               else {
-                merchantApi.getProductTypeByShopName(this.$store.getters.getShopName,    
-                                                     this.$store.getters.getSelectedProvinceName, 
-                                                     this.$store.getters.getSelectedCityName).then(res => {
+                merchantApi.getProductTypeByShopName(this.$store.getters.getMerchantCurrentShop.name,    
+                                                     this.$store.getters.getMerchantCurrentShop.province, 
+                                                     this.$store.getters.getMerchantCurrentShop.city).then(res => {
                   if(res.status == 400) this.$message.error();
                   else {
                     for(let i of res.body) {
@@ -295,9 +347,9 @@ export default {
                       })
                     }
                   }
-                  merchantApi.getGBProductByShopName(this.$store.getters.getShopName,    
-                                                     this.$store.getters.getSelectedProvinceName, 
-                                                     this.$store.getters.getSelectedCityName).then(res => {
+                  merchantApi.getGBProductByShopName(this.$store.getters.getMerchantCurrentShop.name,    
+                                                     this.$store.getters.getMerchantCurrentShop.province, 
+                                                     this.$store.getters.getMerchantCurrentShop.city).then(res => {
                     if(res.status == 400) this.$message.error('获取团购产品失败');
                     else this.gbProducts = res.body;
                   })
@@ -315,9 +367,9 @@ export default {
         this.$router.push('/Merchant/Operation/GBServiceApply');
       }
       else {
-        merchantApi.getProductTypeByShopName(this.$store.getters.getShopName,    
-                                                     this.$store.getters.getSelectedProvinceName, 
-                                                     this.$store.getters.getSelectedCityName).then(res => {
+        merchantApi.getProductTypeByShopName(this.$store.getters.getMerchantCurrentShop.name,    
+                                                     this.$store.getters.getMerchantCurrentShop.province, 
+                                                     this.$store.getters.getMerchantCurrentShop.city).then(res => {
           if(res.status == 400) this.$message.error();
           else {
             for(let i of res.body) {
@@ -327,9 +379,9 @@ export default {
               })
             }
           }
-          merchantApi.getGBProductByShopName(this.$store.getters.getShopName,    
-                                                     this.$store.getters.getSelectedProvinceName, 
-                                                     this.$store.getters.getSelectedCityName).then(res => {
+          merchantApi.getGBProductByShopName(this.$store.getters.getMerchantCurrentShop.name,    
+                                                     this.$store.getters.getMerchantCurrentShop.province, 
+                                                     this.$store.getters.getMerchantCurrentShop.city).then(res => {
             if(res.status == 400) this.$message.error('获取团购产品失败');
             else this.gbProducts = res.body;
           })
@@ -338,10 +390,33 @@ export default {
     })
   },
   methods: {
+    shopEditGBProductImg(i, v) {
+      shopApi.GetGBProductImgs(v.pkId).then(res => {
+        if(res.status != 200) this.$message.error('获取团购产品图片出错');
+
+        else this.selectedGBProductImgs = res.body
+      })
+      this.selectedGBProductId = v.pkId;
+      this.editImgDialogVisible = true;
+    },
+    setGBProductImg() {
+      shopApi.AddGBProductImg({GBProductId: this.selectedGBProductId, Img: this.tempGBProductImg}).then(res => {
+        if(res.status != 200) this.$message.error('设置团购产品图片出错');
+
+        else {
+          this.$message({
+            type: 'success',
+            message: '成功新建团购产品图片'
+          })
+          this.editImgDialogVisible = false
+          this.tempGBProductImg = ""
+        }
+      })
+    },
     createGBProduct() {
       if(this.newGBProduct.productName == "" || this.newGBProduct.orinPrice == 0 || this.newGBProduct.price == 0 ||
          this.newGBProduct.quantity == "" || this.newGBProduct.vailSDate == "" || this.newGBProduct.vailEDate == "" ||
-         this.newGBProduct.vailTime == "" || this.newGBProduct.img == "" || this.newGBProduct.remark == "" || 
+         this.newGBProduct.vailTime == "" || this.newGBProduct.remark == "" || 
          this.newGBProduct.isDisplay == null || this.newGBProduct.productTypeId == "") {
          this.$message.error("请填齐团购产品信息");
 
@@ -449,11 +524,11 @@ export default {
       })
     },
     showDeleteGBProduct(index) {
-      this.deleteGBProductName = this.gbProducts[index].productName;
+      this.delGBProductId = this.gbProducts[index].pkId;
       this.deleteDialogVisible = true;
     },
     deleteGBProduct() {
-       merchantApi.deleteGBProduct(this.deleteGBProductName).then(res => {
+       merchantApi.deleteGBProduct(this.delGBProductId).then(res => {
         if(res.status == 401) {
           identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
             if(res.status == 400) this.$router.push('/Customer/SignIn');
@@ -462,12 +537,14 @@ export default {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
               this.$store.dispatch('commitToken', res.body.access_token);
 
-              merchantApi.deleteGBProduct(this.deleteGBProductName).then(res => {
+              merchantApi.deleteGBProduct(this.delGBProductId).then(res => {
                 if(res.status != 204) this.$message.error('删除失败');
                 else {
                   this.$message({type: 'success', message: '删除成功'});
                   this.deleteDialogVisible = false;
-                  merchantApi.getGBProductByShopName(this.$store.getters.getShopName).then(res => {
+                  merchantApi.getGBProductByShopName(this.$store.getters.getMerchantCurrentShop.name,    
+                                                     this.$store.getters.getMerchantCurrentShop.province, 
+                                                     this.$store.getters.getMerchantCurrentShop.city).then(res => {
                     if(res.status != 200) this.$message.error('获取产品失败');
                     else this.gbProducts = res.body;
                   })
@@ -480,7 +557,9 @@ export default {
         else {
           this.$message({type: 'success', message: '删除成功'});
           this.deleteDialogVisible = false;
-          merchantApi.getGBProductByShopName(this.$store.getters.getShopName).then(res => {
+          merchantApi.getGBProductByShopName(this.$store.getters.getMerchantCurrentShop.name,    
+                                                     this.$store.getters.getMerchantCurrentShop.province, 
+                                                     this.$store.getters.getMerchantCurrentShop.city).then(res => {
             if(res.status != 200) this.$message.error('获取产品失败');
             else this.gbProducts = res.body;
           })
@@ -531,7 +610,9 @@ export default {
                 if(res.status != 201) this.$message.error();
                 else {
                   this.$message({message: '创建成功', type: 'success'});
-                  merchantApi.getProductTypeByShopName(this.$store.getters.getShopName).then(res => {
+                  merchantApi.getProductTypeByShopName(this.$store.getters.getMerchantCurrentShop.name,
+                                                     this.$store.getters.getMerchantCurrentShop.province, 
+                                                     this.$store.getters.getMerchantCurrentShop.city).then(res => {
                     if(res.status == 400) this.$message.error();
                     else {
                       this.productTypes = [];
@@ -551,7 +632,9 @@ export default {
         else if(res.status != 201) this.$message.error();
         else {
           this.$message({message: '创建成功', type: 'success'});
-          merchantApi.getProductTypeByShopName(this.$store.getters.getShopName).then(res => {
+          merchantApi.getProductTypeByShopName(this.$store.getters.getMerchantCurrentShop.name,
+                                               this.$store.getters.getMerchantCurrentShop.province, 
+                                               this.$store.getters.getMerchantCurrentShop.city).then(res => {
             if(res.status == 400) this.$message.error();
             else {
               this.productTypes = [];
@@ -695,13 +778,13 @@ export default {
 
               imgApi.ImgUpload(form).then(res => {
                 if(res.status != 200) this.$message.error('上传错误');
-                else this.newGBProduct.img = res.body;  
+                else this.tempGBProductImg = res.body;  
               })
             }
           })
         }
         else if(res.status != 200) this.$message.error('上传错误');
-        else this.newGBProduct.img = res.body;
+        else this.tempGBProductImg = res.body;
       })
     },
     beforeUpdateAvatarUpload(file) {

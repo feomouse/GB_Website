@@ -5,10 +5,14 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.IntergrationEvents.Eve
 {
   public class MerchantIsIdentitiedIntergrationEvent : IntergrationEvent
   {
+    public Guid MerchantId { get; set; }
+    public Guid ShopId { get; set; }
     public bool IsIdentitied { get; set; }
 
-    public MerchantIsIdentitiedIntergrationEvent(Guid merchantId, bool checkResult) : base(merchantId, DateTime.Now)
+    public MerchantIsIdentitiedIntergrationEvent(Guid merchantId, Guid shopId, bool checkResult) : base(merchantId, DateTime.Now)
     {
+      MerchantId = merchantId;
+      ShopId = shopId;
       IsIdentitied = checkResult;
     }
   }

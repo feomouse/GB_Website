@@ -11,7 +11,7 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.EntityConfiguration
       {
         shopImgConfiguration.ToTable("shopImg", schema: "shop");
 
-        shopImgConfiguration.HasKey(b => b.ShopPkId);
+        shopImgConfiguration.HasKey(b => new {b.MShopId, b.Img});
 
         shopImgConfiguration.Property(b => b.Img).HasColumnType("nvarchar(150)");
       }

@@ -37,26 +37,35 @@ import * as shopApi from '../../../api/Shop';
 export default {
   data() {
     return {
-      merchantBasicList: [],
+      merchantShopList: [],
       merchantIdList: [],
       merchantShopIdList: [],
+      merchantIdentityIdList: [],
       identityList: []
     }
   },
   beforeMount() {
     let _this = this
-    merchantApi.getMerchantBasicListNotChecked(1).then(res => {
+    merchantApi.getMerchantShopListNotChecked(1).then(res => {
       if(res.status != 200) this.$message.error("获取商户信息有误");
 
       else {
-        this.merchantBasicList = res.body;
+        this.merchantShopList = res.body;
       } 
       return
     }).then(() => {
-      for(let i of this.merchantBasicList) {
-        this.merchantIdList.push({
-          "Id": i.authPkId
-        });
+      for(let i of this.merchantShopList) {
+        if(i.mIdentityId != null){
+          this.merchantIdList.push({
+            "Id": i.mBasicId
+          });
+          this.merchantShopIdList.push({
+            "ShopId": i.shopId
+          });
+          this.merchantIdentityIdList.push({
+            "IdentityId": i.mIdentityId
+          })
+        }
       }
       merchantApi.getMerchantsName(this.merchantIdList).then(res => {
         if(res.status != 200) this.$message.error("出错");
@@ -69,6 +78,16 @@ export default {
               "location": ""
             })
           }
+          shopApi.GetShopListByShopIds(this.merchantShopIdList).then(res => {
+            if(res.status != 200) this.$message.error("获取门店名称地址出错");
+
+            else {
+              for(let i=0; i<res.body.length; i++) {
+                this.identityList[i].shopName = res.body[i].shopName;
+                this.identityList[i].location = res.body[i].location;
+              }
+            }
+          })/*
           var merchantIds = []
           for(var i =0 ; i< this.merchantIdList.length; i++) {
             merchantIds[i] = this.merchantIdList[i].Id
@@ -82,7 +101,7 @@ export default {
                 _this.identityList[i].location = res.body[i].location;
               }
             }
-          })
+          })*/
         }
       })
     })
@@ -93,6 +112,8 @@ export default {
       for(let i = 0; i <  this.identityList.length; i++) {
         if(_this.identityList[i].name == row.name) {
           this.$store.dispatch('commitIdentityMerchantId', this.merchantIdList[i].Id)
+          this.$store.dispatch('commitSetMerchantShopId', this.merchantShopIdList[i].ShopId)
+          this.$store.dispatch('commitsetMerchantIdentityId', this.merchantIdentityIdList[i].IdentityId)
         }
       }
       

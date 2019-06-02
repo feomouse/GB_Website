@@ -25,18 +25,10 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.Commands
     public string Location { get; private set; }
 
     [DataMember]
-    public int Type { get; private set; }
-
-    [DataMember]
     public string Tel { get; private set; }
 
-    [DataMember]
-    public string Manager { get; private set; }
 
-    [DataMember]
-    public string Pic { get; private set; }
-
-    public EditShopCommand (string pkId, string name, string province, string city, string district, string location, int type, string tel, string manager, string pic)
+    public EditShopCommand (string pkId, string name, string province, string city, string district, string location, string tel)
     {
       PkId = pkId;
       Name = name;
@@ -44,10 +36,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.Commands
       City = city;
       District = district;
       Location = location;
-      Type = type;
       Tel = tel;
-      Manager = manager;
-      Pic = pic;
     }
   }
 }

@@ -15,7 +15,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.IntergrationEvents.EventHandle
 
     public Task Handle(MerchantIsIdentitiedIntergrationEvent @eventName)
     {
-      return Task.FromResult(_repo.IdentityMerchantOfShop(@eventName.Id.ToString(), @eventName.IsIdentitied));
+      return Task.FromResult(_repo.IdentityMerchantOfShop(@eventName.Id.ToString(), @eventName.ShopId.ToString(), @eventName.IsIdentitied));
     }
   }
 }

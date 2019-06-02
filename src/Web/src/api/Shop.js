@@ -156,3 +156,43 @@ export const GetShopsByMerchantId = (merchantId) => {
     return resFail
   })
 }
+
+export const GetShopImgs = (shopId) => {
+  return Vue.http.get('shop/GetShopImgs', {
+    headers: {
+      'shopId': shopId
+    }
+  }).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}
+
+export const AddShopImg = (body) => {
+  return Vue.http.post('shop/SetShopImg', body).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}
+
+export const GetGBProductImgs = (gbProductId) => {
+  return Vue.http.get('shop//GBProduct/GetGBProductImgs', {
+    headers: {
+      'gbProductId': gbProductId
+    }
+  }).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}
+
+export const AddGBProductImg = (body) => {
+  return Vue.http.post('shop//GBProduct/SetGBProductImg', body).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}

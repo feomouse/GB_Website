@@ -20,7 +20,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.CommandsHandler
       {
         ProductType productType = _repository.GetProductTypeByProductTypeId(request.ProductTypeId);
 
-        GBProduct gbproduct = new GBProduct(request.ProductName, double.Parse(request.OrinPrice), double.Parse(request.Price), request.Quantity, Convert.ToDateTime(request.VailSDate), Convert.ToDateTime(request.VailEDate), request.VailTime, request.Img, request.Remark, productType);
+        GBProduct gbproduct = new GBProduct(request.ProductName, double.Parse(request.OrinPrice), double.Parse(request.Price), request.Quantity, Convert.ToDateTime(request.VailSDate), Convert.ToDateTime(request.VailEDate), request.VailTime, request.Remark, productType);
     
         var result = _repository.AddGBProduct(gbproduct);
         return Task.FromResult(result);               

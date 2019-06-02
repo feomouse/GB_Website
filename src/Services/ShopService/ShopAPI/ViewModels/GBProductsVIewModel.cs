@@ -20,8 +20,6 @@ namespace GB_Project.Services.ShopService.ShopAPI.ViewModels
 
     public string VailTime { get; private set; }
 
-    public string Img { get; private set; }
-
     public string Remark { get; private set; }
 
     public bool IsDisplay { get; private set; }
@@ -33,7 +31,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.ViewModels
     public Guid ProductTypeId { get; private set; }
 
     public GBProductsVIewModel(Guid pkId, string productName, double orinPrice, double price, string quantity, DateTime vailSDate, DateTime vailEDate
-                              , string vailTime, string img, string remark, bool isDisplay, int praiseNum, int mSellNum, Guid productTypeId)
+                              , string vailTime, string remark, bool isDisplay, int praiseNum, int mSellNum, Guid productTypeId)
     {
       PkId = pkId;
       ProductName = productName;
@@ -43,7 +41,6 @@ namespace GB_Project.Services.ShopService.ShopAPI.ViewModels
       VailSDate = vailSDate;
       VailEDate = vailEDate;
       VailTime = vailTime;
-      Img = img;
       Remark = remark;
       IsDisplay = isDisplay;
       PraiseNum = praiseNum;

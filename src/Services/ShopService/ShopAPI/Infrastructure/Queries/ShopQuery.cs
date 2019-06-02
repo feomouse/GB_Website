@@ -156,5 +156,20 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
         return result;
       }
     } */
+
+    public IList<ShopImg> getShopImgs(string shopId)
+    {
+      return _repo.GetShopImgs(shopId);
+    }
+
+    public IList<GBProductImg> getGBProductImgs(string gbProductId)
+    {
+      return _repo.GetGBProductImgs(gbProductId);
+    }
+
+    public IList<Shop> getShopsByLocationAndType(string province, string city, string shopTypeId)
+    {
+      return _repo.GetShopByLocationAndType(province, city, shopTypeId);
+    }
   }
 }

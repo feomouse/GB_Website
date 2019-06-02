@@ -218,15 +218,15 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         if(shop.IsIdentitied == true) {
           return Ok("true");
         } else {
-          return Ok("true");
+          return Ok("false");
         }
       }
 
       [HttpGet]
       [Route("IfSetGB")]
-      public ActionResult JudgeIfGB([FromHeader]string merchantId)
+      public ActionResult JudgeIfGB([FromHeader]string shopId)
       {
-        Shop shop = _query.getShopByMerchantId(merchantId);
+        Shop shop = _query.getShopByShopId(shopId);
 
         if(shop == null) return BadRequest();
 
@@ -253,7 +253,10 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
 
         if(newShop == null) return BadRequest();
 
-        return Ok(newShop);
+        return Ok(new {pkId= newShop.PkId, name= newShop.Name, province= newShop.Province, 
+                     city= newShop.City, district= newShop.District, location= newShop.Location, type= newShop.ShopTypePkId, tel= newShop.Tel, 
+                     isIdentitied= newShop.IsIdentitied, groupBuying= newShop.GroupBuying,
+                     ownMoney= newShop.OwnMoney, workingTime= newShop.WorkingTime});
       }
 
       [HttpGet]
@@ -262,8 +265,33 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
       {
         var shops = _query.getShopsByMerchantId(merchantId);
         return Ok(shops.Select(s => new {pkId= s.PkId, name= s.Name, province= s.Province, 
-                     city= s.City, district= s.District, location= s.Location, tel= s.Tel, isIdentitied= s.IsIdentitied, groupBuying= s.GroupBuying,
+                     city= s.City, district= s.District, location= s.Location, type= s.ShopTypePkId, tel= s.Tel, isIdentitied= s.IsIdentitied, groupBuying= s.GroupBuying,
                      ownMoney= s.OwnMoney, workingTime= s.WorkingTime}));
+      }
+
+      [HttpGet]
+      [Route("GetShopImgs")]
+      public ActionResult GetShopImgs([FromHeader] string shopId)
+      {
+        return Ok(_query.getShopImgs(shopId).Select(sm => new {pkId = sm.MShopId, img = sm.Img}));
+      }
+
+      [HttpPost]
+      [Route("SetShopImg")]
+      public ActionResult SetShopImg([FromBody] AddShopImgCommand command)
+      {
+        var result = _mediator.Send(command).GetAwaiter().GetResult();
+
+        if(result == 0) return BadRequest();
+
+        return Ok();
+      }
+
+      [HttpGet]
+      [Route("GetRadomShops")]
+      public ActionResult GetShopsByLocationAndType([FromHeader]string province, [FromHeader]string city, [FromHeader]string shopTypeId)
+      {
+        
       }
     }
 }

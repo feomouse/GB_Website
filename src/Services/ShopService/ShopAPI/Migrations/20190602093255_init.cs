@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ShopAPI.Migrations
 {
-    public partial class init2 : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -81,20 +81,19 @@ namespace ShopAPI.Migrations
                 schema: "shop",
                 columns: table => new
                 {
-                    ShopPkId = table.Column<Guid>(nullable: false),
-                    Img = table.Column<string>(type: "nvarchar(150)", nullable: true),
-                    ShopPkId1 = table.Column<Guid>(nullable: true)
+                    MShopId = table.Column<Guid>(nullable: false),
+                    Img = table.Column<string>(type: "nvarchar(150)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_shopImg", x => x.ShopPkId);
+                    table.PrimaryKey("PK_shopImg", x => new { x.MShopId, x.Img });
                     table.ForeignKey(
-                        name: "FK_shopImg_shop_ShopPkId1",
-                        column: x => x.ShopPkId1,
+                        name: "FK_shopImg_shop_MShopId",
+                        column: x => x.MShopId,
                         principalSchema: "shop",
                         principalTable: "shop",
                         principalColumn: "PkId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -110,7 +109,6 @@ namespace ShopAPI.Migrations
                     VailSDate = table.Column<DateTime>(type: "date", nullable: false),
                     VailEDate = table.Column<DateTime>(type: "date", nullable: false),
                     VailTime = table.Column<string>(type: "nvarchar(30)", nullable: true),
-                    Img = table.Column<string>(type: "varchar(100)", nullable: true),
                     Remark = table.Column<string>(type: "nvarchar(50)", nullable: true),
                     IsDisplay = table.Column<bool>(type: "bit", nullable: false),
                     PraiseNum = table.Column<int>(type: "int", nullable: false),
@@ -134,20 +132,19 @@ namespace ShopAPI.Migrations
                 schema: "shop",
                 columns: table => new
                 {
-                    GBProductPkId = table.Column<Guid>(nullable: false),
-                    Img = table.Column<string>(type: "nvarchar(150)", nullable: true),
-                    GBProductPkId1 = table.Column<Guid>(nullable: true)
+                    MGBProductId = table.Column<Guid>(nullable: false),
+                    Img = table.Column<string>(type: "nvarchar(150)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_gbProductImg", x => x.GBProductPkId);
+                    table.PrimaryKey("PK_gbProductImg", x => new { x.MGBProductId, x.Img });
                     table.ForeignKey(
-                        name: "FK_gbProductImg_GBProduct_GBProductPkId1",
-                        column: x => x.GBProductPkId1,
+                        name: "FK_gbProductImg_GBProduct_MGBProductId",
+                        column: x => x.MGBProductId,
                         principalSchema: "shop",
                         principalTable: "GBProduct",
                         principalColumn: "PkId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -155,12 +152,6 @@ namespace ShopAPI.Migrations
                 schema: "shop",
                 table: "GBProduct",
                 column: "ProductTypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_gbProductImg_GBProductPkId1",
-                schema: "shop",
-                table: "gbProductImg",
-                column: "GBProductPkId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductType_ShopId",
@@ -173,12 +164,6 @@ namespace ShopAPI.Migrations
                 schema: "shop",
                 table: "shop",
                 column: "ShopTypePkId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_shopImg_ShopPkId1",
-                schema: "shop",
-                table: "shopImg",
-                column: "ShopPkId1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

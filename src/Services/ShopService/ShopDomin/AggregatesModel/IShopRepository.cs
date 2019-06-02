@@ -44,11 +44,13 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
         bool CheckIfIdentitied(string shopId);
 
+        Shop GetShopByMerchantIdAndShopId(string merchantId, string shopId);
+
         int CreateShop(Shop newShop);
 
         Shop GetShopByMerchantId(string merchantId);
 
-        int IdentityMerchantOfShop(string merchantId, bool isChecked);
+        int IdentityMerchantOfShop(string merchantId, string shopId, bool isChecked);
 
         int SetGB(string shopId);
         
@@ -64,11 +66,13 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
         int DeleteGBProduct(string gbProductName);
 
+        int DeleteGBProductById(string gbProductId);
+
         List<ProductType> GetShopProductTypesByShopName(string shopName, string province, string city);
 
         int DeleteProductType(string productTypePkId);
 
-        Shop UpdateShop (Shop shop);
+        Shop UpdateShop (string pkId, string name, string province, string city, string district, string location, string tel);
 
         string GetGBProductKeyByName (string gbProductName);
 
@@ -81,5 +85,13 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
         int SetMerchantToShop(Guid shopId, Guid merchantId);
 
         IList<Shop> GetShopsByMerchantId(string merchantId);
+
+        IList<ShopImg> GetShopImgs(string shopId);
+
+        int CreateShopImg(string shopId, string img);
+
+        IList<GBProductImg> GetGBProductImgs(string gbProductId);
+
+        int CreateGBProductImg(string gbProductId, string img);
     } 
 }

@@ -4,11 +4,11 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.Commands
 {
   public class DeleteGBProductCommand : IRequest<int>
   {
-    public string GBProductName {get; set; }
+    public string GBProductId {get; set; }
 
-    public DeleteGBProductCommand(string name)
+    public DeleteGBProductCommand(string id)
     {
-      GBProductName = name;
+      GBProductId = id;
     }
   }
 }

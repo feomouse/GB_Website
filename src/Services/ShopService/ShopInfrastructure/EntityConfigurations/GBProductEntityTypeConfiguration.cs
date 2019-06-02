@@ -27,8 +27,6 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.EntityConfiguration
 
         gbConfiguration.Property(b => b.VailTime).HasColumnType("nvarchar(30)");
 
-        gbConfiguration.Property(b => b.Img).HasColumnType("varchar(100)");
-
         gbConfiguration.Property(b => b.Remark).HasColumnType("nvarchar(50)"); 
 
         gbConfiguration.Property(b => b.IsDisplay).HasColumnType("bit");

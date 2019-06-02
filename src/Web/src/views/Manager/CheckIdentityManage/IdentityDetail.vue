@@ -34,7 +34,7 @@
       }
     },
     beforeMount() {
-      merchantApi.getMerchantIdentityByMerchantId(this.$store.getters.getIdentityMerchantId).then(res => {
+      merchantApi.getMerchantIdentity(this.$store.getters.getMerchantIdentityId).then(res => {
         if(res.status != 200) this.$message.error('get identity error');
 
         else this.identity = res.body;
@@ -44,6 +44,7 @@
       passCheck() {
         merchantApi.checkIdentity({
           "MerchantId": this.$store.getters.getIdentityMerchantId,
+          "ShopId": this.$store.getters.getMerchantShopId,
           "CheckResult": true
         }).then(res => {
           if(res.status != 200) this.$message.error();

@@ -117,9 +117,14 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         return _context.shops.Where(b => b.RegisterId.ToString() == merchantId).FirstOrDefault();
       }
 
-      public int IdentityMerchantOfShop(string merchantId, bool isChecked)
+      public Shop GetShopByMerchantIdAndShopId(string merchantId, string shopId)
       {
-        var shop = GetShopByMerchantId(merchantId);
+        return _context.shops.Where(s => (s.PkId.ToString() == shopId && s.RegisterId.ToString() == merchantId)).FirstOrDefault();
+      }
+
+      public int IdentityMerchantOfShop(string merchantId, string shopId, bool isChecked)
+      {
+        var shop = GetShopByMerchantIdAndShopId(merchantId, shopId);
       
         if(shop == null) throw new Exception();
         shop.SetIsIdentitied(isChecked);
@@ -187,7 +192,6 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         gbProduct.SetVailEDate(newgbProduct.VailEDate);
         gbProduct.SetVailTime(newgbProduct.VailTime);
         gbProduct.SetIsDisplay(newgbProduct.IsDisplay);
-        gbProduct.SetImg(newgbProduct.Img);
       
         _context.SaveChanges();
 
@@ -199,6 +203,19 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         GBProduct gbProduct = _context.gbproduct.Where(b => b.ProductName == gbProductName).FirstOrDefault();
         _context.gbproduct.Remove(gbProduct);
 
+        return _context.SaveChanges();
+      }
+
+      public int DeleteGBProductById(string gbProductId)
+      {
+        var imgs = _context.gbProductImg.Where(bi => bi.MGBProductId.ToString() == gbProductId).ToList();
+
+        foreach(var i in imgs)
+        {
+          _context.gbProductImg.Remove(i);
+        }
+
+        _context.Remove(_context.gbproduct.Where(b => b.PkId.ToString() == gbProductId).FirstOrDefault());
         return _context.SaveChanges();
       }
 
@@ -217,21 +234,20 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         return _context.SaveChanges();
       }
 
-      public Shop UpdateShop (Shop shop)
+      public Shop UpdateShop (string pkId, string name, string province, string city, string district, string location, string tel)
       {
-        var oldShop = _context.shops.Where(t => t.PkId == shop.PkId).FirstOrDefault();
+        var oldShop = _context.shops.Where(t => t.PkId.ToString() == pkId).FirstOrDefault();
 
-        oldShop.SetName(shop.Name);
-        oldShop.SetProvince(shop.Province);
-        oldShop.SetCity(shop.City);
-        oldShop.SetDistrict(shop.District);
-        oldShop.SetLocation(shop.Location);
-        oldShop.SetType(shop.Type);
-        oldShop.SetTel(shop.Tel);
+        oldShop.SetName(name);
+        oldShop.SetProvince(province);
+        oldShop.SetCity(city);
+        oldShop.SetDistrict(district);
+        oldShop.SetLocation(location);
+        oldShop.SetTel(tel);
 
         _context.SaveChanges();
 
-        return _context.shops.Where(t => t.PkId == shop.PkId).FirstOrDefault();
+        return _context.shops.Where(t => t.PkId.ToString() == pkId).FirstOrDefault();
       }
 
       public string GetGBProductKeyByName (string gbProductName)
@@ -283,6 +299,34 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
       public IList<Shop> GetShopsByMerchantId(string merchantId)
       {
         return _context.shops.Where(s => s.RegisterId.ToString() == merchantId).ToList();
+      }
+
+      public IList<ShopImg> GetShopImgs(string shopId)
+      {
+        return _context.shopImgs.Where(s => s.MShopId.ToString() == shopId).ToList();
+      }
+
+      public int CreateShopImg(string shopId, string img)
+      {
+        Shop shop = _context.shops.Where(s => s.PkId.ToString() == shopId).FirstOrDefault();
+
+        _context.shopImgs.Add(new ShopImg(shop, img));
+      
+        return _context.SaveChanges();
+      }
+
+      public IList<GBProductImg> GetGBProductImgs(string gbProductId)
+      {
+        return _context.gbProductImg.Where(g => g.MGBProductId.ToString() == gbProductId).ToList();
+      }
+
+      public int CreateGBProductImg(string gbProductId, string img)
+      {
+        GBProduct gbProduct = _context.gbproduct.Where(g => g.PkId.ToString() == gbProductId).FirstOrDefault();
+
+        _context.gbProductImg.Add(new GBProductImg(gbProduct, img));
+
+        return _context.SaveChanges();
       }
     }
 }

@@ -6,6 +6,7 @@ using GB_Project.Services.MerchantService.MerchantAPI.Query;
 using System.Threading;
 using GB_Project.Services.MerchantService.MerchantAPI.Application.Commands;
 using System;
+using System.Linq;
 using GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel;
 using System.Collections.Generic;
 using GB_Project.EventBus.BasicEventBus.Abstraction;
@@ -76,9 +77,17 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Controllers
 
      [HttpGet]
      [Route("GetShops")]
-     public ActionResult<IList<MerchantShop>> GetMerchantShops([FromHeader] string merchantId)
+     public ActionResult GetMerchantShops([FromHeader] string merchantId)
      {
-        return Ok(_query.GetMerchantShops(merchantId));
+        return Ok(_query.GetMerchantShops(merchantId).Select(ms => new {mBasicId = ms.MBasicId, shopId = ms.ShopId, mIdentityId = ms.MIdentityId, isChecked = ms.IsChecked}));
+     }
+
+     [HttpGet]
+     [Route("GetMerchantShop")]
+     public ActionResult GetMerchantShop([FromHeader] string merchantId, [FromHeader]string shopId)
+     {
+       var merchantShop = _query.GetMerchantShop(merchantId, shopId);
+       return Ok(new {mBasicId = merchantShop.MBasicId, shopId = merchantShop.ShopId, mIdentityId = merchantShop.MIdentityId, isChecked = merchantShop.IsChecked});
      }
   }
 }

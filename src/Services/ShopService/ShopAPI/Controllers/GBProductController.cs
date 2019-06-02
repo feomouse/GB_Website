@@ -7,6 +7,7 @@ using GB_Project.Services.ShopService.ShopAPI.Application.Commands;
 using System.Threading;
 using System.Collections.Generic;
 using GB_Project.Services.ShopService.ShopAPI.ViewModels;
+using System.Linq;
 
 namespace GB_Project.Services.ShopService.ShopAPI.Controllers
 {
@@ -50,7 +51,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [Route("GBProducts")]
-    public ActionResult GetGBProducts ([FromQuery] string shopName, string province, string city)
+    public ActionResult GetGBProducts ([FromQuery] string shopName, [FromQuery]string province, [FromQuery]string city)
     {
       List<GBProduct> gbProducts = _query.getGBProductsByShopName(shopName, province, city);
  
@@ -61,7 +62,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
       foreach(var p in gbProducts)
       {
         gbProductsViews.Add(new GBProductsVIewModel(p.PkId, p.ProductName, p.OrinPrice, p.Price, p.Quantity, p.VailSDate, p.VailEDate, p.VailTime
-                                                  , p.Img, p.Remark, p.IsDisplay, p.PraiseNum, p.MSellNum, p.ProductTypeId));
+                                                  , p.Remark, p.IsDisplay, p.PraiseNum, p.MSellNum, p.ProductTypeId));
       }
 
       return Ok(gbProductsViews);
@@ -80,7 +81,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
       foreach(var p in gbProducts)
       {
         gbProductsViews.Add(new GBProductsVIewModel(p.PkId, p.ProductName, p.OrinPrice, p.Price, p.Quantity, p.VailSDate, p.VailEDate, p.VailTime
-                                                  , p.Img, p.Remark, p.IsDisplay, p.PraiseNum, p.MSellNum, p.ProductTypeId));
+                                                  , p.Remark, p.IsDisplay, p.PraiseNum, p.MSellNum, p.ProductTypeId));
       }
 
       return Ok(gbProductsViews);
@@ -111,16 +112,18 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
       {
         return BadRequest("err");
       }
-      return Ok(gbProduct);
+      return Ok(new {pkId= gbProduct.PkId, productName= gbProduct.ProductName, orinPrice= gbProduct.OrinPrice, price= gbProduct.Price,
+                     quantity= gbProduct.Quantity, vailSDate= gbProduct.VailSDate, vailEDate= gbProduct.VailEDate, vailTime= gbProduct.VailTime,
+                    remark= gbProduct.Remark, isDisplay= gbProduct.IsDisplay, praiseNum= gbProduct.PraiseNum, mSellNum= gbProduct.MSellNum,
+                    productTypeId= gbProduct.ProductTypeId});
     }
-
     [HttpDelete]
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
     [Route("Delete")]
-    public ActionResult Delete ([FromQuery]string gbProduct)
+    public ActionResult Delete ([FromHeader]string gbProductId)
     {
-      int result = _mediator.Send(new DeleteGBProductCommand(gbProduct)).GetAwaiter().GetResult();
+      int result = _mediator.Send(new DeleteGBProductCommand(gbProductId)).GetAwaiter().GetResult();
 
       if(result == 0)
       {
@@ -128,6 +131,24 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
       }
 
       return StatusCode(204);
+    }
+
+    [HttpGet]
+    [Route("GetGBProductImgs")]
+    public ActionResult GetGBProductImgs([FromHeader]string gbProductId)
+    {
+      return Ok(_query.getGBProductImgs(gbProductId).Select(gm => new {pkId = gm.MGBProductId, img = gm.Img}));
+    }
+
+    [HttpPost]
+    [Route("SetGBProductImg")]
+    public ActionResult SetGBProductImg([FromBody] AddGBProductImgCommand command)
+    {
+       var result = _mediator.Send(command).GetAwaiter().GetResult();
+
+        if(result == 0) return BadRequest();
+
+        return Ok();
     }
   }
 }

@@ -48,5 +48,11 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
       IList<Shop> getShopsByNameAndCity(string shopName, string province, string city);
 
       IList<ShopType> getShopTypes();
+
+      IList<ShopImg> getShopImgs(string shopId);
+
+      IList<GBProductImg> getGBProductImgs(string gbProductId);
+
+      IList<Shop> getShopsByLocationAndType(string province, string city, string shopTypeId);
     } 
 }

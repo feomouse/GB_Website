@@ -10,6 +10,7 @@
 </template>
 <script>
 import * as shopApi from '../../../api/Shop';
+import * as merchantApi from '../../../api/Merchant';
 
 export default {
   beforeMount() {
@@ -60,9 +61,15 @@ export default {
   },
   methods: {
     apply() {
-      if(this.isChecked == false) this.$message.error("还未通过资质验证, 请耐心等待");
+      merchantApi.getMerchantShop(this.$store.getters.getMerchantId, this.$store.getters.getShopId).then(res => {
+        if(res.status != 200 || res.body == null) this.$message.error('无法检测是否填写资质信息');
 
-      else this.$router.push('/Merchant/Operation/GBServiceContract');
+        else if(res.body.mIdentityId == null) this.$router.push('/Merchant/CreateIdentity');
+
+        else if(res.body.isChecked == false) this.$message.error('资质信息还未通过验证');
+
+        else this.$router.push('/Merchant/Operation/GBServiceContract');
+      })
     }
   }
 }

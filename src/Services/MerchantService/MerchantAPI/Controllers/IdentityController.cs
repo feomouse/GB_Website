@@ -7,6 +7,7 @@ using System;
 using MediatR;
 using GB_Project.Services.MerchantService.MerchantAPI.Application.Commands;
 using System.Threading;
+using System.Linq;
 using System.Collections.Generic;
 using GB_Project.EventBus.BasicEventBus.Abstraction;
 using GB_Project.Services.MerchantService.MerchantAPI.IntergrationEvents.Events;
@@ -66,7 +67,7 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Controllers
 
       if(result != 0)
       {
-        var @event = new MerchantIsIdentitiedIntergrationEvent(new Guid(command.MerchantId), command.CheckResult);
+        var @event = new MerchantIsIdentitiedIntergrationEvent(new Guid(command.MerchantId), new Guid(command.ShopId), command.CheckResult);
         _publisher.Publish(@event);
 
         return new StatusCodeResult(200);
@@ -83,7 +84,10 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Controllers
 
       if(identity == null) return BadRequest();
 
-      else return Ok(identity);
+      else return Ok(new {pkId= identity.PkId, identityName= identity.IdentityName, identityNum= identity.IdentityNum, identityImgF= identity.IdentityImgF,
+                                     identityImgB= identity.IdentityImgB, licenseImg= identity.LicenseImg, licenseCode= identity.LicenseCode, licenseName= identity.LicenseName,
+                                     licenseOwner= identity.LicenseOwner, availableSatartTime= identity.AvailableSatartTime, availableTime= identity.AvailableTime,
+                                     tel= identity.Tel, mShopId= identity.MShopId});
     }
 
     [HttpGet]
@@ -94,7 +98,10 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Controllers
 
       if(identity == null) return BadRequest();
 
-      else return Ok(identity);
+      else return Ok(identity.Select(i => new {pkId= i.PkId, identityName= i.IdentityName, identityNum= i.IdentityNum, identityImgF= i.IdentityImgF,
+                                     identityImgB= i.IdentityImgB, licenseImg= i.LicenseImg, licenseCode= i.LicenseCode, licenseName= i.LicenseName,
+                                     licenseOwner= i.LicenseOwner, availableSatartTime= i.AvailableSatartTime, availableTime= i.AvailableTime,
+                                     tel= i.Tel, mShopId= i.MShopId}));
     }
 
     [HttpGet]

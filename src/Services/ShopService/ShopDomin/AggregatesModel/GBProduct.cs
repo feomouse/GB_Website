@@ -21,8 +21,6 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
     public string VailTime { get; private set; }
 
-    public string Img { get; private set; }
-
     public string Remark { get; private set; }
 
     public bool IsDisplay { get; private set; }
@@ -41,7 +39,7 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
     }
 
-    public GBProduct (string productName, double orinPrice, double price, string quantity, DateTime vailSDate, DateTime vailEDate, string vailTime, string img, string remark, ProductType productType)
+    public GBProduct (string productName, double orinPrice, double price, string quantity, DateTime vailSDate, DateTime vailEDate, string vailTime, string remark, ProductType productType)
     {
       PkId = new Guid();
       ProductName = productName;
@@ -51,7 +49,6 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
       VailSDate = vailSDate;
       VailEDate = vailEDate;
       VailTime = vailTime;
-      Img = img;
       Remark = remark;
       IsDisplay = true;
       PraiseNum = 0;
@@ -59,7 +56,7 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
       ProductType = productType;
     }
 
-    public GBProduct (Guid pkId, string productName, double orinPrice, double price, string quantity, DateTime vailSDate, DateTime vailEDate, string vailTime, string img, string remark, ProductType productType)
+    public GBProduct (Guid pkId, string productName, double orinPrice, double price, string quantity, DateTime vailSDate, DateTime vailEDate, string vailTime, string remark, ProductType productType)
     {
       PkId = pkId;
       ProductName = productName;
@@ -69,7 +66,6 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
       VailSDate = vailSDate;
       VailEDate = vailEDate;
       VailTime = vailTime;
-      Img = img;
       Remark = remark;
       IsDisplay = true;
       PraiseNum = 0;
@@ -113,11 +109,6 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
     public void SetVailTime(string time)
     {
       VailTime = time;
-    }
-
-    public void SetImg(string img)
-    {
-      Img = img;
     }
 
     public void SetRemark(string remark)

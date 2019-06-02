@@ -24,11 +24,9 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.Commands
       [DataMember]
       public string VailTime { get; set; }
       [DataMember]
-      public string Img { get; set; }
-      [DataMember]
       public string Remark { get; set; }
 
-      public AddGBProductCommand ( string productTypeId, string productName, string orinPrice, string price, string quantity, string vailSDate, string vailEDate, string vailTime, string img, string remark)
+      public AddGBProductCommand ( string productTypeId, string productName, string orinPrice, string price, string quantity, string vailSDate, string vailEDate, string vailTime, string remark)
       {
         ProductTypeId = productTypeId;
         ProductName = productName;
@@ -38,7 +36,6 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.Commands
         VailSDate = vailSDate;
         VailEDate = vailEDate;
         VailTime = vailTime;
-        Img = img;
         Remark = remark;
       } 
     }

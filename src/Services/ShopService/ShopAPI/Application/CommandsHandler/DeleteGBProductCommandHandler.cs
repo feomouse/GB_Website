@@ -16,7 +16,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.CommandsHandler
     }
     public Task<int> Handle(DeleteGBProductCommand request, CancellationToken cancellationToken)
     {
-      return Task.FromResult(_repo.DeleteGBProduct(request.GBProductName));
+      return Task.FromResult(_repo.DeleteGBProductById(request.GBProductId));
     }
   }
 }

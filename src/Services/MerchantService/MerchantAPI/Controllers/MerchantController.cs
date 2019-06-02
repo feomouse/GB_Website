@@ -7,6 +7,7 @@ using System.Threading;
 using GB_Project.Services.MerchantService.MerchantAPI.Application.Commands;
 using System;
 using GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel;
+using System.Linq;
 
 namespace GB_Project.Services.MerchantService.MerchantAPI.Controllers
 {
@@ -45,14 +46,14 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Controllers
      }
 
      [HttpGet]
-     [Route("GetMerchantBasicListIsNotChecked")]
-     public ActionResult GetMerchantBasicListIsNotChecked([FromQuery] int page)
+     [Route("GetMerchantShopListIsNotChecked")]
+     public ActionResult GetMerchantShopListIsNotChecked([FromQuery] int page)
      {
-       var merchantBasics = _query.GetMerchantShopListNotChecked(page);
+       var merchantShops = _query.GetMerchantShopListNotChecked(page);
 
-       if(merchantBasics == null) return BadRequest();
+       if(merchantShops == null) return BadRequest();
 
-       else return Ok(merchantBasics);
+       else return Ok(merchantShops.Select(ms => new {mBasicId = ms.MBasicId, shopId = ms.ShopId, mIdentityId = ms.MIdentityId, isChecked = ms.IsChecked}));
      }
 
      [HttpGet]

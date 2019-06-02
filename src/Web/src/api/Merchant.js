@@ -132,10 +132,10 @@ export const updateGBProduct = (gbProduct) => {
   });
 }
 
-export const deleteGBProduct = (gbProductName) => {
+export const deleteGBProduct = (gbProductId) => {
   return Vue.http.delete('shop/GBProduct/Delete', {
-    params: {
-      gbProduct: gbProductName
+    headers: {
+      'gbProductId': gbProductId
     }
   }).then(resSuccess => {
     return resSuccess;
@@ -156,8 +156,8 @@ export const getMerchantBasicByMerchantId = (merchantId) => {
   })
 }
 
-export const getMerchantBasicListNotChecked = (page) => {
-  return Vue.http.get('merchant/GetMerchantBasicListIsNotChecked', {
+export const getMerchantShopListNotChecked = (page) => {
+  return Vue.http.get('merchant/GetMerchantShopListIsNotChecked', {
     params: {
       'page': page
     }
@@ -188,10 +188,10 @@ export const checkIdentity = (body) => {
   })
 }
 
-export const ifSetGBService = (merchantId) => {
+export const ifSetGBService = (shopId) => {
   return Vue.http.get('shop/IfSetGB', {
     headers: {
-      'merchantId': merchantId
+      'shopId': shopId
     }
   }).then(resSuccess => {
     return resSuccess
@@ -237,6 +237,31 @@ export const getMerchantBasics = (page) => {
   return Vue.http.get('merchant/GetMerchantList', {
     params: {
       "page": page
+    }
+  }).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}
+
+export const getMerchantShop = (merchantId, shopId) => {
+  return Vue.http.get('merchant/GetMerchantShop', {
+    headers: {
+      'merchantId': merchantId,
+      'shopId': shopId
+    }
+  }).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}
+
+export const getMerchantIdentity = (identityId) => {
+  return Vue.http.get('merchant/GetMerchantIdentity', {
+    headers: {
+      'identityId': identityId
     }
   }).then(resSuccess => {
     return resSuccess

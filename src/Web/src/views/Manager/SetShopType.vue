@@ -114,7 +114,8 @@ export default {
 
             else this.shopTypes = res.body
           });
-          this.addShopTypeDialogShow = false
+          this.addShopTypeDialogShow = false;
+          this.newShopType = {}
         }
       })
     },
@@ -132,7 +133,8 @@ export default {
 
             else this.shopTypes = res.body
           });
-          this.editShopTypeDialogShow = false
+          this.editShopTypeDialogShow = false;
+          this.editShopType = {}
         }
       })
     },
@@ -159,11 +161,13 @@ export default {
 
               imgUploadApi.ImgUpload(form).then(data => {
                 this.newShopType.Img = data.body;
+        console.log(this.newShopType.Img)
               })
             }
           })
         }
         this.newShopType.Img = data.body;
+        console.log(this.newShopType.Img)
       })
 
       return is;

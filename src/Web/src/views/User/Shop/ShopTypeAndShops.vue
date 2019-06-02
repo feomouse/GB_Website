@@ -53,6 +53,7 @@
      </div>
      <div style="clear:both;"></div>
      <div class="shop-header">门店信息</div>
+     <!--
      <div v-for="(i, index) of shopList" v-bind:key="i.name" class="list_item" @click="showDetail(index)"
           style="text-align: left; vertical-align: bottom; cursor:pointer;">
        <img :src="i.img" style="width: 6rem; height: 5rem; display: inline-block; margin: 0 3rem 0 3rem;" />
@@ -67,7 +68,7 @@
         :total="shopsNum"
         @current-change="changePage">
       </el-pagination>
-     </div>
+     </div>-->
    </div>
   </div>
 </template>

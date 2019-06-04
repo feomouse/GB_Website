@@ -60,7 +60,7 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
         int AddGBProduct(GBProduct newgbProduct);
 
-        List<GBProduct> GetGBProductsByShopName(string shopName, string province, string city);
+        List<GBProduct> GetGBProductsByShopName(string shopName, string province, string city, string district);
 
         GBProduct UpdateGBProducts(GBProduct newgbProduct);
 
@@ -68,11 +68,11 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
         int DeleteGBProductById(string gbProductId);
 
-        List<ProductType> GetShopProductTypesByShopName(string shopName, string province, string city);
+        List<ProductType> GetShopProductTypesByShopName(string shopName, string province, string city, string district);
 
         int DeleteProductType(string productTypePkId);
 
-        Shop UpdateShop (string pkId, string name, string province, string city, string district, string location, string tel);
+        Shop UpdateShop (string pkId, string name, string province, string city, string district, string location, string tel, string workingTime);
 
         string GetGBProductKeyByName (string gbProductName);
 
@@ -93,5 +93,11 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
         IList<GBProductImg> GetGBProductImgs(string gbProductId);
 
         int CreateGBProductImg(string gbProductId, string img);
+
+        IList<Shop> GetShopsByDistrictAndType(string province, string city, string district, string shopTypeId, int page);
+
+        IList<Shop> GetRandomShopsByCityAndType(string province, string city, string shopTypeId);
+
+        int GetShopsNumByDistrictAndShopType(string province, string city, string district, string shopTypeId);
     } 
 }

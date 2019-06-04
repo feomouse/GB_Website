@@ -80,6 +80,9 @@
         <el-form-item label="电话: " style="width: 40%;">
           <el-input placeholder="请输入" v-model="newShop.tel"></el-input>
         </el-form-item>
+        <el-form-item label="营业时间: " style="width: 50%;">
+          <el-input placeholder="请输入" v-model="newShop.workingTime"></el-input>
+        </el-form-item>
       </el-form>
       <div class="a-element-a-line" style="text-align: center;">
         <el-button class="rem15-rem3-button" type="success" @click="updateShop">更新门店基本信息</el-button>
@@ -338,7 +341,8 @@ export default {
         "City": this.dataMap[this.newShop.province][this.newShop.city],
         "District": this.dataMap[this.newShop.city][this.newShop.district],
         "Location": this.newShop.location,
-        "Tel": this.newShop.tel
+        "Tel": this.newShop.tel,
+        "WorkingTime": this.newShop.workingTime
       }
       merchantApi.updateShop(shop).then(res => {
         if(res.status == 401) {

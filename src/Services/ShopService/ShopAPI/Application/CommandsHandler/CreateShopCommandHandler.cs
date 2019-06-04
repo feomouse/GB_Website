@@ -26,7 +26,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.CommandsHandler
       }
       public Task<Shop> Handle(CreateShopCommand request, CancellationToken cancellationToken)
       {
-        Shop shop = new Shop(request.Name, request.Province, request.City, request.District, request.Location, request.Tel);
+        Shop shop = new Shop(request.Name, request.Province, request.City, request.District, request.Location, request.Tel, request.WorkingTime);
 
         shop.SetType(_query.getShopTypeByPkId(request.Type));
 

@@ -178,7 +178,7 @@ export const AddShopImg = (body) => {
 }
 
 export const GetGBProductImgs = (gbProductId) => {
-  return Vue.http.get('shop//GBProduct/GetGBProductImgs', {
+  return Vue.http.get('shop/GBProduct/GetGBProductImgs', {
     headers: {
       'gbProductId': gbProductId
     }
@@ -190,7 +190,66 @@ export const GetGBProductImgs = (gbProductId) => {
 }
 
 export const AddGBProductImg = (body) => {
-  return Vue.http.post('shop//GBProduct/SetGBProductImg', body).then(resSuccess => {
+  return Vue.http.post('shop/GBProduct/SetGBProductImg', body).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}
+
+export const GetRandomShops = (province, city, shopTypeId) => {
+  return Vue.http.get('shop/GetRandomShops', {
+    params: {
+      'province': province,
+      'city': city
+    },
+    headers: {
+      'shopTypeId': shopTypeId
+    }
+  }).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}
+
+export const GetShopsByDistrict = (province, city, district, shopTypeId, page) => {
+  return Vue.http.get('shop/GetShopsByDistrictAndType', {
+    params: {
+      'province': province,
+      'city': city,
+      'district': district,
+    },
+    headers: {
+      'shopTypeId': shopTypeId,
+      'page': page
+    }
+  }).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}
+
+export const GetShopsNumByDistrictAndShopType = (province, city, district, shopTypeId) => {
+  return Vue.http.get('shop/GetShopsNumByDistrictAndShopType', {
+    params: {
+      'province': province,
+      'city': city,
+      'district': district
+    },
+    headers: {
+      'shopTypeId': shopTypeId
+    }
+  }).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}
+
+export const GetGBProductsFirstImg = (body) => {
+  return Vue.http.post('shop/GBProduct/GetGBProductsFirstImg', body).then(resSuccess => {
     return resSuccess
   }, resFail => {
     return resFail

@@ -95,6 +95,7 @@ export default {
                 this.$store.dispatch('commitProvinceName', res.body[0].province);
                 this.$store.dispatch('commitCityName', res.body[0].city);
                 this.$store.dispatch('commitSetMerchantShops', res.body);
+                this.$store.dispatch('commitSetMerchantShopId', res.body[0].pkId);
                 this.$store.dispatch('commitSetMerchantCurrentShop', res.body[0])
               }
             })
@@ -112,6 +113,7 @@ export default {
         this.$store.dispatch('commitProvinceName', res.body[0].province);
         this.$store.dispatch('commitCityName', res.body[0].city);
         this.$store.dispatch('commitSetMerchantShops', res.body);
+        this.$store.dispatch('commitSetMerchantShopId', res.body[0].pkId);
         this.$store.dispatch('commitSetMerchantCurrentShop', res.body[0]);
       }
     }) 

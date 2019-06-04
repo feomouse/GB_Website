@@ -30,5 +30,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.Commands
       public string Img { get; set; }
       [DataMember]
       public string Remark { get; set; }
+      [DataMember]
+      public string Detail { get; set; }
   }
 }

@@ -40,7 +40,7 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
     }
 
-    public Shop(string name, string province, string city, string district, string location, string tel)
+    public Shop(string name, string province, string city, string district, string location, string tel, string workingTime)
     {
        PkId = new Guid();
        Name = name;
@@ -49,6 +49,7 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
        District = district;
        Location = location;
        Tel = tel;
+       WorkingTime = workingTime;
        IsIdentitied = false;
        GroupBuying = false;
        OwnMoney = 0;

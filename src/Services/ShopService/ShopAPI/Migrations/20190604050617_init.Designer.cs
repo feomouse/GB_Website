@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ShopAPI.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    [Migration("20190602093255_init")]
+    [Migration("20190604050617_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,9 @@ namespace ShopAPI.Migrations
                 {
                     b.Property<Guid>("PkId")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Detail")
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<bool>("IsDisplay")
                         .HasColumnType("bit");
@@ -52,7 +55,7 @@ namespace ShopAPI.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Remark")
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime>("VailEDate")
                         .HasColumnType("date");

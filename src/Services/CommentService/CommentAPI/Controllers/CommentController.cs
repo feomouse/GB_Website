@@ -125,5 +125,12 @@ namespace GB_Project.Services.CommentService.CommentAPI.Controller
     {
       return Ok(_query.GetReplyCommentsByCommentIds(commentIds));
     }
+
+    [HttpPost]
+    [Route("getCommentsNumAndAverStarsNumByShopIds")]
+    public ActionResult GetCommentsNumAndAverStarsNumByShopIds([FromBody] List<string> shopIds)
+    {
+      return Ok(_query.GetCommentNumsAndAverStarsNumByShopIds(shopIds));
+    }
   }
 }

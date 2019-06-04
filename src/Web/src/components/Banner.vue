@@ -8,7 +8,7 @@
     <el-dialog label-width="70px" :visible.sync="showSelectCityDialogShow">
       <el-form inline="true">
         <el-form-item label="省" style="width:40%;">
-          <el-select v-model="selectedProvince" placeholder="请选择省">
+          <el-select v-model="selectedProvince" placeholder="请选择省" @change="selectProvince">
             <el-option 
               v-for="(i, k) in cityData['86']"
               :key="k"
@@ -31,7 +31,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer">
-        <el-button type="primary" @click="getShopsByCity">选择</el-button>
+        <el-button type="primary" @click="getShopsByLocation">选择</el-button>
         <el-button @click="showSelectCityDialogShow = false">取消</el-button>
       </div>
     </el-dialog>
@@ -46,11 +46,16 @@ export default {
       showSelectCityDialogShow : false,
       selectedProvince: this.$store.getters.getSelectedProvince,
       selectedCity: this.$store.getters.getSelectedCity,
+      //selectedDistrict: this.$store.getters.getSeletedDistrict,
       selectedProvinceName : this.$store.getters.getSelectedProvinceName,
       selectedCityName : this.$store.getters.getSelectedCityName,
+      //selectedDistrictName: this.$store.getters.getSelectedDistrictName,
       userName : this.$store.getters.user.userName,
       cityData : this.$store.getters.getCityData
     }
+  },
+  beforeMount() {
+    console.log(this.selectedProvinceName)
   },
   methods : {
     redirectToShops() {
@@ -59,21 +64,34 @@ export default {
     directToMyMessage() {
       this.$router.push('/Customer/Basic');
     },
-    getShopsByCity() {
+    getShopsByLocation() {
       this.selectedProvinceName = this.cityData['86'][this.selectedProvince];
       this.selectedCityName = this.cityData[this.selectedProvince][this.selectedCity];
-      shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.selectedProvince], this.cityData[this.selectedProvince][this.selectedCity], 1, 1).then(res => {
+      //this.selectedDistrictName = this.cityData[this.selectedCity][this.selectedDistrict];
+      shopApi.GetRandomShops(this.selectedProvinceName, this.selectedCityName, this.$store.getters.getShopTypes[0].pkId).then(res => {
         if(res.status != 200) this.$message.error();
 
         else {
           this.showSelectCityDialogShow = false;
           this.$store.dispatch('commitProvince', this.selectedProvince);
           this.$store.dispatch('commitCity', this.selectedCity);
+          this.$store.dispatch('commitDistrict', this._.keys(this.districts)[0]);
           this.$store.dispatch('commitProvinceName', this.selectedProvinceName);
           this.$store.dispatch('commitCityName', this.selectedCityName);
-          this.$store.dispatch('commitSetShopList', res.body);
+          this.$store.dispatch('commitDistrictName', this.cityData[this.selectedCity][this._.keys(this.cityData[this.selectedCity])[0]]);
+          this.$store.dispatch('commitSetRandomShops', res.body);
+
+          this.selectedProvince = "";
+          this.selectedCity = "";
+          this.selectedProvinceName = "";
+          this.selectedCityName = "";
+
+          this.$router.push('/Shops');
         }
       })
+    },
+    selectProvince() {
+      this.selectedCity = ""
     }
   }
 }

@@ -27,8 +27,11 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.Commands
     [DataMember]
     public string Tel { get; private set; }
 
+    [DataMember]
+    public string WorkingTime { get; private set; }
 
-    public EditShopCommand (string pkId, string name, string province, string city, string district, string location, string tel)
+
+    public EditShopCommand (string pkId, string name, string province, string city, string district, string location, string tel, string workingTime)
     {
       PkId = pkId;
       Name = name;
@@ -37,6 +40,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.Commands
       District = district;
       Location = location;
       Tel = tel;
+      WorkingTime = workingTime;
     }
   }
 }

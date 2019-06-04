@@ -74,3 +74,11 @@ export const getReplyCommentsByCommentIds = (commentIds) => {
     return resFail
   })
 }
+
+export const getCommentsNumAndAverStarsNumByShopIds = (shopIds) => {
+  return Vue.http.post('comment/getCommentsNumAndAverStarsNumByShopIds', shopIds).then(resSuccess => {
+    return resSuccess;
+  }, resFail => {
+    return resFail;
+  })
+}

@@ -4,13 +4,26 @@
     <div class="auto_eight" style="text-align: left; box-shadow: 3px 3px 3px lightgray; padding: 2rem 0 2rem 2rem;">
       <div style="float: left">
         <h1>{{shopDetail.name}}</h1>
+        <el-rate
+          v-model="shopDetail.averStarsNum"
+          disabled
+          show-score
+          text-color="#ff9900"
+          score-template="{value}">
+        </el-rate>
         <div>
+          <p>共有{{shopDetail.commentsNum}}条评论</p>
           <p>门店地址: {{shopDetail.province + shopDetail.city + shopDetail.district + shopDetail.location}}</p>
           <p>联系电话: {{shopDetail.tel}}</p>
+          <p>营业时间: {{shopDetail.workingTime}}</p>
         </div>
       </div>
-      <div style="float: right;">
-        <img :src="shopDetail.pic" style="width: 24rem; height: 12rem; margin-right: 2rem;"/>
+      <div style="float: right; margin: 3rem 3rem 0 0;">
+        <el-carousel style="width: 30rem;">
+          <el-carousel-item v-for="item in shopImgs" :key="item.pkId">
+            <img :src="item.img" style="width: 30rem; height: 15rem;"/>
+          </el-carousel-item>
+        </el-carousel>
       </div>
       <div style="clear: both;"></div>
     </div>
@@ -34,6 +47,7 @@
           <p>月销量: {{i.mSellNum}}</p>
         </div>
       </div>
+      <!--
       <el-dialog title="团购产品详细信息" :visible.sync="gbProductDialogVisible" style="text-align: left;">
         <div>
           <img :src="selectedGBProduct.img" style="width: 8rem; height: 8rem; display: inline-block; margin-right: 5rem; "/>
@@ -61,7 +75,7 @@
           <el-button @click="gbProductDialogVisible = false">取消</el-button>
           <el-button type="primary" @click="createGBOrder">创建订单</el-button>
         </div>
-      </el-dialog>
+      </el-dialog>-->
     </div>
     <div class="auto_eight" style="margin-top: 3rem;">
       <div class="shop-header">用户点评</div>
@@ -126,10 +140,37 @@ export default {
       replyList: {},
       commentCount: 0,
       'cityData': cityData,
-      replys: []
+      replys: [],
+      shopImgs: []
     }
   },
-  beforeMount() {
+  mounted() {
+    this.shopDetail = this.$store.getters.getCurrentSelectedShop
+
+    merchantApi.getGBProductByShopName(this.$store.getters.getShopSelectedName,
+                                        this.cityData['86'][this.$store.getters.getSelectedProvince], 
+                                        this.cityData[this.$store.getters.getSelectedProvince][this.$store.getters.getSelectedCity],
+                                        this.$store.getters.getSelectedDistrictName
+                                        ).then(res => {
+      if(res.status != 200) this.$message.error('获取团购产品失败');
+      else {
+        this.gbProductList = res.body;
+      }
+      /*
+      merchantApi.getProductTypeByShopName(this.$store.getters.getShopSelectedName,
+                                        this.cityData['86'][this.$store.getters.getSelectedProvince], 
+                                        this.cityData[this.$store.getters.getSelectedProvince][this.$store.getters.getSelectedCity]).then(res => {
+        if(res.status != 200) this.$message.error();
+        else this.productTypes = res.body;
+      })*/
+    }).then(() => {
+      shopApi.GetShopImgs(this.shopDetail.pkId).then(res => {
+        if(res.status != 200) this.$message.error("获取门店图片出错");
+
+        else this.shopImgs = res.body;
+      })
+    })
+    /*
     shopApi.GetShopInfoByShopNameAndCity(this.$store.getters.getShopSelectedName, 
                                          this.cityData['86'][this.$store.getters.getSelectedProvince], 
                                          this.cityData[this.$store.getters.getSelectedProvince][this.$store.getters.getSelectedCity]).then(res => {
@@ -166,7 +207,7 @@ export default {
           else this.productTypes = res.body;
         })
       })
-    }),
+    }),*/
     commentApi.getUserCommentsByShopId(this.$store.getters.getShopId, 1).then(res => {
       if(res.status == 401) {
         identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
@@ -285,12 +326,15 @@ export default {
     }
   },
   methods: {
-    showGBProductDetail(index) {
+    showGBProductDetail(index) {/*
       this.selectedGBProduct = this.gbProductList[index];
       this.selectedGBProduct.vailSDate = this.selectedGBProduct.vailSDate.split('T')[0];
       this.selectedGBProduct.vailEDate = this.selectedGBProduct.vailEDate.split('T')[0];
-      this.gbProductDialogVisible = true;
+      this.gbProductDialogVisible = true;*/
+      this.$store.dispatch('commitSetSelectedGBProduct', this.gbProductList[index]);
+      this.$router.push('/GBProductDetail');
     },
+    /*
     createGBOrder() {
       var now = new Date();
       this.gbProductOrder.GroupProductName = this.selectedGBProduct.productName;
@@ -336,6 +380,7 @@ export default {
         this.gbProductDialogVisible = false;
       })
     },
+    */
     changeCommentPage(page) {
       commentApi.getUserCommentsByShopId(this.$store.getters.getShopId, page).then(res => {
         if(res.status == 401) {

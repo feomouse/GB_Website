@@ -160,9 +160,9 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         return _context.SaveChanges();
       }
 
-      public List<GBProduct> GetGBProductsByShopName(string shopName, string province, string city)
+      public List<GBProduct> GetGBProductsByShopName(string shopName, string province, string city, string district)
       {
-        Shop shop = _context.shops.Where(b => (b.Name == shopName && b.Province == province && b.City == city)).FirstOrDefault();
+        Shop shop = _context.shops.Where(b => (b.Name == shopName && b.Province == province && b.City == city && b.District == district)).FirstOrDefault();
 
         if(shop == null) return null;
 
@@ -219,9 +219,9 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         return _context.SaveChanges();
       }
 
-      public List<ProductType> GetShopProductTypesByShopName(string shopName, string province, string city)
+      public List<ProductType> GetShopProductTypesByShopName(string shopName, string province, string city, string district)
       {
-        var shop = _context.shops.Where(b => (b.Name == shopName && b.Province == province && b.City == city)).FirstOrDefault();
+        var shop = _context.shops.Where(b => (b.Name == shopName && b.Province == province && b.City == city && b.District == district)).FirstOrDefault();
         return shop == null ?  new List<ProductType>() : _context.producttypes.Where(t => t.ShopId == shop.PkId).ToList();
       }
 
@@ -234,7 +234,7 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         return _context.SaveChanges();
       }
 
-      public Shop UpdateShop (string pkId, string name, string province, string city, string district, string location, string tel)
+      public Shop UpdateShop (string pkId, string name, string province, string city, string district, string location, string tel, string workingTime)
       {
         var oldShop = _context.shops.Where(t => t.PkId.ToString() == pkId).FirstOrDefault();
 
@@ -244,6 +244,7 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         oldShop.SetDistrict(district);
         oldShop.SetLocation(location);
         oldShop.SetTel(tel);
+        oldShop.SetWorkingTime(workingTime);
 
         _context.SaveChanges();
 
@@ -327,6 +328,30 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         _context.gbProductImg.Add(new GBProductImg(gbProduct, img));
 
         return _context.SaveChanges();
+      }
+
+      public IList<Shop> GetShopsByDistrictAndType(string province, string city, string district, string shopTypeId, int page)
+      {
+        return _context.shops.Where(s => (s.Province == province && s.City == city && 
+                             s.District == district && s.ShopTypePkId.ToString() == shopTypeId)).Skip((page-1)*10).Take(10).ToList();
+      }
+
+      public IList<Shop> GetRandomShopsByCityAndType(string province, string city, string shopTypeId)
+      {
+        var r = new Random();
+        var startVal = 0;
+        if(_context.shops.Count()-6 > 0) startVal = r.Next(_context.shops.Count()-6);
+        else startVal = 0;
+        return _context.shops.
+                Where(s => (s.Province == province && s.City == city && s.ShopTypePkId.ToString() == shopTypeId)).
+                Skip(startVal).
+                Take(6).
+                ToList();
+      }
+
+      public int GetShopsNumByDistrictAndShopType(string province, string city, string district, string shopTypeId)
+      {
+        return _context.shops.Count(s => (s.Province == province && s.City == city && s.District == district && s.ShopTypePkId.ToString() == shopTypeId));
       }
     }
 }

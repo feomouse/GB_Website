@@ -21,7 +21,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
 
       Shop getShopByShopId(string shopId);
 
-      List<GBProduct> getGBProductsByShopName( string shopName, string province, string city);
+      List<GBProduct> getGBProductsByShopName( string shopName, string province, string city, string district);
 
       List<Shop> getShopListByShopTypeAndCity(string province, string city, ShopType shopType, int page);
 
@@ -39,7 +39,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
 
       //GBProductItem getGBProductItemByGbIdAndName( Guid gbid, string name);
 
-      List<ProductType> getShopProductTypesByShopName(string shopName, string province, string city);
+      List<ProductType> getShopProductTypesByShopName(string shopName, string province, string city, string district);
 
       //GBRule getGBRuleByContentAndGBProductId(string content, Guid gbProId);
 
@@ -53,6 +53,10 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
 
       IList<GBProductImg> getGBProductImgs(string gbProductId);
 
-      IList<Shop> getShopsByLocationAndType(string province, string city, string shopTypeId);
+      IList<Shop> getShopsByDistrictAndType(string province, string city, string district, string shopTypeId, int page);
+
+      IList<Shop> getRandomShopsByCityAndType(string province, string city, string shopTypeId);
+
+      int getShopsNumByDistrictAndShopType(string province, string city, string district, string shopTypeId);
     } 
 }

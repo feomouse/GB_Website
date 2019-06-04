@@ -133,7 +133,7 @@ export default {
                   {
                     this.$store.dispatch('commitSetUser', res.body);
         
-                    this.$router.push({path: "/Customer/Basic"});
+                    this.$router.push({path: "/Shops"});
                   }
                 })
               }

@@ -288,10 +288,55 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
       }
 
       [HttpGet]
-      [Route("GetRadomShops")]
-      public ActionResult GetShopsByLocationAndType([FromHeader]string province, [FromHeader]string city, [FromHeader]string shopTypeId)
+      [Route("GetShopsByDistrictAndType")]
+      public ActionResult GetShopsByDistrictAndType([FromQuery]string province, [FromQuery]string city, [FromQuery]string district, [FromHeader]string shopTypeId, [FromHeader]int page)
       {
+        var shops = _query.getShopsByDistrictAndType(province, city, district, shopTypeId, page);
+
+        var shopViews = new List<RandomShopViewModel>();
+
+        foreach(var s in shops)
+        {
+            var img = "";
+            var imgs = _query.getShopImgs(s.PkId.ToString());
+            if(imgs.Count() != 0) {
+              img = imgs[0].Img; 
+            }
+            
+            shopViews.Add(new RandomShopViewModel(s.PkId.ToString(), s.Name, s.Province, s.City, s.District, s.Location,
+                            s.Tel, s.ShopTypePkId.ToString(), s.RegisterId.ToString(), img, s.WorkingTime));
+        }
+        return Ok(shopViews);
+      }
+
+      [HttpGet]
+      [Route("GetRandomShops")]
+      public ActionResult GetRandomShopsByCityAndType([FromQuery]string province, [FromQuery]string city, [FromHeader]string shopTypeId)
+      {
+        var shops = _query.getRandomShopsByCityAndType(province, city, shopTypeId);
         
+        var shopViews = new List<RandomShopViewModel>();
+
+        foreach(var s in shops)
+        {
+            var img = "";
+            var imgs = _query.getShopImgs(s.PkId.ToString());
+            if(imgs.Count() != 0) {
+              img = imgs[0].Img; 
+            }
+
+            shopViews.Add(new RandomShopViewModel(s.PkId.ToString(), s.Name, s.Province, s.City, s.District, s.Location,
+                            s.Tel, s.ShopTypePkId.ToString(), s.RegisterId.ToString(), img, s.WorkingTime));
+        }
+        return Ok(shopViews);
+      }
+
+      [HttpGet]
+      [Route("GetShopsNumByDistrictAndShopType")]
+      public ActionResult GetShopsNumByDistrictAndShopType([FromQuery]string province, [FromQuery]string city, 
+                                                [FromQuery]string district, [FromHeader]string shopTypeId)
+      {
+        return Ok(_query.getShopsNumByDistrictAndShopType(province, city, district, shopTypeId));
       }
     }
 }

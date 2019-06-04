@@ -29,6 +29,8 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
     public int MSellNum { get; private set; }
 
+    public string Detail { get; private set; }
+
     public Guid ProductTypeId { get; private set; }
 
     public ProductType ProductType { get; private set; } 
@@ -39,7 +41,7 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
     }
 
-    public GBProduct (string productName, double orinPrice, double price, string quantity, DateTime vailSDate, DateTime vailEDate, string vailTime, string remark, ProductType productType)
+    public GBProduct (string productName, double orinPrice, double price, string quantity, DateTime vailSDate, DateTime vailEDate, string vailTime, string remark, string detail, ProductType productType)
     {
       PkId = new Guid();
       ProductName = productName;
@@ -50,13 +52,14 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
       VailEDate = vailEDate;
       VailTime = vailTime;
       Remark = remark;
+      Detail = detail;
       IsDisplay = true;
       PraiseNum = 0;
       MSellNum = 0;
       ProductType = productType;
     }
 
-    public GBProduct (Guid pkId, string productName, double orinPrice, double price, string quantity, DateTime vailSDate, DateTime vailEDate, string vailTime, string remark, ProductType productType)
+    public GBProduct (Guid pkId, string productName, double orinPrice, double price, string quantity, DateTime vailSDate, DateTime vailEDate, string vailTime, string remark, string detail, ProductType productType)
     {
       PkId = pkId;
       ProductName = productName;
@@ -67,6 +70,7 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
       VailEDate = vailEDate;
       VailTime = vailTime;
       Remark = remark;
+      Detail = detail;
       IsDisplay = true;
       PraiseNum = 0;
       MSellNum = 0;
@@ -114,6 +118,11 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
     public void SetRemark(string remark)
     {
       Remark = remark;
+    }
+
+    public void SetDetail(string detail)
+    {
+      Detail = detail;
     }
 
     public void SetIsDisplay(bool isDisplay)

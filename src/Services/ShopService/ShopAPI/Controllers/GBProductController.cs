@@ -51,18 +51,24 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [Route("GBProducts")]
-    public ActionResult GetGBProducts ([FromQuery] string shopName, [FromQuery]string province, [FromQuery]string city)
+    public ActionResult GetGBProducts ([FromQuery] string shopName, [FromQuery]string province, [FromQuery]string city, [FromQuery]string district)
     {
-      List<GBProduct> gbProducts = _query.getGBProductsByShopName(shopName, province, city);
+      List<GBProduct> gbProducts = _query.getGBProductsByShopName(shopName, province, city, district);
  
       if(gbProducts == null) return BadRequest();
-      
+
       List<GBProductsVIewModel> gbProductsViews = new List<GBProductsVIewModel>();
 
       foreach(var p in gbProducts)
-      {
+      { 
+        var img = "";
+        var imgs = _query.getGBProductImgs(p.PkId.ToString());
+        if(imgs.Count() != 0) {
+          img = imgs[0].Img; 
+        }
+ 
         gbProductsViews.Add(new GBProductsVIewModel(p.PkId, p.ProductName, p.OrinPrice, p.Price, p.Quantity, p.VailSDate, p.VailEDate, p.VailTime
-                                                  , p.Remark, p.IsDisplay, p.PraiseNum, p.MSellNum, p.ProductTypeId));
+                                                  , p.Remark, p.Detail, p.IsDisplay, p.PraiseNum, p.MSellNum, p.ProductTypeId, img));
       }
 
       return Ok(gbProductsViews);
@@ -76,12 +82,20 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
     {
       List<GBProduct> gbProducts = _query.getGBProductByProductTypeId(productTypeId);
 
+      if(gbProducts == null) return BadRequest();
+      
       List<GBProductsVIewModel> gbProductsViews = new List<GBProductsVIewModel>();
 
       foreach(var p in gbProducts)
       {
+        var img = "";
+        var imgs = _query.getGBProductImgs(p.PkId.ToString());
+        if(imgs.Count() != 0) {
+          img = imgs[0].Img; 
+        }
+
         gbProductsViews.Add(new GBProductsVIewModel(p.PkId, p.ProductName, p.OrinPrice, p.Price, p.Quantity, p.VailSDate, p.VailEDate, p.VailTime
-                                                  , p.Remark, p.IsDisplay, p.PraiseNum, p.MSellNum, p.ProductTypeId));
+                                                  , p.Remark, p.Detail, p.IsDisplay, p.PraiseNum, p.MSellNum, p.ProductTypeId, img));
       }
 
       return Ok(gbProductsViews);
@@ -149,6 +163,20 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         if(result == 0) return BadRequest();
 
         return Ok();
+    }
+
+    [HttpPost]
+    [Route("GetGBProductsFirstImg")]
+    public ActionResult GetGBProductsFirstImg([FromBody] List<string> gbProductIds)
+    {
+      IList<GBProductImg> imgs = new List<GBProductImg>();
+
+      foreach(var i in gbProductIds)
+      {
+        imgs.Add( _query.getGBProductImgs(i)[0]);
+      }
+
+      return Ok(imgs.Select(img => new {pkId = img.MGBProductId, img = img.Img}));
     }
   }
 }

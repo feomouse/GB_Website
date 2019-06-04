@@ -34,9 +34,6 @@
           <el-form-item label="有效时间" label-width="5rem">
             <el-input v-model="newGBProduct.vailTime" auto-complete="off" style="width: 10rem"></el-input>
           </el-form-item>
-          <el-form-item label="备注" label-width="5rem">
-            <el-input v-model="newGBProduct.remark" type="textarea" autosize auto-complete="off"></el-input>
-          </el-form-item>
           <el-form-item label="是否显示" label-width="5rem">
             <el-radio v-model="newGBProduct.isDisplay" label="true">显示</el-radio>
             <el-radio v-model="newGBProduct.isDisplay" label="false">不显示</el-radio>
@@ -50,6 +47,12 @@
                 :value="item.pkId">
               </el-option>
             </el-select>
+          </el-form-item>
+          <el-form-item label="备注" label-width="5rem">
+            <el-input v-model="newGBProduct.remark" type="textarea" autosize auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="产品细节" label-width="5rem">
+            <el-input v-model="newGBProduct.detail" type="textarea" autosize auto-complete="off"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer">
@@ -137,7 +140,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="日期"
+          label="截止日期"
           width="180">
           <template slot-scope="scope">
             <span style="margin-left: 10px">{{ scope.row.vailEDate }}</span>
@@ -197,9 +200,6 @@
         <el-form-item label="有效时间" label-width="5rem">
           <el-input v-model="editGBProduct.vailTime" auto-complete="off" style="width: 10rem"></el-input>
         </el-form-item>
-        <el-form-item label="备注" label-width="5rem">
-          <el-input v-model="editGBProduct.remark" type="textarea" autosize auto-complete="off"></el-input>
-        </el-form-item>
         <el-form-item label="是否显示" label-width="5rem">
           <el-radio v-model="editGBProduct.isDisplay" label="true">显示</el-radio>
           <el-radio v-model="editGBProduct.isDisplay" label="false">不显示</el-radio>
@@ -213,6 +213,12 @@
               :value="item.pkId">
             </el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="备注" label-width="5rem">
+          <el-input v-model="editGBProduct.remark" type="textarea" autosize auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="产品细节" label-width="5rem">
+          <el-input v-model="editGBProduct.detail" type="textarea" autosize auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer">
@@ -273,6 +279,7 @@ export default {
         "vailTime": "",
         "img": "",
         "remark": "",
+        "detail": "",
         "isDisplay": null,
         "praiseNum": 0,
         "mSellNum": 0,
@@ -289,6 +296,7 @@ export default {
         "vailTime": "",
         "img": "",
         "remark": "",
+        "detail": "",
         "isDisplay": null,
         "praiseNum": 0,
         "mSellNum": 0,
@@ -337,7 +345,8 @@ export default {
               else {
                 merchantApi.getProductTypeByShopName(this.$store.getters.getMerchantCurrentShop.name,    
                                                      this.$store.getters.getMerchantCurrentShop.province, 
-                                                     this.$store.getters.getMerchantCurrentShop.city).then(res => {
+                                                     this.$store.getters.getMerchantCurrentShop.city,
+                                                     this.$store.getters.getMerchantCurrentShop.district).then(res => {
                   if(res.status == 400) this.$message.error();
                   else {
                     for(let i of res.body) {
@@ -349,7 +358,8 @@ export default {
                   }
                   merchantApi.getGBProductByShopName(this.$store.getters.getMerchantCurrentShop.name,    
                                                      this.$store.getters.getMerchantCurrentShop.province, 
-                                                     this.$store.getters.getMerchantCurrentShop.city).then(res => {
+                                                     this.$store.getters.getMerchantCurrentShop.city,
+                                                     this.$store.getters.getMerchantCurrentShop.district).then(res => {
                     if(res.status == 400) this.$message.error('获取团购产品失败');
                     else this.gbProducts = res.body;
                   })
@@ -369,7 +379,8 @@ export default {
       else {
         merchantApi.getProductTypeByShopName(this.$store.getters.getMerchantCurrentShop.name,    
                                                      this.$store.getters.getMerchantCurrentShop.province, 
-                                                     this.$store.getters.getMerchantCurrentShop.city).then(res => {
+                                                     this.$store.getters.getMerchantCurrentShop.city,
+                                                     this.$store.getters.getMerchantCurrentShop.district).then(res => {
           if(res.status == 400) this.$message.error();
           else {
             for(let i of res.body) {
@@ -381,7 +392,8 @@ export default {
           }
           merchantApi.getGBProductByShopName(this.$store.getters.getMerchantCurrentShop.name,    
                                                      this.$store.getters.getMerchantCurrentShop.province, 
-                                                     this.$store.getters.getMerchantCurrentShop.city).then(res => {
+                                                     this.$store.getters.getMerchantCurrentShop.city,
+                                                     this.$store.getters.getMerchantCurrentShop.district).then(res => {
             if(res.status == 400) this.$message.error('获取团购产品失败');
             else this.gbProducts = res.body;
           })
@@ -416,14 +428,27 @@ export default {
     createGBProduct() {
       if(this.newGBProduct.productName == "" || this.newGBProduct.orinPrice == 0 || this.newGBProduct.price == 0 ||
          this.newGBProduct.quantity == "" || this.newGBProduct.vailSDate == "" || this.newGBProduct.vailEDate == "" ||
-         this.newGBProduct.vailTime == "" || this.newGBProduct.remark == "" || 
+         this.newGBProduct.vailTime == "" || this.newGBProduct.remark == "" || this.newGBProduct.detail == "" || 
          this.newGBProduct.isDisplay == null || this.newGBProduct.productTypeId == "") {
          this.$message.error("请填齐团购产品信息");
 
          return
       }
-
-      merchantApi.addGBProduct(this.newGBProduct).then(res => {
+      var newAddGBProduct = {
+        "GBProductId" : this.newGBProduct.pkId,
+        "ProductTypeId" : this.newGBProduct.productTypeId,
+        "ProductName" : this.newGBProduct.productName,
+        "OrinPrice" : this.newGBProduct.orinPrice,
+        "Price" : this.newGBProduct.price,
+        "Quantity" : this.newGBProduct.quantity,
+        "VailSDate" : this.newGBProduct.vailSDate,
+        "VailEDate" : this.newGBProduct.vailEDate,
+        "VailTime" : this.newGBProduct.vailTime,
+        "Img" : this.newGBProduct.img,
+        "Remark" : this.newGBProduct.remark,
+        "Detail": this.newGBProduct.detail
+      }
+      merchantApi.addGBProduct(newAddGBProduct).then(res => {
         if(res.status == 401) {
           identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
             if(res.status == 400) this.$router.push('/Customer/SignIn');
@@ -477,7 +502,7 @@ export default {
 
       if(this.editGBProduct.productName == "" || this.editGBProduct.orinPrice == 0 || this.editGBProduct.price == 0 ||
          this.editGBProduct.quantity == "" || this.editGBProduct.vailSDate == "" || this.editGBProduct.vailEDate == "" ||
-         this.editGBProduct.vailTime == "" || this.editGBProduct.img == "" || this.editGBProduct.remark == "" || 
+         this.editGBProduct.vailTime == "" || this.editGBProduct.remark == "" || this.editGBProduct.detail == "" ||
          this.editGBProduct.productTypeId == "") {
          this.$message.error("请填齐团购产品信息");
 
@@ -495,7 +520,8 @@ export default {
         "VailEDate" : this.editGBProduct.vailEDate,
         "VailTime" : this.editGBProduct.vailTime,
         "Img" : this.editGBProduct.img,
-        "Remark" : this.editGBProduct.remark
+        "Remark" : this.editGBProduct.remark,
+        "Detail": this.editGBProduct.detail
       }
       merchantApi.updateGBProduct(newEditGBProduct).then(res => {
         if(res.status == 401) {
@@ -544,7 +570,8 @@ export default {
                   this.deleteDialogVisible = false;
                   merchantApi.getGBProductByShopName(this.$store.getters.getMerchantCurrentShop.name,    
                                                      this.$store.getters.getMerchantCurrentShop.province, 
-                                                     this.$store.getters.getMerchantCurrentShop.city).then(res => {
+                                                     this.$store.getters.getMerchantCurrentShop.city,
+                                                     this.$store.getters.getMerchantCurrentShop.district).then(res => {
                     if(res.status != 200) this.$message.error('获取产品失败');
                     else this.gbProducts = res.body;
                   })
@@ -559,7 +586,8 @@ export default {
           this.deleteDialogVisible = false;
           merchantApi.getGBProductByShopName(this.$store.getters.getMerchantCurrentShop.name,    
                                                      this.$store.getters.getMerchantCurrentShop.province, 
-                                                     this.$store.getters.getMerchantCurrentShop.city).then(res => {
+                                                     this.$store.getters.getMerchantCurrentShop.city,
+                                                     this.$store.getters.getMerchantCurrentShop.district).then(res => {
             if(res.status != 200) this.$message.error('获取产品失败');
             else this.gbProducts = res.body;
           })
@@ -612,7 +640,8 @@ export default {
                   this.$message({message: '创建成功', type: 'success'});
                   merchantApi.getProductTypeByShopName(this.$store.getters.getMerchantCurrentShop.name,
                                                      this.$store.getters.getMerchantCurrentShop.province, 
-                                                     this.$store.getters.getMerchantCurrentShop.city).then(res => {
+                                                     this.$store.getters.getMerchantCurrentShop.city,
+                                                     this.$store.getters.getMerchantCurrentShop.district).then(res => {
                     if(res.status == 400) this.$message.error();
                     else {
                       this.productTypes = [];
@@ -634,7 +663,8 @@ export default {
           this.$message({message: '创建成功', type: 'success'});
           merchantApi.getProductTypeByShopName(this.$store.getters.getMerchantCurrentShop.name,
                                                this.$store.getters.getMerchantCurrentShop.province, 
-                                               this.$store.getters.getMerchantCurrentShop.city).then(res => {
+                                               this.$store.getters.getMerchantCurrentShop.city,
+                                               this.$store.getters.getMerchantCurrentShop.district).then(res => {
             if(res.status == 400) this.$message.error();
             else {
               this.productTypes = [];

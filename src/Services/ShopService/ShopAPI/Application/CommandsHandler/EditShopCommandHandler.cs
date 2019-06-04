@@ -17,7 +17,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.CommandsHandler
     }
     public Task<Shop> Handle(EditShopCommand request, CancellationToken cancellationToken)
     {
-      return Task.FromResult(_repo.UpdateShop(request.PkId, request.Name, request.Province, request.City, request.District, request.Location, request.Tel));
+      return Task.FromResult(_repo.UpdateShop(request.PkId, request.Name, request.Province, request.City, request.District, request.Location, request.Tel, request.WorkingTime));
     }
   }
 }

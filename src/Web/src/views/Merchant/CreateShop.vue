@@ -82,6 +82,9 @@
           <el-input v-model="shop.Tel" placeholder="请输入门店电话"></el-input>
           <span v-if="telErrMsgShow" style="color: red; font-size: 0.75rem;">请输入正确电话</span>
         </el-form-item>
+        <el-form-item label="营业时间">
+          <el-input v-model="shop.WorkingTime" placeholder="请输入营业时间"></el-input>
+        </el-form-item>
       </el-form>
       <span slot="footer">
         <el-button @click="dialogCreateShopFormVisible = false; shop = {}">取 消</el-button>
@@ -262,7 +265,7 @@ export default {
       this.shop.District = this.mapData[this.tempLocation.cityCode][this.tempLocation.districtCode];
 
       if(this.shop.Name == "" || this.shop.Province == "" || this.shop.City == "" || this.shop.District == "" ||
-         this.shop.Location == "" || this.shop.Type == "" || this.shop.Tel == "") {
+         this.shop.Location == "" || this.shop.Type == "" || this.shop.Tel == "" || this.shop.WorkingTime == "") {
            this.$message.error("请将门店信息全部添齐");
 
            return

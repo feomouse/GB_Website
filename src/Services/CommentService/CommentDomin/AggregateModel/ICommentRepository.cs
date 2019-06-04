@@ -23,5 +23,7 @@ namespace GB_Project.Services.CommentService.CommentDomin.AggregateModel
     int GetUserCommentCountByShopId(string shopId);
 
     List<ReplyComment> GetReplyCommentsByCommentIds(List<string> commentIds);
+
+    IList<dynamic> GetCommentNumsAndAverStarsNumByShopIds(List<string> shopIds);
   }
 }

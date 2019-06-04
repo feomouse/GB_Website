@@ -16,29 +16,17 @@
      </div>
      <div style="width: 100%; height: auto;">
       <div class="float-left-two" style="background: #7dcea0; padding-top: 1rem; color: white;">
-        <div v-for="i of shopTypes"
-            v-bind:key="i.id" 
+        <div v-for="(i,index) in shopTypes"
+            v-bind:key="i.pkId" 
             @click="selectShopTypes(i)"
             style="height: 3rem; padding-left: 2rem; cursor: pointer;">
-            <svg-icon :iconClass="icons[i.id]"> </svg-icon>
+            <svg-icon :iconClass="icons[index]"> </svg-icon>
             {{i.name}}
         </div>
       </div>
       <div class="float-left-six" style="text-align: center;">
-        <div class="left-six">
-          <img :src="shopTypes[1].img" style="width: 100%; height: 100%; cursor: pointer;" @click="selectShopTypes(shopTypes[1])"/>
-        </div>
-        <div class="right-three">
-          <img :src="shopTypes[0].img" style="width: 100%; height: 100%; cursor: pointer;" @click="selectShopTypes(shopTypes[0])"/>
-        </div>
-        <div class="left-three">
-          <img :src="shopTypes[2].img" style="width: 100%; height: 100%; cursor: pointer;" @click="selectShopTypes(shopTypes[2])"/>
-        </div>
-        <div class="left-three">
-          <img :src="shopTypes[3].img" style="width: 100%; height: 100%; cursor: pointer;" @click="selectShopTypes(shopTypes[3])"/>
-        </div>
-        <div class="left-three">
-          <img :src="shopTypes[4].img" style="width: 100%; height: 100%; cursor: pointer;" @click="selectShopTypes(shopTypes[4])"/>
+        <div class="left-three" v-for="i in shopTypes" v-bind:key='i.pkId'>
+          <img :src="i.img" style="width: 100%; height: 100%; cursor: pointer;" @click="selectShopTypes(i)"/>
         </div>
       </div>
       <div class="float-left-two" style="text-align: center; background: #f4f6f6; cursor: pointer;" @click="directToMyMessage">
@@ -52,7 +40,21 @@
       </div>
      </div>
      <div style="clear:both;"></div>
-     <div class="shop-header">门店信息</div>
+     <div class="shop-header">
+        <label style="float: left; font-size: 1.2rem; font-weight: bold;">门店信息</label>
+        <div v-for="(i,index) in shopTypes"
+          v-bind:key="i.pkId" 
+          @click="selectShopTypesGetRandom(i)"
+          style="padding-left: 2rem; cursor: pointer; float: left;">
+          {{i.name}}
+        </div>
+     </div>
+     <div>
+       <div v-for="i in shopList" class="random-shop">
+         <img :src="i.img" style="width:100%; height: 12rem; border-radius:20px;"/>
+         <h3>{{i.name}}</h3>
+       </div>
+     </div>
      <!--
      <div v-for="(i, index) of shopList" v-bind:key="i.name" class="list_item" @click="showDetail(index)"
           style="text-align: left; vertical-align: bottom; cursor:pointer;">
@@ -85,22 +87,24 @@ export default {
   data() {
     return {
       shopTypes: [],
-      shopList: this.$store.getters.getShopList,
+      shopList: this.$store.getters.getRandomShops,
       showSelectCityDialogShow: false,
       'cityData': cityData,
       selectedProvince: this.$store.getters.getSelectedProvince,
       selectedCity: this.$store.getters.getSelectedCity,
+      selectedDistrict: this.$store.getters.getSelectedDistrict,
       selectedProvinceName: this.$store.getters.getSelectedProvinceName,
       selectedCityName: this.$store.getters.getSelectedCityName,
+      selectedDistrictName: this.$store.getters.getSelectedDistrictName,
       selectedShopType: 1,
       userName: this.$store.getters.user.userName,
 
       icons: {
-        1: 'beauty',
-        3: 'entertain',
+        0: 'beauty',
+        1: 'entertain',
         2: 'food',
-        4: 'living',
-        5: 'learning'
+        3: 'living',
+        4: 'learning'
       },
       CustomerInfo: {
         CustomerName: "",
@@ -124,16 +128,19 @@ export default {
             shopApi.GetShopTypes().then(res => {
               if(res.status != 200) this.$message.error('获取门店类型错误');
               else {
+                this.$store.dispatch('commitSetShopTypes', res.body);
                 this.shopTypes = res.body;
-                shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.selectedProvince], this.cityData[this.selectedProvince][this.selectedCity], 1, 1).then(res => {
+                shopApi.GetRandomShops('北京市', '市辖区', this.shopTypes[0].pkId).then(res => {
                   if(res.status != 200) this.$message.error('获取门店错误')
                   else {
                     this.shopList = res.body;
+                    this.$store.dispatch('commitSetRandomShops', res.body);
+                    /*
                     shopApi.GetShopsCount(this.cityData['86'][this.selectedProvince], this.cityData[this.selectedProvince][this.selectedCity], 1).then(res => {
                       if(res.status != 200) this.$message.error("获取数量错误");
 
                       else this.shopsNum = res.body;
-                    })
+                    })*/
                     //this.$store.dispatch('commitSetShopList', res.body);
                   }
                 })
@@ -144,16 +151,19 @@ export default {
       }
       else if(res.status != 200) this.$message.error('获取门店类型错误');
       else {
+        this.$store.dispatch('commitSetShopTypes', res.body);
         this.shopTypes = res.body;
-        shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.selectedProvince], this.cityData[this.selectedProvince][this.selectedCity], 1, 1).then(res => {
+        shopApi.GetRandomShops('北京市', '市辖区', this.shopTypes[0].pkId).then(res => {
           if(res.status != 200) this.$message.error('获取门店错误')
           else {
             this.shopList = res.body;
+            this.$store.dispatch('commitSetRandomShops', res.body);
+            /*
             shopApi.GetShopsCount(this.cityData['86'][this.selectedProvince], this.cityData[this.selectedProvince][this.selectedCity], 1).then(res => {
               if(res.status != 200) this.$message.error("获取数量错误");
 
               else this.shopsNum = res.body;
-            })
+            })*/
             //this.$store.dispatch('commitSetShopList', res.body);
           }
         })
@@ -161,8 +171,9 @@ export default {
     })
     //this.selectedProvinceName = this.cityData['86'][this.selectedProvince];
     //this.selectedCityName = this.cityData[this.selectedProvince][this.selectedCity];
-    this.$store.dispatch('commitProvinceName', this.cityData['86'][this.selectedProvince]);
-    this.$store.dispatch('commitCityName', this.cityData[this.selectedProvince][this.selectedCity]);
+    this.$store.dispatch('commitProvinceName', this.cityData['86']['110000']);
+    this.$store.dispatch('commitCityName', this.cityData['110000']['110100']);
+    //this.$store.dispatch('commitDistrictName', this.cityData['110100']['110101'])
 
     this.CustomerInfo.CustomerName = this.$store.getters.user.userName;
     this.CustomerInfo.CustomerImg = this.$store.getters.user.lookingImg;
@@ -176,7 +187,10 @@ export default {
       this.$router.push('/ShopDetail');
     },
     selectShopTypes(type) {
-      this.selectedShopType = type.id;
+      this.selectedShopType = type.pkId;
+      this.$store.dispatch('commitSetSelectedShopTypeId', type.pkId);
+      this.$router.push('/ShopLists');
+      /*
       shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.$store.getters.getSelectedProvince], this.cityData[this.$store.getters.getSelectedProvince][this.$store.getters.getSelectedCity], type.id, 1).then(res => {
         if(res.status == 401) {
           identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
@@ -210,11 +224,21 @@ export default {
           })
           //this.$store.dispatch('commitSetShopList', res.body);
         }
+      })*/
+    },
+    selectShopTypesGetRandom(v) {
+      shopApi.GetRandomShops(this.$store.getters.getSelectedProvinceName, this.$store.getters.getSelectedCityName, v.pkId).then(res => {
+        if(res.status != 200) this.$message.error('获取门店错误')
+        else {
+          this.shopList = res.body;
+          this.$store.dispatch('commitSetRandomShops', res.body);
+        }
       })
     },
     directToMyMessage() {
       this.$router.push('/Customer/Basic');
     },
+    /*
     changePage(page) {
       shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.$store.getters.getSelectedProvince], this.cityData[this.$store.getters.getSelectedProvince][this.$store.getters.getSelectedCity], this.selectedShopType, page).then(res => {
         if(res.status == 401) {
@@ -241,7 +265,7 @@ export default {
         }
       })
     }
-    /* 
+     
     getShopsByCity() {
       this.selectedProvinceName = cityData['86'][this.selectedProvince];
       this.selectedCityName = cityData[this.selectedProvince][this.selectedCity];

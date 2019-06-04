@@ -75,5 +75,24 @@ namespace GB_Project.Services.CommentService.CommentInfrastructrue.Repository
       }
       return rcomments;
     }
+
+    public IList<dynamic> GetCommentNumsAndAverStarsNumByShopIds(List<string> shopIds)
+    {
+      var result = new List<dynamic>();
+
+      foreach(var i in shopIds)
+      {
+        if(_context.UserComments.Count(uc => uc.ShopId.ToString() == i) != 0) {
+          result.Add(new {commentsNum= _context.UserComments.Count(uc => uc.ShopId.ToString() == i),
+                          averStarsNum= _context.UserComments.Where(uc => uc.ShopId.ToString() == i).Select(uc => uc.Stars).Average()});
+        }
+        else {
+          result.Add(new {commentsNum= _context.UserComments.Count(uc => uc.ShopId.ToString() == i),
+                          averStarsNum= 0});
+        }
+      }
+
+      return result;
+    }
   }
 }

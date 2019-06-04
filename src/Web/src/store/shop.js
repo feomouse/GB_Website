@@ -2,7 +2,13 @@ var state = {
   shopId: "",
   shopName: "",
   shopSelectedName: "",
-  shopList: []
+  shopList: [],
+  shopTypes: [],
+  randomShops: [],
+  selectedShopTypeId: '',
+  currentSelectedShop: {},
+  selectedGBProduct: {},
+  selectedShopStars: 0
 }
 
 var getters = {
@@ -17,6 +23,24 @@ var getters = {
   },
   getShopList: (state) => {
     return state.shopList
+  },
+  getShopTypes: (state) => {
+    return state.shopTypes
+  },
+  getRandomShops: (state) => {
+    return state.randomShops
+  },
+  getSelectedShopTypeId: (state) => {
+    return state.selectedShopTypeId
+  },
+  getCurrentSelectedShop: (state) => {
+    return state.currentSelectedShop
+  },
+  getSelectedGBProduct: (state) => {
+    return state.selectedGBProduct
+  },
+  getSelectedShopStars: (state) => {
+    return state.selectedShopStars
   }
 }
 
@@ -32,6 +56,24 @@ var mutations = {
   },
   setShopList: (state, list) => {
     state.shopList = list;
+  },
+  setShopTypes: (state, types) => {
+    state.shopTypes = types;
+  },
+  setRandomShops: (state, shops) => {
+    state.randomShops = shops
+  },
+  setSelectedShopTypeId: (state, shopTypeId) => {
+    state.selectedShopTypeId = shopTypeId
+  },
+  setCurrentSelectedShop: (state, shop) => {
+    state.currentSelectedShop = shop
+  },
+  setSelectedGBProduct: (state, gbProduct) => {
+    state.selectedGBProduct = gbProduct
+  },
+  setSelectedShopStars: (state, shopStars) => {
+    state.selectedShopStars = shopStars
   }
 }
 
@@ -47,6 +89,24 @@ var actions = {
   },
   commitSetShopList: ({commit}, list) => {
     commit('setShopList', list)
+  },
+  commitSetShopTypes: ({commit}, types) => {
+    commit('setShopTypes', types)
+  },
+  commitSetRandomShops: ({commit}, shops) => {
+    commit('setRandomShops', shops)
+  },
+  commitSetSelectedShopTypeId: ({commit}, shopTypeId) => {
+    commit('setSelectedShopTypeId', shopTypeId)
+  },
+  commitSetCurrentSelectedShop: ({commit}, shop) => {
+    commit('setCurrentSelectedShop', shop)
+  },
+  commitSetSelectedGBProduct: ({commit}, gbProduct) => {
+    commit('setSelectedGBProduct', gbProduct)
+  },
+  commitSetSelectedShopStars:({commit}, shopStars) => {
+    commit('setSelectedShopStars', shopStars)
   }
 }
 

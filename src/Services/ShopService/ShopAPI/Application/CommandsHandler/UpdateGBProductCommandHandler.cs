@@ -21,7 +21,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.CommandsHandler
         ProductType pt = _repository.GetProductTypeByProductTypeId(request.ProductTypeId);
         GBProduct newGB = _repository.UpdateGBProducts(new GBProduct(new Guid(request.GBProductId), request.ProductName, double.Parse(request.OrinPrice), double.Parse(request.Price), request.Quantity, 
                                                    Convert.ToDateTime(request.VailSDate), Convert.ToDateTime(request.VailEDate), request.VailTime, 
-                                                   request.Remark, pt));
+                                                   request.Remark, request.Detail, pt));
 
         return Task.FromResult(newGB);
       }

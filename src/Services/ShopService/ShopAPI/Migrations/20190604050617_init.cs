@@ -109,10 +109,11 @@ namespace ShopAPI.Migrations
                     VailSDate = table.Column<DateTime>(type: "date", nullable: false),
                     VailEDate = table.Column<DateTime>(type: "date", nullable: false),
                     VailTime = table.Column<string>(type: "nvarchar(30)", nullable: true),
-                    Remark = table.Column<string>(type: "nvarchar(50)", nullable: true),
+                    Remark = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     IsDisplay = table.Column<bool>(type: "bit", nullable: false),
                     PraiseNum = table.Column<int>(type: "int", nullable: false),
                     MSellNum = table.Column<int>(type: "int", nullable: false),
+                    Detail = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     ProductTypeId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>

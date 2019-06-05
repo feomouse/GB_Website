@@ -100,5 +100,17 @@ namespace GB_Project.Services.MerchantService.MerchantInfrastructure.Repository
 
         else return ms.MIdentity;
       }
+
+      public int UnbindShopFromMerchant(string merchantId, string shopId)
+      {
+        var merchantShop = _context.merchantShops.Where(ms => ms.MBasicId.ToString() == merchantId && ms.ShopId.ToString() == shopId).FirstOrDefault();
+        
+        _context.merchantIdentitys.Remove(_context.merchantIdentitys.
+                                          Where(mi => mi.PkId.ToString() == 
+                                          merchantShop.MIdentityId.ToString()).FirstOrDefault());
+        _context.merchantShops.Remove(merchantShop);
+
+        return _context.SaveChanges();
+      }
     }
 }

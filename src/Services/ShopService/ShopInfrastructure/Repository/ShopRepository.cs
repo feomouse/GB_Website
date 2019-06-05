@@ -353,5 +353,101 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
       {
         return _context.shops.Count(s => (s.Province == province && s.City == city && s.District == district && s.ShopTypePkId.ToString() == shopTypeId));
       }
+
+      public int IncreaseVisitNum(string shopId, string year, string month)
+      {
+        var result = _context.visitNums.Where(vn => (vn.MShopId.ToString() == shopId && vn.Year == year && vn.Month == month)).FirstOrDefault();
+      
+        if(result == null) 
+        {
+          _context.visitNums.Add(new VisitNum(_context.shops.Where(s => s.PkId.ToString() == shopId).FirstOrDefault(), year, month, 1));
+        }
+
+        else 
+        {
+          result.IncreaseNum();
+        }
+        return _context.SaveChanges();
+      }
+
+      public int IncreaseMonthSell(string shopId, string year, string month)
+      {
+        var result = _context.monthSells.Where(vn => (vn.MShopId.ToString() == shopId && vn.Year == year && vn.Month == month)).FirstOrDefault();
+      
+        if(result == null) 
+        {
+          _context.monthSells.Add(new MonthSell(_context.shops.Where(s => s.PkId.ToString() == shopId).FirstOrDefault(), year, month, 1));
+        }
+
+        else 
+        {
+          result.IncreaseMonthSell();
+        }
+        return _context.SaveChanges();
+      }
+
+      public dynamic GetVisitNumsByYear(string shopId, string year)
+      {
+        return _context.visitNums.
+                      Where(vn => (vn.MShopId.ToString() == shopId && vn.Year == year)).
+                      OrderBy(vn => Int32.Parse(vn.Month)).
+                      Select(vn => new {month = vn.Month, num = vn.Num}).
+                      ToList();
+      }
+
+      public dynamic GetMonthSellsByYear(string shopId, string year)
+      {
+        return _context.monthSells.
+                      Where(ms => (ms.MShopId.ToString() == shopId && ms.Year == year)).
+                      OrderBy(ms => Int32.Parse(ms.Month)).
+                      Select(ms => new {month = ms.Month, num = ms.Num}).
+                      ToList();
+      }
+
+      public int DeleteShopType(string shopTypeId)
+      {
+        var shopType = _context.shopTypes.Where(st => st.PkId.ToString() == shopTypeId).FirstOrDefault();
+
+        var shops = _context.shops.Where(s => s.ShopTypePkId.ToString() == shopType.PkId.ToString()).ToList();
+
+        foreach(var i in shops)
+        {
+          foreach(var k in i.Imgs)
+          {
+            _context.shopImgs.Remove(k);
+          }
+          foreach(var h in i.VisitNums)
+          {
+            _context.visitNums.Remove(h);
+          }
+          foreach(var p in i.MonthSells)
+          {
+            _context.monthSells.Remove(p);
+          }
+
+          var pts = _context.producttypes.Where(d => d.ShopId.ToString() == i.PkId.ToString()).ToList();
+
+          foreach(var j in pts)
+          {
+            var gbs = _context.gbproduct.Where(c => c.ProductTypeId.ToString() == j.PkId.ToString()).ToList();
+
+            foreach(var z in gbs)
+            {
+              foreach(var m in z.Imgs)
+              {
+                _context.gbProductImg.Remove(m);
+              }
+              _context.gbproduct.Remove(z);
+            }
+            _context.producttypes.Remove(j);
+          }
+
+          _context.shops.Remove(i);
+        }
+
+        _context.shopTypes.Remove(shopType);
+
+        return _context.SaveChanges();
+      }
     }
 }

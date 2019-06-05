@@ -255,3 +255,61 @@ export const GetGBProductsFirstImg = (body) => {
     return resFail
   })
 }
+
+export const GetVisitNum = (shopId, year) => {
+  return Vue.http.get('shop/GetVisitNum', {
+    headers: {
+      'shopId': shopId
+    },
+    params: {
+      'year': year
+    }
+  }).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}
+
+export const GetMonthSell = (shopId, year) => {
+  return Vue.http.get('shop/GetMonthSell', {
+    headers: {
+      'shopId': shopId
+    },
+    params: {
+      'year': year
+    }
+  }).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}
+
+export const IncreaseVisitNum = (body) => {
+  return Vue.http.post('shop/IncreaseVisitNum', body).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}
+
+export const IncreaseMonthSell = (body) => {
+  return Vue.http.post('shop/IncreaseMonthSell', body).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}
+
+export const DeleteShopType = (shopTypeId) => {
+  return Vue.http.delete('shop/DeleteShopType', {
+    headers: {
+      'shopTypeId': shopTypeId
+    }
+  }).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}

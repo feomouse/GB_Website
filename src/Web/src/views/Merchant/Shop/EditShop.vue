@@ -3,6 +3,14 @@
     <div>
       <el-button type="primary" @click="goBindShop"  style="float: right;">绑定门店</el-button>
       <el-button type="primary" @click="goChooseShop" style="float: right;margin-right: 2rem;">选择门店</el-button>
+      <el-button type="error" @click="unbindShopDialogShow = true" style="float: right; margin-right: 2rem;">解绑门店</el-button>
+      <el-dialog title="解绑门店" :visible.sync="unbindShopDialogShow">
+        <h2>确定解绑当前绑定门店?</h2>
+        <span slot="footer">
+          <el-button @click="unbindShopDialogShow = false">取 消</el-button>
+          <el-button type="primary" @click="ensureUnbindMerchantShop">提交</el-button>
+        </span>
+      </el-dialog>
       <el-dialog title="选择门店" :visible.sync="selectShopDialogShow">
         <el-row :gutter="20">
           <el-col :span="6">
@@ -137,6 +145,7 @@ export default {
       selectShopDialogShow: false,
       getShopImgsDialogShow: false,
       setShopImgsDialogShow: false,
+      unbindShopDialogShow: false,
       tempShopImg: '',
       shopImgs: [],
       selectedShopId: '',
@@ -232,6 +241,22 @@ export default {
     }*/
   },
   methods: {
+    ensureUnbindMerchantShop() {
+      merchantApi.unbindShop(this.$store.getters.getMerchantId, this.$store.getters.getMerchantCurrentShop.pkId).then(res => {
+        if(res.status != 200) this.$message.error('解绑失败');
+
+        else {
+          this.$message({
+            type: 'success',
+            message: '解绑当前门店成功'
+          })
+          this.unbindShopDialogShow = false
+          this.selectedShop = {}
+          this.selectedShopId = ""
+          this.selectShop()
+        }
+      })
+    },
     goBindShop() {
       this.$router.push('/Merchant/CreateShop')
     },
@@ -240,7 +265,10 @@ export default {
     },
     selectedShopChange(v) {
       for(var i of this.merchantShops) {
-        if(i.pkId == v) this.selectedShop = i
+        if(i.pkId == v) {
+          this.selectedShop = i
+          this.selectedShopId = i.pkId
+        }
       }
     },
     selectShop() {

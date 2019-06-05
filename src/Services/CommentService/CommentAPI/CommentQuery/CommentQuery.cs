@@ -45,5 +45,15 @@ namespace GB_Project.Services.CommentService.CommentAPI.CommentQuery
     {
       return _repo.GetCommentNumsAndAverStarsNumByShopIds(shopIds);
     }
+
+    public dynamic GetCommentStarsMoreThree(string shopId, string year)
+    {
+      return _repo.GetCommentStarsMoreThree(shopId, year);
+    }
+
+    public dynamic GetCommentStarsLessThree(string shopId, string year)
+    {
+      return _repo.GetCommentStarsLessThree(shopId, year);
+    }
   }
 }

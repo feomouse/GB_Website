@@ -83,6 +83,24 @@ namespace ShopAPI.Migrations
                     b.ToTable("gbProductImg","shop");
                 });
 
+            modelBuilder.Entity("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.MonthSell", b =>
+                {
+                    b.Property<Guid>("MShopId");
+
+                    b.Property<string>("Year")
+                        .HasColumnType("varchar(4)");
+
+                    b.Property<string>("Month")
+                        .HasColumnType("varchar(2)");
+
+                    b.Property<int>("Num")
+                        .HasColumnType("int");
+
+                    b.HasKey("MShopId", "Year", "Month");
+
+                    b.ToTable("monthSell","shop");
+                });
+
             modelBuilder.Entity("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.ProductType", b =>
                 {
                     b.Property<Guid>("PkId")
@@ -175,6 +193,24 @@ namespace ShopAPI.Migrations
                     b.ToTable("shopType","shop");
                 });
 
+            modelBuilder.Entity("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.VisitNum", b =>
+                {
+                    b.Property<Guid>("MShopId");
+
+                    b.Property<string>("Year")
+                        .HasColumnType("varchar(4)");
+
+                    b.Property<string>("Month")
+                        .HasColumnType("varchar(2)");
+
+                    b.Property<int>("Num")
+                        .HasColumnType("int");
+
+                    b.HasKey("MShopId", "Year", "Month");
+
+                    b.ToTable("visitNum","shop");
+                });
+
             modelBuilder.Entity("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.GBProduct", b =>
                 {
                     b.HasOne("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.ProductType", "ProductType")
@@ -188,6 +224,14 @@ namespace ShopAPI.Migrations
                     b.HasOne("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.GBProduct", "MGBProduct")
                         .WithMany("Imgs")
                         .HasForeignKey("MGBProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.MonthSell", b =>
+                {
+                    b.HasOne("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.Shop", "MShop")
+                        .WithMany("MonthSells")
+                        .HasForeignKey("MShopId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -211,6 +255,14 @@ namespace ShopAPI.Migrations
                 {
                     b.HasOne("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.Shop", "MShop")
                         .WithMany("Imgs")
+                        .HasForeignKey("MShopId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.VisitNum", b =>
+                {
+                    b.HasOne("GB_Project.Services.ShopService.ShopDomin.AggregatesModel.Shop", "MShop")
+                        .WithMany("VisitNums")
                         .HasForeignKey("MShopId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

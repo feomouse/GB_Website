@@ -270,3 +270,14 @@ export const getMerchantIdentity = (identityId) => {
     return resFail
   })
 }
+
+export const unbindShop = (merchantId, shopId) => {
+  return Vue.http.post('merchant/UnbindShop', {
+    'merchantId': merchantId,
+    'shopId': shopId
+  }).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}

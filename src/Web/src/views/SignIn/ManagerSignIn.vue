@@ -2,7 +2,7 @@
   <div id="mholder__SignIn">
     <div class="auto_eight">
       <div id="mleft__place">
-        <img src="../../static/imgs/building2.jpg" alt="春天到了，去踏青吧" style="width: 80%; height: 30rem; margin-top: 5rem;"/>
+        <img src="../../static/imgs/building2.jpg" alt="春天到了，去踏青吧" style="width: 80%; height: 30rem; margin-top: 8rem;"/>
       </div>
       <div id="mright__place">
         <div class="formEle_container" style="box-shadow: 3px 3px 3px gray; border: 1px solid gray;">

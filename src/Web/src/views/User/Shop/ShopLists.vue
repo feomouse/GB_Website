@@ -41,9 +41,11 @@
         :current-change="changePage">
       </el-pagination>
     </div>
+    <div style="width: 80%; margin: 0 auto;"><my-footer></my-footer></div>
   </div>
 </template>
 <script>
+  import myFooter from '../../../views/Common/Footer';
 import city from '../../../data';
 import * as shopApi from '../../../api/Shop';
 import * as commentApi from '../../../api/Evaluate';
@@ -51,7 +53,8 @@ import myBanner from '../../../components/Banner';
 
 export default {
   components: {
-    'myBanner': myBanner
+    'myBanner': myBanner,
+      'my-footer': myFooter
   },
   data() {
     return {
@@ -96,9 +99,20 @@ export default {
   },
   methods: {
     selectShop(shop) {
-      this.$store.dispatch('commitSetSelectedName', shop.name);
-      this.$store.dispatch('commitSetCurrentSelectedShop', shop);
-      this.$router.push('/ShopDetail')
+      let date = new Date();
+      shopApi.IncreaseVisitNum({
+        ShopId: shop.pkId,
+        Year: date.getFullYear(),
+        Month: date.getMonth()
+      }).then(res => {
+        if(res.status != 200) this.$message.error('增加访问数失败');
+
+        else {
+          this.$store.dispatch('commitSetSelectedName', shop.name);
+          this.$store.dispatch('commitSetCurrentSelectedShop', shop);
+          this.$router.push('/ShopDetail')
+        }
+      })
     },
     changeDistrict(v, k) {
       this.$store.dispatch('commitDistrictName', v);

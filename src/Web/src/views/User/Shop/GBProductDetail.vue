@@ -96,9 +96,11 @@
         </div>
       </el-dialog>
     </div>
+    <div style="width: 80%; margin: 0 auto;"><my-footer></my-footer></div>
   </div>
 </template>
 <script>
+  import myFooter from '../../../views/Common/Footer';
 import Tab from '../../../components/Tabs';
 import * as shopApi from '../../../api/Shop';
 import * as orderApi from '../../../api/Order';
@@ -107,7 +109,8 @@ import myBanner from '../../../components/Banner';
 export default {
   components: {
     "tabs": Tab,
-    'myBanner': myBanner
+    'myBanner': myBanner,
+      'my-footer': myFooter
   },
   data() {
     return {
@@ -193,6 +196,14 @@ export default {
         else if(res.status != 201) this.$message.error();
         else {
           this.$message({type: "success", message: "创建订单成功"});
+          let date = new Date();
+          shopApi.IncreaseMonthSell({
+            ShopId: this.$store.getters.getCurrentSelectedShop.pkId,
+            Year: date.getFullYear(),
+            Month: date.getMonth()
+          }).then(res => {
+            if(res.status != 200) this.$messager.error('增加订购数据失败')
+          })
           this.$router.push('/redirect')
         }
 

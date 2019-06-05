@@ -101,9 +101,11 @@
       </el-pagination>
     </div>
     <!--<div @click="test" style="cursor: pointer;">测试</div>-->
+    <div style="width: 80%; margin: 0 auto;"><my-footer></my-footer></div>
   </div>
 </template>
 <script>
+  import myFooter from '../../../views/Common/Footer';
 import * as shopApi from '../../../api/Shop';
 import * as merchantApi from '../../../api/Merchant';
 import * as orderApi from '../../../api/Order';
@@ -114,7 +116,8 @@ import cityData from '../../../data';
 
 export default {
   components: {
-    'myBanner': myBanner
+    'myBanner': myBanner,
+      'my-footer': myFooter
   },
   data() {
     return {

@@ -28,6 +28,11 @@ export default {
           link: "/Merchant/Operation/GBProductOperations",
           icon: "gb",
           level: 1
+        }, {
+          label: "数据分析",
+          link: "/Merchant/Operation/Data",
+          icon: "living",
+          level: 1
         }]
     }
   },

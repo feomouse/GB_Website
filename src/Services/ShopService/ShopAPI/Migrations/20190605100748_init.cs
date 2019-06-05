@@ -56,6 +56,28 @@ namespace ShopAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "monthSell",
+                schema: "shop",
+                columns: table => new
+                {
+                    MShopId = table.Column<Guid>(nullable: false),
+                    Year = table.Column<string>(type: "varchar(4)", nullable: false),
+                    Month = table.Column<string>(type: "varchar(2)", nullable: false),
+                    Num = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_monthSell", x => new { x.MShopId, x.Year, x.Month });
+                    table.ForeignKey(
+                        name: "FK_monthSell_shop_MShopId",
+                        column: x => x.MShopId,
+                        principalSchema: "shop",
+                        principalTable: "shop",
+                        principalColumn: "PkId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductType",
                 schema: "shop",
                 columns: table => new
@@ -89,6 +111,28 @@ namespace ShopAPI.Migrations
                     table.PrimaryKey("PK_shopImg", x => new { x.MShopId, x.Img });
                     table.ForeignKey(
                         name: "FK_shopImg_shop_MShopId",
+                        column: x => x.MShopId,
+                        principalSchema: "shop",
+                        principalTable: "shop",
+                        principalColumn: "PkId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "visitNum",
+                schema: "shop",
+                columns: table => new
+                {
+                    MShopId = table.Column<Guid>(nullable: false),
+                    Year = table.Column<string>(type: "varchar(4)", nullable: false),
+                    Month = table.Column<string>(type: "varchar(2)", nullable: false),
+                    Num = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_visitNum", x => new { x.MShopId, x.Year, x.Month });
+                    table.ForeignKey(
+                        name: "FK_visitNum_shop_MShopId",
                         column: x => x.MShopId,
                         principalSchema: "shop",
                         principalTable: "shop",
@@ -174,7 +218,15 @@ namespace ShopAPI.Migrations
                 schema: "shop");
 
             migrationBuilder.DropTable(
+                name: "monthSell",
+                schema: "shop");
+
+            migrationBuilder.DropTable(
                 name: "shopImg",
+                schema: "shop");
+
+            migrationBuilder.DropTable(
+                name: "visitNum",
                 schema: "shop");
 
             migrationBuilder.DropTable(

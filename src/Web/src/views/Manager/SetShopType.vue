@@ -18,10 +18,20 @@
             <el-button
               size="mini"
               @click="setShopType(scope.$index, scope.row)">编辑</el-button>
+            <el-button
+              size="mini"
+              @click="deleteShopType(scope.$index, scope.row)">删除</el-button> 
           </template>
         </el-table-column>
       </el-table>
     </div>
+    <el-dialog title="删除门店类型" :visible.sync="deleteShopTypeDialogShow">
+      <h2>确认删除门店?(会连同该门店类型下的所有门店一并删除)</h2>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="deleteShopTypeDialogShow = false">取 消</el-button>
+        <el-button type="primary" @click="ensureDeleteShopType">确 定</el-button>
+      </div>
+    </el-dialog>
     <el-dialog title="新建门店类型" :visible.sync="addShopTypeDialogShow">
       <el-form>
         <el-form-item label="门店类型名称" label-width="100px">
@@ -32,8 +42,8 @@
             class="avatar-uploader"
             action=""
             :show-file-list="false"
-            :before-upload="beforeShopTypeImgUpload">
-            <img v-if="newShopType.Img" :src="newShopType.Img" class="avatar">
+            :before-upload="beforeAddShopTypeImgUpload">
+            <img v-if="tempAddShopTypeImg" :src="tempAddShopTypeImg" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
@@ -76,9 +86,12 @@ export default {
     return {
       shopTypes: [],
       newShopType: {},
+      tempAddShopTypeImg: "",
       editShopType: {},
+      deleteShopTypeId: '',
       addShopTypeDialogShow: false,
-      editShopTypeDialogShow: false
+      editShopTypeDialogShow: false,
+      deleteShopTypeDialogShow: false
     }
   },
   beforeMount() {
@@ -100,7 +113,30 @@ export default {
         Img : v.img
       }
     },
+    deleteShopType(i, v) {
+      this.deleteShopTypeDialogShow = true
+      this.deleteShopTypeId = v.pkId
+    },
+    ensureDeleteShopType() {
+      shopApi.DeleteShopType(this.deleteShopTypeId).then(res => {
+        if(res.status != 200) this.$message.error('删除失败');
+
+        else {
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          })
+          this.deleteShopTypeDialogShow = false
+          shopApi.GetShopTypes().then(res => {
+            if(res.status != 200) this.$message.error("获取门店类型失败");
+
+            else this.shopTypes = res.body
+          });
+        }
+      })
+    },
     ensureAddShopType() {
+      this.newShopType.Img = this.tempAddShopTypeImg;
       shopApi.AddShopTypes(this.newShopType).then(res => {
         if(res.status != 200) this.$message.error("新建门店类型失败");
 
@@ -118,6 +154,7 @@ export default {
           this.newShopType = {}
         }
       })
+      this.tempAddShopTypeImg = "";
     },
     ensureSetShopType() {
       shopApi.SetShopType(this.editShopType).then(res => {
@@ -138,7 +175,7 @@ export default {
         }
       })
     },
-    beforeShopTypeImgUpload(file) {
+    beforeAddShopTypeImgUpload(file) {
       const is = file.type === 'image/jpeg' || file.type === 'image/png';
 
       var form = new FormData();
@@ -160,14 +197,17 @@ export default {
               this.$store.dispatch('commitToken', res.body.access_token);
 
               imgUploadApi.ImgUpload(form).then(data => {
-                this.newShopType.Img = data.body;
-        console.log(this.newShopType.Img)
+                //this.newShopType.Img = data.body;
+                this.tempAddShopTypeImg = data.body;
               })
             }
           })
         }
-        this.newShopType.Img = data.body;
-        console.log(this.newShopType.Img)
+        else {
+          //this.newShopType.Img = data.body;
+          this.tempAddShopTypeImg = data.body;
+        }
+          console.log(this.newShopType.Img)
       })
 
       return is;
@@ -199,7 +239,9 @@ export default {
             }
           })
         }
-        this.editShopType.Img = data.body;
+        else {
+          this.editShopType.Img = data.body;
+        }
       })
 
       return is;

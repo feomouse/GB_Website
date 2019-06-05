@@ -32,5 +32,7 @@ namespace GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel
     MerchantShop GetMerchantShop(string merchantId, string shopId);
 
     MerchantIdentity GetMerchantIdentityByMIdAndSId(string merchantId, string shopId);
+
+    int UnbindShopFromMerchant(string merchantId, string shopId);
   }
 }

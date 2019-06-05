@@ -45,6 +45,13 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         return Ok(_mediator.Send(command).GetAwaiter().GetResult());
       }
 
+      [HttpDelete]
+      [Route("DeleteShopType")]
+      public ActionResult DeleteShopType([FromHeader] string shopTypeId)
+      {
+        return Ok(_mediator.Send(new DeleteShopTypeCommand(shopTypeId)).GetAwaiter().GetResult());
+      }
+
       [HttpPost]
       [Route("SetShopType")]
       public ActionResult SetShopType([FromBody] EditShopTypeCommand command)
@@ -337,6 +344,34 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
                                                 [FromQuery]string district, [FromHeader]string shopTypeId)
       {
         return Ok(_query.getShopsNumByDistrictAndShopType(province, city, district, shopTypeId));
+      }
+
+      [HttpPost]
+      [Route("IncreaseVisitNum")]
+      public ActionResult IncreaseVisitNum([FromBody] IncreaseVisitNumCommand command)
+      {
+        return Ok(_mediator.Send(command).GetAwaiter().GetResult());
+      }
+
+      [HttpPost]
+      [Route("IncreaseMonthSell")]
+      public ActionResult IncreaseMonthSell([FromBody] IncreaseMonthSellCommand command)
+      {
+        return Ok(_mediator.Send(command).GetAwaiter().GetResult());
+      }
+
+      [HttpGet]
+      [Route("GetVisitNum")]
+      public ActionResult GetVisitNum([FromHeader] string shopId, [FromQuery] string year)
+      {
+        return Ok(_query.getVisitNumByYear(shopId, year));
+      }
+
+      [HttpGet]
+      [Route("GetMonthSell")]
+      public ActionResult GetMonthSell([FromHeader] string shopId, [FromQuery] string year)
+      {
+        return Ok(_query.getMonthSellByYear(shopId, year));
       }
     }
 }

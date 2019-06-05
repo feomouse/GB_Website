@@ -2,7 +2,7 @@
   <div id="holderCSignUp__place">
     <div class="auto_eight">
       <div id="cleft__place">
-        <img src="../../static/imgs/summer.jpeg" alt="夏天到了，去游泳吧" style="width: 80%; height: 30rem; margin-top: 5rem;"/>
+        <img src="../../static/imgs/summer.jpeg" alt="夏天到了，去游泳吧" style="width: 80%; height: 30rem; margin-top: 8rem;"/>
       </div>
       <div id="cright__place">
         <div class="formEle_container" style="box-shadow: 3px 3px 3px gray; border: 1px solid gray;">

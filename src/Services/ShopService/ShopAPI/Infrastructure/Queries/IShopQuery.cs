@@ -58,5 +58,9 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
       IList<Shop> getRandomShopsByCityAndType(string province, string city, string shopTypeId);
 
       int getShopsNumByDistrictAndShopType(string province, string city, string district, string shopTypeId);
+
+      dynamic getVisitNumByYear(string shopId, string year);
+
+      dynamic getMonthSellByYear(string shopId, string year);
     } 
 }

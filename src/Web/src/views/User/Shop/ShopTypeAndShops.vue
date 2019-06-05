@@ -50,7 +50,7 @@
         </div>
      </div>
      <div>
-       <div v-for="i in shopList" class="random-shop">
+       <div v-for="i in shopList" class="random-shop" @click="selectShop(i)">
          <img :src="i.img" style="width:100%; height: 12rem; border-radius:20px;"/>
          <h3>{{i.name}}</h3>
        </div>
@@ -72,9 +72,11 @@
       </el-pagination>
      </div>-->
    </div>
+    <div style="width: 80%; margin: 0 auto;"><my-footer></my-footer></div>
   </div>
 </template>
 <script>
+  import myFooter from '../../../views/Common/Footer';
 import * as shopApi from '../../../api/Shop';
 import * as identityApi from '../../../api/Identity';
 import myBanner from '../../../components/Banner';
@@ -82,7 +84,8 @@ import cityData from '../../../data';
 
 export default {
   components: {
-    'myBanner': myBanner
+    'myBanner': myBanner,
+      'my-footer': myFooter
   },
   data() {
     return {
@@ -238,6 +241,22 @@ export default {
     directToMyMessage() {
       this.$router.push('/Customer/Basic');
     },
+    selectShop(shop){
+      let date = new Date();
+      shopApi.IncreaseVisitNum({
+        ShopId: shop.pkId,
+        Year: date.getFullYear(),
+        Month: date.getMonth()
+      }).then(res => {
+        if(res.status != 200) this.$message.error('增加访问数失败');
+
+        else {
+          this.$store.dispatch('commitSetSelectedName', shop.name);
+          this.$store.dispatch('commitSetCurrentSelectedShop', shop);
+          this.$router.push('/ShopDetail')
+        }
+      })
+    }
     /*
     changePage(page) {
       shopApi.GetShopListByShopTypeAndCity(this.cityData['86'][this.$store.getters.getSelectedProvince], this.cityData[this.$store.getters.getSelectedProvince][this.$store.getters.getSelectedCity], this.selectedShopType, page).then(res => {

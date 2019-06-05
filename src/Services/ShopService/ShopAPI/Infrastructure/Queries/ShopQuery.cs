@@ -181,5 +181,15 @@ namespace GB_Project.Services.ShopService.ShopAPI.Infrastructure.Queries
     {
       return _repo.GetShopsNumByDistrictAndShopType(province, city, district, shopTypeId);
     }
+
+    public dynamic getVisitNumByYear(string shopId, string year)
+    {
+      return _repo.GetVisitNumsByYear(shopId, year);
+    }
+
+    public dynamic getMonthSellByYear(string shopId, string year)
+    {
+      return _repo.GetMonthSellsByYear(shopId, year);
+    }
   }
 }

@@ -34,6 +34,10 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
 
     public List<ShopImg> Imgs { get; private set; }
 
+    public List<VisitNum> VisitNums { get; private set; }
+
+    public List<MonthSell> MonthSells { get; private set; }
+
 /*     public List<ProductType> _producttype { get; set; } */
 
     public Shop () {

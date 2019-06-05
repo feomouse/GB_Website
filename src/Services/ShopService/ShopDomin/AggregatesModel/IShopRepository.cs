@@ -99,5 +99,15 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
         IList<Shop> GetRandomShopsByCityAndType(string province, string city, string shopTypeId);
 
         int GetShopsNumByDistrictAndShopType(string province, string city, string district, string shopTypeId);
+    
+        int IncreaseVisitNum(string shopId, string year, string month);
+
+        int IncreaseMonthSell(string shopId, string year, string month);
+
+        dynamic GetVisitNumsByYear(string shopId, string year);
+
+        dynamic GetMonthSellsByYear(string shopId, string year);
+
+        int DeleteShopType(string shopTypeId);
     } 
 }

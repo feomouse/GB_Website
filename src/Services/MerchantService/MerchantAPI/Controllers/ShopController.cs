@@ -75,6 +75,22 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Controllers
        return new StatusCodeResult(200);
      }
 
+     [HttpPost]
+     [Route("UnbindShop")]
+     public ActionResult UnbindShop([FromBody] UnbindShopCommand command)
+     {
+       if(!ModelState.IsValid)
+       {
+         return new StatusCodeResult(400);
+       }
+
+       var result = _mediator.Send(command, default(CancellationToken)).GetAwaiter().GetResult();
+
+       if(result == 0) return BadRequest();
+
+       else return Ok();
+     }
+
      [HttpGet]
      [Route("GetShops")]
      public ActionResult GetMerchantShops([FromHeader] string merchantId)

@@ -18,5 +18,9 @@ namespace GB_Project.Services.CommentService.CommentAPI.CommentQuery
     List<ReplyComment> GetReplyCommentsByCommentIds(List<string> commentIds);
 
     IList<dynamic> GetCommentNumsAndAverStarsNumByShopIds(List<string> shopIds);
+
+    dynamic GetCommentStarsMoreThree(string shopId, string year);
+
+    dynamic GetCommentStarsLessThree(string shopId, string year);
   }
 }

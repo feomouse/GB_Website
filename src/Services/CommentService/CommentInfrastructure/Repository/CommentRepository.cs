@@ -94,5 +94,17 @@ namespace GB_Project.Services.CommentService.CommentInfrastructrue.Repository
 
       return result;
     }
+
+    public dynamic GetCommentStarsMoreThree(string shopId, string year)
+    {
+      return _context.UserComments.Where(uc => (uc.ShopId.ToString() == shopId && uc.Date.Year.ToString() == year && uc.Stars >= 3))
+                           .Select(uc => new {month=uc.Date.Month}).ToList();
+    }
+
+    public dynamic GetCommentStarsLessThree(string shopId, string year)
+    {
+      return _context.UserComments.Where(uc => (uc.ShopId.ToString() == shopId && uc.Date.Year.ToString() == year && uc.Stars < 3))
+                           .Select(uc => new {month=uc.Date.Month}).ToList();
+    }
   }
 }

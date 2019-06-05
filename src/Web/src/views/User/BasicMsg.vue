@@ -57,14 +57,19 @@
         <el-button @click="ShowAddressEditDialog = false">取消</el-button>
       </div>
     </el-dialog>
+    <div style="width: 80%; margin: 0 auto;"><my-footer></my-footer></div>
   </div>
 </template>
 <script>
+  import myFooter from '../../views/Common/Footer';
 import * as userApi from '../../api/User';
 import * as imgApi from '../../api/img';
 import * as identityApi from '../../api/Identity';
 
 export default {
+  components: {
+    'my-footer': myFooter
+  },
   data() {
     return {
       CustomerInfo: {

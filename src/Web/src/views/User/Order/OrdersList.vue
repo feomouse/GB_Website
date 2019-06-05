@@ -122,7 +122,7 @@
         </el-dialog>
       </div>
     </div>
-  </div>  
+  </div>
 </template>
 <script>
 import * as orderApi from '../../../api/Order';
@@ -461,7 +461,7 @@ export default {
                     type: "success",
                     message: "评论成功"
                   });
-
+                  this.evaluate = {}
                   this.evaluateDialogVisible = false;
                 }
               })
@@ -475,7 +475,7 @@ export default {
             type: "success",
             message: "评论成功"
           });
-
+          this.evaluate = {}
           this.evaluateDialogVisible = false;
         }
       })

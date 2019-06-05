@@ -21,6 +21,10 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Context
 
       public DbSet<GBProductImg> gbProductImg { get; set; }
 
+      public DbSet<VisitNum> visitNums { get; set; }
+
+      public DbSet<MonthSell> monthSells { get; set; }
+
       public ShopDbContext (DbContextOptions<ShopDbContext> options) : base (options)
       {
 
@@ -39,6 +43,8 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Context
         modelBuilder.ApplyConfiguration(new ShopTypeEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new ShopImgEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new GBProductImgEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new VisitNumEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new MonthSellEntityTypeConfiguration());
       }
     }
 }

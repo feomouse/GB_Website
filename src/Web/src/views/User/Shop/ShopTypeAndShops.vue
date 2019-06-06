@@ -107,7 +107,9 @@ export default {
         1: 'entertain',
         2: 'food',
         3: 'living',
-        4: 'learning'
+        4: 'learning',
+        5: 'sports',
+        6: 'bars',
       },
       CustomerInfo: {
         CustomerName: "",

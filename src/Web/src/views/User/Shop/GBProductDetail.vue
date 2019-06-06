@@ -185,6 +185,15 @@ export default {
                 if(res.status != 201) this.$message.error();
                 else {
                   this.$message({type: "success", message: "创建订单成功"});
+                  let date = new Date();
+                  shopApi.IncreaseMonthSell({
+                    ShopId: this.$store.getters.getCurrentSelectedShop.pkId,
+                    Year: date.getFullYear(),
+                    Month: date.getMonth(),
+                    Num: this.gbProductNum
+                  }).then(res => {
+                    if(res.status != 200) this.$messager.error('增加订购数据失败')
+                  })
                   this.$router.push('/redirect')
                 }
 
@@ -200,7 +209,8 @@ export default {
           shopApi.IncreaseMonthSell({
             ShopId: this.$store.getters.getCurrentSelectedShop.pkId,
             Year: date.getFullYear(),
-            Month: date.getMonth()
+            Month: date.getMonth(),
+            Num: this.gbProductNum
           }).then(res => {
             if(res.status != 200) this.$messager.error('增加订购数据失败')
           })

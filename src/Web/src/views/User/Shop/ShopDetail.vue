@@ -79,20 +79,28 @@
     </div>
     <div class="auto_eight" style="margin-top: 3rem;">
       <div class="shop-header">用户点评</div>
-      <div v-for="i of commentList"
+      <div v-for="i in commentList"
            v-bind:key="i.pkId"
-           style="text-align: left; border-bottom: 1px solid lightgray; padding: 1rem 3rem 0 3rem; background: #f2f3f4;">
-          <div><p style="display: inline;">{{i.userName}}</p></div>
-          <div style="margin-top: 1rem;">
-            <i v-for="i in i.stars" :key="i" class="el-icon-star-on">
-            </i>  
+           style="text-align: left; border-bottom: 1px solid lightgray; padding: 1rem 3rem 0 3rem; background: #f2f3f4; height: 12rem;">
+          <div style="margin-right: 2rem;">
+            <img :src="i.img" style="width:5rem; height: 5rem; border-radius: 50%; float: left; margin: 1rem 2rem 0 0;"/>
+            <div style="float: left;">
+              <div><p style="margin-top:2rem;">{{i.userName}}</p></div>
+              <el-rate
+                v-model="i.stars"
+                disabled
+                show-score
+                text-color="#ff9900"
+                score-template="{value}">
+              </el-rate>
+            </div>
+            <div style="float: right; margin-top: 3rem;">日期: {{i.date}}</div>
           </div>
-          <div style="text-align: right;">日期: {{i.date}}</div>
-          <div style="margin: 3rem 0 3rem 0;">{{i.comment}}</div>
-          <div style="color: green; margin-bottom: 2rem;" v-if="typeof replyList[i.pkId] != 'undefined'">商家回复: {{replyList[i.pkId].reply}}</div>
-<!--           <div>
-            <img :src="i.img" />
-          </div> -->
+          <div style="clear: both;"></div>
+          <div style="margin-top: 1rem;">
+            <div style="margin: 1rem 0 1rem 7rem; font-size: 0.8rem;">{{i.comment}}</div>
+            <div style="color: green; margin: 1rem 0 1rem 7rem;" v-if="typeof replyList[i.pkId] != 'undefined'">商家回复: {{replyList[i.pkId].reply}}</div>
+          </div>
       </div>
       <el-pagination
         layout="prev, pager, next"
@@ -111,6 +119,7 @@ import * as merchantApi from '../../../api/Merchant';
 import * as orderApi from '../../../api/Order';
 import * as commentApi from '../../../api/Evaluate';
 import * as identityApi from '../../../api/Identity';
+import * as userApi from '../../../api/User';
 import myBanner from '../../../components/Banner';
 import cityData from '../../../data';
 
@@ -211,7 +220,7 @@ export default {
         })
       })
     }),*/
-    commentApi.getUserCommentsByShopId(this.$store.getters.getShopId, 1).then(res => {
+    commentApi.getUserCommentsByShopId(this.$store.getters.getCurrentSelectedShop.pkId, 1).then(res => {
       if(res.status == 401) {
         identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
           if(res.status == 400) this.$router.push('/Customer/SignIn');
@@ -220,15 +229,27 @@ export default {
             this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
             this.$store.dispatch('commitToken', res.body.access_token);
 
-            commentApi.getUserCommentsByShopId(this.$store.getters.getShopId, 1).then(res => {
+            commentApi.getUserCommentsByShopId(this.$store.getters.getCurrentSelectedShop.pkId, 1).then(res => {
               if(res.status != 200) this.$message.error();
 
               else {
                 this.commentList = res.body;
                 let commentIds = new Array();
+                let commentUserNames = new Array();
                 for(let i = 0; i < this.commentList.length; i++) {
                   commentIds[i] = this.commentList[i].pkId;
+                  commentUserNames[i] = this.commentList[i].userName;
                 }
+
+                userApi.getUsersImg(commentUserNames).then(res => {
+                  if(res.status != 200) this.$message.error("获取用户头像错误");
+
+                  else {
+                    for(let i = 0; i < this.commentList.length; i++) {
+                      this.commentList[i].img = res.body[i];
+                    }
+                  }
+                })
                 commentApi.getReplyCommentsByCommentIds(commentIds).then(res => {
                   this.replys = res.body
                 }).then(() => {
@@ -238,28 +259,10 @@ export default {
                 })
                 
                 for(let i = 0; i < this.commentList.length; i++) {
-/*                   if(this.commentList[i].isReply) {
-                    commentApi.getReplyCommentByCommentId(this.commentList[i].pkId).then(res => {
-                      if(res.status != 200) this.$message.error("获取回复失败");
-
-                      else {
-                        this.replyList[this.commentList[i].pkId] = res.body;
-                        this.replyList[this.commentList[i].pkId].date = this.replyList[this.commentList[i].pkId].date.split('T')[0];
-                      }
-                    })
-                  } */
-
                   let dateArr = this.commentList[i].date.split('T');
                   this.commentList[i].date = dateArr[0];
-
-                  let starsArr = [];
-                  for(let j = 0; j < this.commentList[i].stars; j++)
-                  {
-                    starsArr.push({});
-                  }
-                  this.commentList[i].stars = starArr;
                 }
-                commentApi.getUserCommentCount(this.$store.getters.getShopId).then(res => {
+                commentApi.getUserCommentCount(this.$store.getters.getCurrentSelectedShop.pkId).then(res => {
                   if(res.status != 200) this.$message.error('获取评论数量失败');
 
                   else {
@@ -276,9 +279,21 @@ export default {
       else {
         this.commentList = res.body;
         let commentIds = new Array();
+        let commentUserNames = new Array();
         for(let i = 0; i < this.commentList.length; i++) {
           commentIds[i] = this.commentList[i].pkId;
+          commentUserNames[i] = this.commentList[i].userName;
         }
+
+        userApi.getUsersImg(commentUserNames).then(res => {
+          if(res.status != 200) this.$message.error("获取用户头像错误");
+
+          else {
+            for(let i = 0; i < this.commentList.length; i++) {
+              this.commentList[i].img = res.body[i];
+            }
+          }
+        })
         commentApi.getReplyCommentsByCommentIds(commentIds).then(res => {
           this.replys = res.body
         }).then(() => {
@@ -290,28 +305,10 @@ export default {
         })
 
         for(let i = 0; i < this.commentList.length; i++) {
-/*                   if(this.commentList[i].isReply) {
-            commentApi.getReplyCommentByCommentId(this.commentList[i].pkId).then(res => {
-              if(res.status != 200) this.$message.error("获取回复失败");
-
-              else {
-                this.replyList[this.commentList[i].pkId] = res.body;
-                this.replyList[this.commentList[i].pkId].date = this.replyList[this.commentList[i].pkId].date.split('T')[0];
-              }
-            })
-          } */
-
           let dateArr = this.commentList[i].date.split('T');
           this.commentList[i].date = dateArr[0];
-
-          let starsArr = [];
-          for(let j = 0; j < this.commentList[i].stars; j++)
-          {
-            starsArr.push({});
-          }
-          this.commentList[i].stars = starArr;
         }
-        commentApi.getUserCommentCount(this.$store.getters.getShopId).then(res => {
+        commentApi.getUserCommentCount(this.$store.getters.getCurrentSelectedShop.pkId).then(res => {
           if(res.status != 200) this.$message.error('获取评论数量失败');
 
           else {

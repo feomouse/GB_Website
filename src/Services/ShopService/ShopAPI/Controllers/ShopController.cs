@@ -45,7 +45,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Controllers
         return Ok(_mediator.Send(command).GetAwaiter().GetResult());
       }
 
-      [HttpDelete]
+      [HttpPost]
       [Route("DeleteShopType")]
       public ActionResult DeleteShopType([FromHeader] string shopTypeId)
       {

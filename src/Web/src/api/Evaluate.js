@@ -83,28 +83,32 @@ export const getCommentsNumAndAverStarsNumByShopIds = (shopIds) => {
   })
 }
 
-export const getCommentStarsMoreThree = (shopId, year) => {
-  return Vue.http.get('comment/getCommentStarsMoreThree', {
+export const getGoodCommentNum = (shopId, year) => {
+  return Vue.http.post('comment/getCommentStarsMoreThree', null, {
     headers: {
-      'shopId': shopId,
+      'shopId': shopId
+    },
+    params: {
       'year': year
     }
-  }, resSuccess => {
-    return resSuccess;
+  }).then(resSuccess => {
+    return resSuccess
   }, resFail => {
-    return resFail;
+    return resFail
   })
 }
-/*
-export const getCommentStarsLessThree = (shopId, year) => {
-  return Vue.http.get('comment/getCommentStarsLessThree', {
+
+export const getBadCommentNum = (shopId, year) => {
+  return Vue.http.post('comment/getCommentStarsLessThree', null, {
     headers: {
-      'shopId': shopId,
+      'shopId': shopId
+    },
+    params: {
       'year': year
     }
-  }, resSuccess => {
-    return resSuccess;
+  }).then(resSuccess => {
+    return resSuccess
   }, resFail => {
-    return resFail;
+    return resFail
   })
-}*/
+}

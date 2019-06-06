@@ -1,16 +1,16 @@
 <template>
   <div style='text-align: center;'>
     <my-tab :tabs="tabData" :tabLabelNow="tabDataNow" :activeIndex="activeIndex">
-      <template slot=read>
+      <template v-slot:read>
         <visit-data></visit-data>
       </template>
-      <template slot=sell>
+      <template v-slot:sell>
         <buy-data></buy-data>
       </template>
-      <template slot=good>
+      <template v-slot:good>
         <goodcomment-data></goodcomment-data>
       </template>
-      <template slot=bad>
+      <template v-slot:bad>
         <badcomment-data></badcomment-data>
       </template>
     </my-tab>
@@ -46,7 +46,7 @@ export default {
         label: "差评量",
         link: "bad"
       }],
-      tabDataNow: "阅读门店数",
+      tabDataNow: "read",
       activeIndex: "0"
     }
   }

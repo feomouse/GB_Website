@@ -17,7 +17,7 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.CommandsHandler
     }
     public Task<int> Handle(IncreaseMonthSellCommand request, CancellationToken cancellationToken)
     {
-      return Task.FromResult(_repo.IncreaseMonthSell(request.ShopId, request.Year, request.Month));
+      return Task.FromResult(_repo.IncreaseMonthSell(request.ShopId, request.Year, request.Month, request.Num));
     }
   }
 }

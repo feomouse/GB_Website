@@ -61,3 +61,11 @@ export const getCustomers = (page) => {
     return resFail
   })
 }
+
+export const getUsersImg = (usersName) => {
+  return Vue.http.post('user/GetUserImgsByUsersName', usersName).then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}

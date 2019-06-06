@@ -28,9 +28,9 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
         Num = num;
       }
 
-      public void IncreaseMonthSell()
+      public void IncreaseMonthSell(int num)
       {
-        Num++;
+        Num += num;
       }
     }
 }

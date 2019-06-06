@@ -102,7 +102,7 @@ namespace GB_Project.Services.ShopService.ShopDomin.AggregatesModel
     
         int IncreaseVisitNum(string shopId, string year, string month);
 
-        int IncreaseMonthSell(string shopId, string year, string month);
+        int IncreaseMonthSell(string shopId, string year, string month, int num);
 
         dynamic GetVisitNumsByYear(string shopId, string year);
 

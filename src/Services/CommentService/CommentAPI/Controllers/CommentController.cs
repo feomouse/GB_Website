@@ -133,16 +133,16 @@ namespace GB_Project.Services.CommentService.CommentAPI.Controller
       return Ok(_query.GetCommentNumsAndAverStarsNumByShopIds(shopIds));
     }
 
-    [HttpGet]
+    [HttpPost]
     [Route("getCommentStarsMoreThree")]
-    public ActionResult GetCommentStarsMoreThree([FromHeader]string shopId, [FromHeader]string year)
+    public ActionResult GetCommentStarsMoreThree([FromHeader]string shopId, [FromQuery]string year)
     {
       return Ok(_query.GetCommentStarsMoreThree(shopId, year));
     }
 
-    [HttpGet]
+    [HttpPost]
     [Route("getCommentStarsLessThree")]
-    public ActionResult GetCommentStarsLessThree([FromHeader]string shopId, [FromHeader]string year)
+    public ActionResult GetCommentStarsLessThree([FromHeader]string shopId, [FromQuery]string year)
     {
       return Ok(_query.GetCommentStarsLessThree(shopId, year));
     }

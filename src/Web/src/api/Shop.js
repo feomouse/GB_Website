@@ -303,7 +303,7 @@ export const IncreaseMonthSell = (body) => {
 }
 
 export const DeleteShopType = (shopTypeId) => {
-  return Vue.http.delete('shop/DeleteShopType', {
+  return Vue.http.post('shop/DeleteShopType', null, {
     headers: {
       'shopTypeId': shopTypeId
     }

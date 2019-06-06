@@ -126,5 +126,12 @@ namespace GB_Project.Services.UserService.UserAPI.Controllers
 
       else return Ok(users);
     }
+
+    [HttpPost]
+    [Route("GetUserImgsByUsersName")]
+    public ActionResult GetUserImgs([FromBody] List<string> usersName)
+    {
+      return Ok(_query.GetUserImgs(usersName));
+    }
   }
 }

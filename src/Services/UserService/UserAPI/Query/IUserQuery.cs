@@ -8,5 +8,7 @@ namespace GB_Project.Services.UserService.UserAPI.Query
     User GetUserByUserId(string userId);
 
     List<User> GetUsers(int page);
+
+    dynamic GetUserImgs(List<string> usersName);
   }
 }

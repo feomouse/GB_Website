@@ -1,6 +1,6 @@
 <template>
   <div>
-    <tabs :tabs="tabLabels" :tabLabelNow="tabLabels[0].label" activeIndex='0'>
+    <tabs :tabs="tabLabels" :tabLabelNow="tabLabels[0].link" activeIndex='0'>
       <template v-slot:violate>
         <vio></vio>
       </template>

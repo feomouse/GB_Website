@@ -62,5 +62,15 @@ namespace GB_Project.Services.UserService.UserInfrastructure.Repository
     {
       return _context.user.Skip((page-1)*10).Take(10).ToList();
     }
+
+    public dynamic GetUserImgs(List<string> usersName)
+    {
+      var result = new List<string>();
+      foreach (var item in usersName)
+      {
+          result.Add(_context.user.Where(u => u.Email == item).FirstOrDefault().LookingImg);
+      }
+      return result;
+    }
   } 
 }

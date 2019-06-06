@@ -10,11 +10,14 @@ namespace GB_Project.Services.ShopService.ShopAPI.Application.Commands
 
     public string Month { get; set; }
 
-    public IncreaseMonthSellCommand(string shopId, string year, string month)
+    public int Num { get; set; }
+
+    public IncreaseMonthSellCommand(string shopId, string year, string month, int num)
     {
       ShopId = shopId;
       Year = year;
       Month = month;
+      Num = num;
     }
   }
 }

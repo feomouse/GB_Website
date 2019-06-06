@@ -28,8 +28,8 @@ export default {
     }
   },
   beforeMount() {
-    var date = new Date();
-    commentApi.getCommentStarsLessThree(this.$store.getters.getMerchantCurrentShop.pkId, date.getFullYear()).then(res => {
+    let date = new Date();
+    commentApi.getBadCommentNum(this.$store.getters.getMerchantCurrentShop.pkId, date.getFullYear()).then(res => {
       if(res.status != 200) this.$message.error('获取差评数失败');
 
       else {

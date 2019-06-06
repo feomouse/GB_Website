@@ -370,18 +370,18 @@ namespace GB_Project.Services.ShopService.ShopInfrastructure.Repository
         return _context.SaveChanges();
       }
 
-      public int IncreaseMonthSell(string shopId, string year, string month)
+      public int IncreaseMonthSell(string shopId, string year, string month, int num)
       {
         var result = _context.monthSells.Where(vn => (vn.MShopId.ToString() == shopId && vn.Year == year && vn.Month == month)).FirstOrDefault();
       
         if(result == null) 
         {
-          _context.monthSells.Add(new MonthSell(_context.shops.Where(s => s.PkId.ToString() == shopId).FirstOrDefault(), year, month, 1));
+          _context.monthSells.Add(new MonthSell(_context.shops.Where(s => s.PkId.ToString() == shopId).FirstOrDefault(), year, month, num));
         }
 
         else 
         {
-          result.IncreaseMonthSell();
+          result.IncreaseMonthSell(num);
         }
         return _context.SaveChanges();
       }

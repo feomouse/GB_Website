@@ -135,7 +135,7 @@ export default {
               else {
                 this.$store.dispatch('commitSetShopTypes', res.body);
                 this.shopTypes = res.body;
-                shopApi.GetRandomShops('北京市', '市辖区', this.shopTypes[0].pkId).then(res => {
+                shopApi.GetRandomShops(this.$store.getters.getSelectedProvinceName, this.$store.getters.getSelectedCityName, this.shopTypes[0].pkId).then(res => {
                   if(res.status != 200) this.$message.error('获取门店错误')
                   else {
                     this.shopList = res.body;
@@ -158,7 +158,7 @@ export default {
       else {
         this.$store.dispatch('commitSetShopTypes', res.body);
         this.shopTypes = res.body;
-        shopApi.GetRandomShops('北京市', '市辖区', this.shopTypes[0].pkId).then(res => {
+        shopApi.GetRandomShops(this.$store.getters.getSelectedProvinceName, this.$store.getters.getSelectedCityName, this.shopTypes[0].pkId).then(res => {
           if(res.status != 200) this.$message.error('获取门店错误')
           else {
             this.shopList = res.body;
@@ -176,8 +176,8 @@ export default {
     })
     //this.selectedProvinceName = this.cityData['86'][this.selectedProvince];
     //this.selectedCityName = this.cityData[this.selectedProvince][this.selectedCity];
-    this.$store.dispatch('commitProvinceName', this.cityData['86']['110000']);
-    this.$store.dispatch('commitCityName', this.cityData['110000']['110100']);
+    //this.$store.dispatch('commitProvinceName', this.cityData['86']['110000']);
+    //this.$store.dispatch('commitCityName', this.cityData['110000']['110100']);
     //this.$store.dispatch('commitDistrictName', this.cityData['110100']['110101'])
 
     this.CustomerInfo.CustomerName = this.$store.getters.user.userName;

@@ -24,6 +24,9 @@ const mutations = {
   },
   setUser: function(state, user) {
     state.user = user
+  },
+  setUserImg: function(state, img) {
+    state.user.lookingImg = img
   }
 }
 
@@ -33,6 +36,9 @@ const actions = {
   },
   commitSetUser: function({commit}, user) {
     commit('setUser', user);
+  },
+  commitSetUserImg: function({commit}, img) {
+    commit('setUserImg', img)
   }
 }
 

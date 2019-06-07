@@ -125,7 +125,10 @@ export default {
                   userApi.setCustomerImg(this.$store.getters.userId, res.body).then(res => {
                     if(res.status != 200) this.$message.error("设置图像失败");
 
-                    else this.CustomerInfo.CustomerImg = res.body;
+                    else {
+                      this.$store.dispatch('commitSetUserImg', res.body)
+                      this.CustomerInfo.CustomerImg = res.body;
+                    }
                   })
                 }
               })
@@ -139,6 +142,7 @@ export default {
             if(res.status != 200) this.$message.error("设置图像失败");
 
             else {
+              this.$store.dispatch('commitSetUserImg', res.body)
               this.CustomerInfo.CustomerImg = res.body;
             }
           })

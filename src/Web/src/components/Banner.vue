@@ -2,7 +2,7 @@
   <div class="auto_ten">
     <div class="banner">
       <p style="float: left; cursor: pointer; margin-right: 3rem;" @click="redirectToShops">浏览门店</p>
-      <p style="float: left; cursor: pointer;" @click="showSelectCityDialogShow = true">选择城市: {{selectedProvinceName + ' ' + selectedCityName}}</p>
+      <p style="float: left; cursor: pointer;" @click="showSelectCityDialogShow = true">选择城市: {{cityData['86'][selectedProvince] + ' ' + cityData[selectedProvince][selectedCity]}}</p>
       <p style="float: right; cursor: pointer;" @click="directToMyMessage">{{userName}} : 我的信息</p>
     </div>
     <el-dialog label-width="70px" :visible.sync="showSelectCityDialogShow">
@@ -55,7 +55,12 @@ export default {
     }
   },
   beforeMount() {
-    console.log(this.selectedProvinceName)
+    console.log(this.cityData['86'][this.selectedProvince] + this.cityData[this.selectedProvince][this.selectedCity])
+    //console.log(this.selectedProvinceName + this.selectedCityName)
+    console.log(this.$store.getters.getSelectedProvinceName + ' ' + this.$store.getters.getSelectedCityName)
+  },
+  mounted() {
+        console.log(this.selectedProvinceName)
   },
   methods : {
     redirectToShops() {
@@ -76,15 +81,11 @@ export default {
           this.$store.dispatch('commitProvince', this.selectedProvince);
           this.$store.dispatch('commitCity', this.selectedCity);
           this.$store.dispatch('commitDistrict', this._.keys(this.districts)[0]);
+          console.log(this.selectedProvinceName + ' ' + this.selectedCityName)
           this.$store.dispatch('commitProvinceName', this.selectedProvinceName);
           this.$store.dispatch('commitCityName', this.selectedCityName);
           this.$store.dispatch('commitDistrictName', this.cityData[this.selectedCity][this._.keys(this.cityData[this.selectedCity])[0]]);
           this.$store.dispatch('commitSetRandomShops', res.body);
-
-          this.selectedProvince = "";
-          this.selectedCity = "";
-          this.selectedProvinceName = "";
-          this.selectedCityName = "";
 
           this.$router.push('/Shops');
         }

@@ -64,7 +64,7 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Controllers
 
         if(merchants == null) return BadRequest();
 
-        else return Ok(merchants);
+        else return Ok(merchants.Select(m => new {authPkId = m.AuthPkId}));
      }
   }
 }

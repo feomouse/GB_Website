@@ -254,20 +254,20 @@ export default {
                   this.replys = res.body
                 }).then(() => {
                   for(let m = 0; m < this.replys.length; m++) {
-                    this.replyList[this.replys[m].commentId] = this.replys[m];
+                    this.replyList[this.replys[m] != null ? this.replys[m].commentId : ''] = this.replys[m];
                   }
-                })
-                
-                for(let i = 0; i < this.commentList.length; i++) {
-                  let dateArr = this.commentList[i].date.split('T');
-                  this.commentList[i].date = dateArr[0];
-                }
-                commentApi.getUserCommentCount(this.$store.getters.getCurrentSelectedShop.pkId).then(res => {
-                  if(res.status != 200) this.$message.error('获取评论数量失败');
+                    console.log(this.replyList)
+                  for(let i = 0; i < this.commentList.length; i++) {
+                    let dateArr = this.commentList[i].date.split('T');
+                    this.commentList[i].date = dateArr[0];
+                  }
+                  commentApi.getUserCommentCount(this.$store.getters.getCurrentSelectedShop.pkId).then(res => {
+                    if(res.status != 200) this.$message.error('获取评论数量失败');
 
-                  else {
-                    this.commentCount = res.body;
-                  }
+                    else {
+                      this.commentCount = res.body;
+                    }
+                  })
                 })
               }
             })
@@ -298,22 +298,20 @@ export default {
           this.replys = res.body
         }).then(() => {
           for(let m = 0; m < this.replys.length; m++) {
-            this.replyList[this.replys[m].commentId] = this.replys[m];
-            console.log(this.replys[m])
-            console.log(this.replys[m].commentId)
+            this.replyList[this.replys[m] != null ? this.replys[m].commentId : ''] = this.replys[m];
           }
-        })
-
-        for(let i = 0; i < this.commentList.length; i++) {
-          let dateArr = this.commentList[i].date.split('T');
-          this.commentList[i].date = dateArr[0];
-        }
-        commentApi.getUserCommentCount(this.$store.getters.getCurrentSelectedShop.pkId).then(res => {
-          if(res.status != 200) this.$message.error('获取评论数量失败');
-
-          else {
-            this.commentCount = res.body;
+                    console.log(this.replyList)
+          for(let i = 0; i < this.commentList.length; i++) {
+            let dateArr = this.commentList[i].date.split('T');
+            this.commentList[i].date = dateArr[0];
           }
+          commentApi.getUserCommentCount(this.$store.getters.getCurrentSelectedShop.pkId).then(res => {
+            if(res.status != 200) this.$message.error('获取评论数量失败');
+
+            else {
+              this.commentCount = res.body;
+            }
+          })
         })
       }
     })
@@ -406,7 +404,7 @@ export default {
                   })
   
                   for(let m = 0; m < replys.length; m++) {
-                    this.replyList[replys[m].commentId] = replys[m];
+                    this.replyList[this.replys[m] != null ? this.replys[m].commentId : ''] = replys[m];
                   }
                   
                   for(let i = 0; i < this.commentList.length; i++) {
@@ -457,7 +455,7 @@ export default {
           })
 
           for(let m = 0; m < replys.length; m++) {
-            this.replyList[replys[m].commentId] = replys[m];
+            this.replyList[this.replys[m] != null ? this.replys[m].commentId : ''] = replys[m];
           }
           
           for(let i = 0; i < this.commentList.length; i++) {

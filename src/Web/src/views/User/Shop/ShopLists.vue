@@ -91,7 +91,7 @@ export default {
                                    else {
                                      for(let i=0; i < this.shopList.length; i++) {
                                        this.shopList[i].commentsNum = res.body[i]['commentsNum'];
-                                       this.shopList[i].averStarsNum = res.body[i]['averStarsNum'];
+                                       this.shopList[i].averStarsNum = parseFloat(res.body[i]['averStarsNum'].toFixed(1));
                                      }
                                    }
                                  })
@@ -137,7 +137,7 @@ export default {
                                 else {
                                   for(let i=0; i < this.shopList.length; i++) {
                                     this.shopList[i].commentsNum = res.body[i]['commentsNum'];
-                                    this.shopList[i].averStarsNum = res.body[i]['averStarsNum'];
+                                    this.shopList[i].averStarsNum = parseFloat(res.body[i]['averStarsNum'].toFixed(1));
                                   }
                                 }
                               })
@@ -163,7 +163,7 @@ export default {
                                 else {
                                   for(let i=0; i < this.shopList.length; i++) {
                                     this.shopList[i].commentsNum = res.body[i]['commentsNum'];
-                                    this.shopList[i].averStarsNum = res.body[i]['averStarsNum'];
+                                    this.shopList[i].averStarsNum = parseFloat(res.body[i]['averStarsNum'].toFixed(1));
                                   }
                                 }
                               })

@@ -163,11 +163,11 @@ export default {
       this.gbProductOrder.CpkId = this.$store.getters.userId;
       this.gbProductOrder.SpkId = this.currentShop.pkId;
       this.gbProductOrder.SName = this.currentShop.name;
-      var month = now.getMonth() < 10? '0' + now.getMonth() : now.getMonth()
-      var date = now.getDate() < 10? '0' + now.getDate() : now.getDate()
-      var hours = now.getHours() < 10? '0' + now.getHours() : now.getHours()
-      var minutes = now.getMinutes() < 10? '0' + now.getMinutes() : now.getMinutes()
-      var seconds = now.getSeconds() < 10? '0' + now.getSeconds() : now.getSeconds()
+      var month = now.getMonth()
+      var date = now.getDate()
+      var hours = now.getHours()
+      var minutes = now.getMinutes()
+      var seconds = now.getSeconds()
       this.gbProductOrder.Time = now.getFullYear() + "/" + month + "/" + date  
       //+ " "  + hours + ":" + minutes + ":" + seconds;
       this.gbProductOrder.Img = this.currentShop.img;

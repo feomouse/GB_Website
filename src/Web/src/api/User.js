@@ -62,6 +62,14 @@ export const getCustomers = (page) => {
   })
 }
 
+export const getCustomersNum = () => {
+  return Vue.http.get('user/GetUserNum').then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}
+
 export const getUsersImg = (usersName) => {
   return Vue.http.post('user/GetUserImgsByUsersName', usersName).then(resSuccess => {
     return resSuccess

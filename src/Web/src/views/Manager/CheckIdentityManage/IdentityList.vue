@@ -28,6 +28,12 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      layout="prev, pager, next"
+      page-size=10
+      :total="mNum"
+      @current-change="changePage">
+    </el-pagination>
   </div>
 </template>
 <script>
@@ -41,7 +47,8 @@ export default {
       merchantIdList: [],
       merchantShopIdList: [],
       merchantIdentityIdList: [],
-      identityList: []
+      identityList: [],
+      mNum: 0
     }
   },
   beforeMount() {
@@ -51,6 +58,12 @@ export default {
 
       else {
         this.merchantShopList = res.body;
+
+        merchantApi.getMerchantShopListNotCheckedNum().then(res => {
+          if(res.status != 200) this.$message.error("获取商户数量有误");
+
+          else this.mNum = res.body
+        })
       } 
       return
     }).then(() => {
@@ -118,6 +131,60 @@ export default {
       }
       
       this.$router.push('/Manager/IdentityDetail');
+    },
+    changePage(page) {
+      let _this = this
+      merchantApi.getMerchantShopListNotChecked(page).then(res => {
+        if(res.status != 200) this.$message.error("获取商户信息有误");
+
+        else {
+          this.merchantShopList = res.body;
+
+          merchantApi.getMerchantShopListNotCheckedNum().then(res => {
+            if(res.status != 200) this.$message.error("获取商户数量有误");
+
+            else this.mNum = res.body
+          })
+        } 
+        return
+      }).then(() => {
+        for(let i of this.merchantShopList) {
+          if(i.mIdentityId != null){
+            this.merchantIdList.push({
+              "Id": i.mBasicId
+            });
+            this.merchantShopIdList.push({
+              "ShopId": i.shopId
+            });
+            this.merchantIdentityIdList.push({
+              "IdentityId": i.mIdentityId
+            })
+          }
+        }
+        merchantApi.getMerchantsName(this.merchantIdList).then(res => {
+          if(res.status != 200) this.$message.error("出错");
+
+          else {
+            for(let i of res.body) {
+              this.identityList.push({
+                "name": i,
+                "shopName": "",
+                "location": ""
+              })
+            }
+            shopApi.GetShopListByShopIds(this.merchantShopIdList).then(res => {
+              if(res.status != 200) this.$message.error("获取门店名称地址出错");
+
+              else {
+                for(let i=0; i<res.body.length; i++) {
+                  this.identityList[i].shopName = res.body[i].shopName;
+                  this.identityList[i].location = res.body[i].location;
+                }
+              }
+            })
+          }
+        })
+      })
     }
   }
 }

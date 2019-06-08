@@ -105,6 +105,7 @@
       <el-pagination
         layout="prev, pager, next"
         :total="commentCount"
+        page-size=3
         @current-change="changeCommentPage">
       </el-pagination>
     </div>
@@ -162,7 +163,7 @@ export default {
     merchantApi.getGBProductByShopName(this.$store.getters.getShopSelectedName,
                                         this.cityData['86'][this.$store.getters.getSelectedProvince], 
                                         this.cityData[this.$store.getters.getSelectedProvince][this.$store.getters.getSelectedCity],
-                                        this.$store.getters.getSelectedDistrictName
+                                        this.shopDetail.district
                                         ).then(res => {
       if(res.status != 200) this.$message.error('获取团购产品失败');
       else {

@@ -33,7 +33,7 @@ namespace GB_Project.Services.CommentService.CommentInfrastructrue.Repository
     public List<UserComment> GetUserCommentsByShopId(string shopId, int page)
     {
       if((page-1) < 0) return null;
-      return _context.UserComments.Where(b => b.ShopId.ToString() == shopId).Skip((page-1)*10).Take(10).OrderByDescending(b => b.Date).ToList();
+      return _context.UserComments.Where(b => b.ShopId.ToString() == shopId).Skip((page-1)*3).Take(3).OrderByDescending(b => b.Date).ToList();
     }
 
     public UserComment GetUserCommentByCommentId(string commentId)

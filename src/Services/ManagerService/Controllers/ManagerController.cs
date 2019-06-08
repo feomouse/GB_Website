@@ -49,5 +49,12 @@ namespace GB_Project.Services.ManagerService.Controllers
 
             else return Ok(true);
         }
+
+        [HttpGet]
+        [Route("GetVioNum")]
+        public ActionResult GetVioNum()
+        {
+            return Ok(_query.GetVioNum());
+        }
     }
 }

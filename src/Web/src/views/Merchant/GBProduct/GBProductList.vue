@@ -708,7 +708,7 @@ export default {
                       if(res.status != 204) this.$message.error('删除失败');
                       else {
                         this.$message({message: '删除成功', type: 'success'});
-                        merchantApi.getProductTypeByShopName(this.$store.getters.getShopName).then(res => {
+                        merchantApi.getProductTypeByShopName(this.$store.getters.getMerchantCurrentShop.name).then(res => {
                           if(res.status == 400) this.$message.error('获取产品类型失败');
                           else {
                             this.productTypes = [];
@@ -739,7 +739,7 @@ export default {
               if(res.status != 204) this.$message.error('删除失败');
               else {
                 this.$message({message: '删除成功', type: 'success'});
-                merchantApi.getProductTypeByShopName(this.$store.getters.getShopName).then(res => {
+                merchantApi.getProductTypeByShopName(this.$store.getters.getMerchantCurrentShop.name).then(res => {
                   if(res.status == 400) this.$message.error('获取产品类型失败');
                   else {
                     this.productTypes = [];
@@ -759,7 +759,7 @@ export default {
       })
     },
     ensureUseGB() {
-      orderApi.ensureUsed({"ShopName": this.$store.getters.getShopName, "OrderCode": this.orderCode}).then(res => {
+      orderApi.ensureUsed({"ShopName": this.$store.getters.getMerchantCurrentShop.name, "OrderCode": this.orderCode}).then(res => {
         if(res.status == 401) {
           identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
             if(res.status == 400) this.$router.push('/Customer/SignIn');
@@ -768,7 +768,7 @@ export default {
               this.$store.dispatch('commitRefreshToken', res.body.refresh_token);
               this.$store.dispatch('commitToken', res.body.access_token);
 
-              orderApi.ensureUsed({"ShopName": this.$store.getters.getShopName, "OrderCode": this.orderCode}).then(res => {
+              orderApi.ensureUsed({"ShopName": this.$store.getters.getMerchantCurrentShop.name, "OrderCode": this.orderCode}).then(res => {
                 if(res.status != 200) this.$message.error();
                 else {
                   this.$message({type: "success", message: "交易成功"}); 

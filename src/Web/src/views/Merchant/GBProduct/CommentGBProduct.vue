@@ -38,6 +38,7 @@
     <el-pagination
       layout="prev, pager, next"
       :total="userCommentCount"
+      page-size=3
       @current-change="changeCommentPage">
     </el-pagination>
   </div>
@@ -78,6 +79,7 @@ export default {
                 let commentIds = new Array();
                 let commentUserNames = new Array();
                 for(let i = 0; i < this.comments.length; i++) {
+                  this.comments[i].date = this.comments[i].date.split('T')[0]
                   commentIds[i] = this.comments[i].pkId;
                   commentUserNames[i] = this.comments[i].userName;
                 }
@@ -110,6 +112,7 @@ export default {
         let commentIds = new Array();
         let commentUserNames = new Array();
         for(let i = 0; i < this.comments.length; i++) {
+          this.comments[i].date = this.comments[i].date.split('T')[0]
           commentIds[i] = this.comments[i].pkId;
           commentUserNames[i] = this.comments[i].userName;
         }
@@ -149,6 +152,30 @@ export default {
 
                 else {
                   this.comments = res.body;
+                  let commentIds = new Array();
+                  let commentUserNames = new Array();
+                  for(let i = 0; i < this.comments.length; i++) {
+                    this.comments[i].date = this.comments[i].date.split('T')[0]
+                    commentIds[i] = this.comments[i].pkId;
+                    commentUserNames[i] = this.comments[i].userName;
+                  }
+
+                  userApi.getUsersImg(commentUserNames).then(res => {
+                    if(res.status != 200) this.$message.error("获取用户头像错误");
+
+                    else {
+                      for(let i = 0; i < this.comments.length; i++) {
+                        this.comments[i].img = res.body[i];
+                      }
+                    }
+                  })
+                  commentApi.getUserCommentCount(this.$store.getters.getShopId).then(res => {
+                    if(res.status != 200) this.$message.error('获取评论数量失败');
+
+                    else {
+                      this.userCommentCount = res.body;
+                    }
+                  })
                 }
               })
             }
@@ -158,13 +185,37 @@ export default {
 
         else {
           this.comments = res.body;
+          let commentIds = new Array();
+          let commentUserNames = new Array();
+          for(let i = 0; i < this.comments.length; i++) {
+            this.comments[i].date = this.comments[i].date.split('T')[0]
+            commentIds[i] = this.comments[i].pkId;
+            commentUserNames[i] = this.comments[i].userName;
+          }
+
+          userApi.getUsersImg(commentUserNames).then(res => {
+            if(res.status != 200) this.$message.error("获取用户头像错误");
+
+            else {
+              for(let i = 0; i < this.comments.length; i++) {
+                this.comments[i].img = res.body[i];
+              }
+            }
+          })
+          commentApi.getUserCommentCount(this.$store.getters.getShopId).then(res => {
+            if(res.status != 200) this.$message.error('获取评论数量失败');
+
+            else {
+              this.userCommentCount = res.body;
+            }
+          })
         }
       })
     },
     reply(comment) {
       var date = new Date();
       this.replyComment.CommentId = comment.pkId;
-      this.replyComment.Date = date.getFullYear() + '/' + date.getMonth() + '/' + date.getDate() + ' '
+      this.replyComment.Date = date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate() + ' '
                            + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
 
       this.replyDialogVisible = true;

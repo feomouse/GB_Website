@@ -79,6 +79,7 @@
   import myFooter from '../../../views/Common/Footer';
 import * as shopApi from '../../../api/Shop';
 import * as identityApi from '../../../api/Identity';
+import * as commentApi from '../../../api/Evaluate';
 import myBanner from '../../../components/Banner';
 import cityData from '../../../data';
 
@@ -139,7 +140,22 @@ export default {
                   if(res.status != 200) this.$message.error('获取门店错误')
                   else {
                     this.shopList = res.body;
+                    let shopIds = []
+                    for(let i of this.shopList) {
+                      shopIds.push(i.pkId)
+                    }
                     this.$store.dispatch('commitSetRandomShops', res.body);
+
+                    commentApi.getCommentsNumAndAverStarsNumByShopIds(shopIds).then(res => {
+                      if(res.status != 200) this.$message.error("获取评论数失败");
+
+                      else {
+                        for(let i=0; i < this.shopList.length; i++) {
+                          this.shopList[i].commentsNum = res.body[i]['commentsNum'];
+                          this.shopList[i].averStarsNum = parseFloat(res.body[i]['averStarsNum'].toFixed(1));
+                        }
+                      }
+                    })
                     /*
                     shopApi.GetShopsCount(this.cityData['86'][this.selectedProvince], this.cityData[this.selectedProvince][this.selectedCity], 1).then(res => {
                       if(res.status != 200) this.$message.error("获取数量错误");
@@ -162,7 +178,22 @@ export default {
           if(res.status != 200) this.$message.error('获取门店错误')
           else {
             this.shopList = res.body;
+            let shopIds = []
+            for(let i of this.shopList) {
+              shopIds.push(i.pkId)
+            }
             this.$store.dispatch('commitSetRandomShops', res.body);
+
+            commentApi.getCommentsNumAndAverStarsNumByShopIds(shopIds).then(res => {
+              if(res.status != 200) this.$message.error("获取评论数失败");
+
+              else {
+                for(let i=0; i < this.shopList.length; i++) {
+                  this.shopList[i].commentsNum = res.body[i]['commentsNum'];
+                  this.shopList[i].averStarsNum = parseFloat(res.body[i]['averStarsNum'].toFixed(1));
+                }
+              }
+            })
             /*
             shopApi.GetShopsCount(this.cityData['86'][this.selectedProvince], this.cityData[this.selectedProvince][this.selectedCity], 1).then(res => {
               if(res.status != 200) this.$message.error("获取数量错误");
@@ -236,6 +267,22 @@ export default {
         if(res.status != 200) this.$message.error('获取门店错误')
         else {
           this.shopList = res.body;
+          let shopIds = []
+          for(let i of this.shopList) {
+            shopIds.push(i.pkId)
+          }
+          this.$store.dispatch('commitSetRandomShops', res.body);
+
+          commentApi.getCommentsNumAndAverStarsNumByShopIds(shopIds).then(res => {
+            if(res.status != 200) this.$message.error("获取评论数失败");
+
+            else {
+              for(let i=0; i < this.shopList.length; i++) {
+                this.shopList[i].commentsNum = res.body[i]['commentsNum'];
+                this.shopList[i].averStarsNum = parseFloat(res.body[i]['averStarsNum'].toFixed(1));
+              }
+            }
+          })
           this.$store.dispatch('commitSetRandomShops', res.body);
         }
       })
@@ -248,7 +295,7 @@ export default {
       shopApi.IncreaseVisitNum({
         ShopId: shop.pkId,
         Year: date.getFullYear(),
-        Month: date.getMonth()
+        Month: date.getMonth() + 1
       }).then(res => {
         if(res.status != 200) this.$message.error('增加访问数失败');
 

@@ -4,18 +4,18 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
-  //mode: "production",
-  mode: "development",
+  mode: "production",
+  //mode: "development",
   entry: {
     index: "./src/main"
   },
-  devtool: "inline-source-map",
+  //devtool: "inline-source-map",
   output: {
     path: path.resolve(__dirname, "dist"),
 
     filename: "[name].js"
   },
-  //devtool: 'source-map',
+  devtool: 'source-map',
 
   module: {
     rules: [
@@ -90,11 +90,11 @@ module.exports = {
   resolve: {
     extensions: [".js", ".vue", ".less"],
     alias: {
-      'vue$': 'vue/dist/vue.esm.js'
-      //'vue$': 'vue/dist/vue.min.js'
+      //'vue$': 'vue/dist/vue.esm.js'
+      'vue$': 'vue/dist/vue.min.js'
     }
   },
-  
+  /*
   devServer: {
     contentBase: path.join(__dirname, "../../"),
     compress: true,
@@ -107,5 +107,5 @@ module.exports = {
         secure: false
       }
     }
-  }
+  }*/
 }

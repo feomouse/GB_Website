@@ -138,6 +138,9 @@ export default {
     this.gbProduct = this.$store.getters.getSelectedGBProduct;
     this.currentShop = this.$store.getters.getCurrentSelectedShop;
 
+    this.gbProduct.vailSDate = this.gbProduct.vailSDate.split('T')[0]
+    this.gbProduct.vailEDate = this.gbProduct.vailEDate.split('T')[0]
+
     shopApi.GetGBProductImgs(this.gbProduct.pkId).then(res => {
       if(res.status != 200) this.$message.error("获取团购图片错误");
 
@@ -163,11 +166,11 @@ export default {
       this.gbProductOrder.CpkId = this.$store.getters.userId;
       this.gbProductOrder.SpkId = this.currentShop.pkId;
       this.gbProductOrder.SName = this.currentShop.name;
-      var month = now.getMonth()
+      var month = now.getMonth() + 1
       var date = now.getDate()
-      var hours = now.getHours()
-      var minutes = now.getMinutes()
-      var seconds = now.getSeconds()
+      //var hours = now.getHours()
+      //var minutes = now.getMinutes()
+      //var seconds = now.getSeconds()
       this.gbProductOrder.Time = now.getFullYear() + "/" + month + "/" + date  
       //+ " "  + hours + ":" + minutes + ":" + seconds;
       this.gbProductOrder.Img = this.currentShop.img;
@@ -189,7 +192,7 @@ export default {
                   shopApi.IncreaseMonthSell({
                     ShopId: this.$store.getters.getCurrentSelectedShop.pkId,
                     Year: date.getFullYear(),
-                    Month: date.getMonth(),
+                    Month: date.getMonth() + 1,
                     Num: this.gbProductNum
                   }).then(res => {
                     if(res.status != 200) this.$messager.error('增加订购数据失败')
@@ -209,7 +212,7 @@ export default {
           shopApi.IncreaseMonthSell({
             ShopId: this.$store.getters.getCurrentSelectedShop.pkId,
             Year: date.getFullYear(),
-            Month: date.getMonth(),
+            Month: date.getMonth() + 1,
             Num: this.gbProductNum
           }).then(res => {
             if(res.status != 200) this.$messager.error('增加订购数据失败')

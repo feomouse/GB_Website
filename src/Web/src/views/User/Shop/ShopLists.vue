@@ -34,8 +34,7 @@
         </div>
       </div>
       <el-pagination
-        :page-size="10"
-        :pager-count="11"
+        page-size=10
         layout="prev, pager, next"
         :total="shopTotalCount"
         :current-change="changePage">
@@ -103,7 +102,7 @@ export default {
       shopApi.IncreaseVisitNum({
         ShopId: shop.pkId,
         Year: date.getFullYear(),
-        Month: date.getMonth()
+        Month: date.getMonth() + 1
       }).then(res => {
         if(res.status != 200) this.$message.error('增加访问数失败');
 

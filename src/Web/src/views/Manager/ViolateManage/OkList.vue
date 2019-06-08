@@ -35,8 +35,9 @@
     <el-pagination
       background
       layout="prev, pager, next"
-      :total="10"
-      current-change="changeList">
+      :total="peopleNum"
+      page-size=10
+      @current-change="changeList">
     </el-pagination>
     <el-dialog title="加入黑名单" :visible.sync="showAddToBlackDialog" style="text-align:left;">
       <div>确认将{{selectedItemName}}加入黑名单?</div>
@@ -58,6 +59,7 @@ export default{
     return {
       selectedRole: "customer",
       okList: [],
+      peopleNum: 0,
       customerList: [{
         "pkId": "",
         "lookingImg": "",
@@ -91,6 +93,11 @@ export default{
       else {
         this.customerList = res.body;
 
+        customerApi.getCustomersNum().then(res => {
+          if(res.status != 200) this.$message.error('获取用户数量有误')
+
+          else this.peopleNum = res.body
+        })
         for(let i of this.customerList)
         {
           this.okList.push({
@@ -111,7 +118,7 @@ export default{
       var now = new Date();
 
       this.vioMemberData.UserName = this.selectedItemName
-      this.vioMemberData.Date = now.getFullYear() + "/" + now.getMonth() + "/" + now.getDate() + " " 
+      this.vioMemberData.Date = now.getFullYear() + "/" + (now.getMonth() + 1) + "/" + now.getDate() + " " 
                               + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
       if(this.selectedRole == "customer")   this.vioMemberData.Role = 1;
       if(this.selectedRole == "merchant")this.vioMemberData.Role = 2;
@@ -178,6 +185,12 @@ export default{
           else {
             this.customerList = res.body;
 
+            customerApi.getCustomersNum().then(res => {
+              if(res.status != 200) this.$message.error('获取用户数量有误')
+
+              else this.peopleNum = res.body
+            })
+
             for(let i of this.customerList)
             {
               this.okList.push({
@@ -213,6 +226,12 @@ export default{
                 })
               }
             }
+          })
+        }).then(() => {
+          merchantApi.getMerchantBasicsNum().then(res => {
+            if(res.status != 200) this.$message.error('获取商户数量有误')
+
+            else this.peopleNum = res.body
           })
         })
       }

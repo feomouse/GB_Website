@@ -22,6 +22,11 @@ namespace GB_Project.Services.UserService.UserAPI.Query
       return _repo.GetUsers(page);
     }
 
+    public int GetUserNum()
+    {
+      return _repo.GetUserNum();
+    }
+
     public dynamic GetUserImgs(List<string> usersName)
     {
       return _repo.GetUserImgs(usersName);

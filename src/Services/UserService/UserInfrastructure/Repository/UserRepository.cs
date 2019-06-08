@@ -63,6 +63,11 @@ namespace GB_Project.Services.UserService.UserInfrastructure.Repository
       return _context.user.Skip((page-1)*10).Take(10).ToList();
     }
 
+    public int GetUserNum()
+    {
+      return _context.user.Count();
+    }
+
     public dynamic GetUserImgs(List<string> usersName)
     {
       var result = new List<string>();

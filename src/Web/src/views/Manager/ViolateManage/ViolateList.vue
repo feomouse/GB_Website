@@ -18,8 +18,9 @@
     <el-pagination
       background
       layout="prev, pager, next"
-      :total="10"
-      current-change="changeList">
+      page-size=10
+      :total="vioNum"
+      @current-change="changeList">
     </el-pagination>
   </div>
 </template>
@@ -33,7 +34,8 @@ export default {
       roles: {
         1: "顾客",
         2: "商户"
-      }
+      },
+      vioNum: 0
     }
   },
   beforeMount() {
@@ -42,6 +44,12 @@ export default {
 
       else {
         this.violateList = res.body
+
+        managerApi.getVioNum().then(res => {
+          if(res.status != 200) this.$message.error('获取黑名单数量有误');
+
+          else this.vioNum = res.body;
+        })
 
         for(let i = 0; i < this.violateList.length; i++) {
           this.violateList[i].role = this.violateList[i].role == 1 ? "顾客" : "商户";

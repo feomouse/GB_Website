@@ -169,6 +169,14 @@ export const getMerchantShopListNotChecked = (page) => {
   })
 }
 
+export const getMerchantShopListNotCheckedNum = () => {
+  return Vue.http.get('merchant/GetMerchantShopListNotCheckedNum').then(resSuccess => {
+    return resSuccess;
+  }, resFail => {
+    return resFail;
+  })
+}
+
 export const getGBProductsByProductTypeId = (productTypeId) => {
   return Vue.http.get('shop/GBProduct/ProductType/GBProducts', {
     headers: {
@@ -243,6 +251,14 @@ export const getMerchantBasics = (page) => {
     return resSuccess
   }, resFail => {
     return resFail
+  })
+}
+
+export const getMerchantBasicsNum = () => {
+  return Vue.http.get('merchant/GetMerchantNum').then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+     return resFail
   })
 }
 

@@ -27,5 +27,10 @@ namespace GB_Project.Services.ManagerService.Querys
     {
       return connection.Query<ViolateUser>("select * from [manager].[violateUser]").Skip((page-1)*10).Take(10);
     }
+
+    public int GetVioNum()
+    {
+      return connection.Query<int>("select count(*) from [manager].[violateUser]").FirstOrDefault();
+    }
   }
 }

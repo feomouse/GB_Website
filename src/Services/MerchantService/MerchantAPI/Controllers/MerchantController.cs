@@ -57,6 +57,13 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Controllers
      }
 
      [HttpGet]
+     [Route("GetMerchantShopListNotCheckedNum")]
+     public ActionResult GetMerchantShopListNotCheckedNum()
+     {
+       return Ok(_query.GetMerchantShopListNotCheckedNum());
+     }
+
+     [HttpGet]
      [Route("GetMerchantList")]
      public ActionResult GetMerchantList([FromQuery] int page)
      {
@@ -65,6 +72,13 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Controllers
         if(merchants == null) return BadRequest();
 
         else return Ok(merchants.Select(m => new {authPkId = m.AuthPkId}));
+     }
+
+     [HttpGet]
+     [Route("GetMerchantNum")]
+     public ActionResult GetMerchantNum()
+     {
+       return Ok(_query.GetMerchantNum());
      }
   }
 }

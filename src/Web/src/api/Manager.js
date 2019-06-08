@@ -31,3 +31,11 @@ export const ifViolateUser = (userName) => {
     return resFail
   })
 }
+
+export const getVioNum = () => {
+  return Vue.http.get('manager/GetVioNum').then(resSuccess => {
+    return resSuccess
+  }, resFail => {
+    return resFail
+  })
+}

@@ -8,5 +8,7 @@ namespace GB_Project.Services.ManagerService.Querys
     ViolateUser GetViolateUserByUserName(string userName);
 
     IEnumerable<ViolateUser> GetViolateUsers(int page);
+
+    int GetVioNum();
   }
 }

@@ -24,6 +24,7 @@ namespace GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel
     MerchantIdentity GetMerchantIdentityByIdentityId (string identityId);
 
     List<MerchantShop> GetMerchantShopListNotChecked(int page);
+    int GetMerchantShopListNotCheckedNum();
 
     IList<MerchantIdentity> GetMerchantIdentityByMerchantId(string merchantId);
 
@@ -33,6 +34,7 @@ namespace GB_Project.Services.MerchantService.MerchantDomin.AggregatesModel
 
     MerchantIdentity GetMerchantIdentityByMIdAndSId(string merchantId, string shopId);
 
+    int GetMerchantNum();
     int UnbindShopFromMerchant(string merchantId, string shopId);
   }
 }

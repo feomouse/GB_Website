@@ -14,6 +14,8 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Query
 
     List<MerchantShop> GetMerchantShopListNotChecked(int page);
 
+    int GetMerchantShopListNotCheckedNum();
+
     List<MerchantBasic> GetMerchantBasics(int page);
 
     IList<MerchantShop> GetMerchantShops(string merchantId);
@@ -21,5 +23,7 @@ namespace GB_Project.Services.MerchantService.MerchantAPI.Query
     MerchantShop GetMerchantShop(string merchantId, string shopId);
 
     MerchantIdentity GetMerchantIdentityByMIdAndSId(string merchantId, string shopId);
+
+    int GetMerchantNum();
   }
 }

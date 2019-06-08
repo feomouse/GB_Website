@@ -78,6 +78,11 @@ namespace GB_Project.Services.MerchantService.MerchantInfrastructure.Repository
         return _context.merchantShops.Where(m => m.IsChecked == false).Skip((page-1)*10).Take(10).ToList();
       }
 
+      public int GetMerchantShopListNotCheckedNum()
+      {
+        return _context.merchantShops.Where(m => m.IsChecked == false).Count();
+      }
+
       public IList<MerchantIdentity> GetMerchantIdentityByMerchantId(string merchantId)
       {
         return _context.merchantShops.Where(m => m.MBasicId.ToString() == merchantId).Select(i => i.MIdentity).ToList();
@@ -86,6 +91,11 @@ namespace GB_Project.Services.MerchantService.MerchantInfrastructure.Repository
       public List<MerchantBasic> GetMerchantBasics(int page)
       {
         return _context.merchantBasics.Skip((page-1) * 10).Take(10).ToList();
+      }
+
+      public int GetMerchantNum()
+      {
+        return _context.merchantBasics.Count();
       }
 
       public MerchantShop GetMerchantShop(string merchantId, string shopId)

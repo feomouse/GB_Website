@@ -15,6 +15,7 @@ namespace GB_Project.Services.UserService.UserDomin.UserAggregateModel
       User GetUserByUserId(string userId);
 
       List<User> GetUsers(int page);
+      int GetUserNum();
 
       dynamic GetUserImgs(List<string> usersName);
   }

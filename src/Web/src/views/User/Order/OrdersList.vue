@@ -51,7 +51,6 @@
         </div>
         <div style="float: right; margin: 2rem 2rem 0 0;">
           <el-button type="success" @click="commentAction(i)">评论</el-button>
-          <el-button type="success" @click="refresh()">刷新</el-button>
         </div>
         <el-dialog title="评价" :visible.sync="evaluateDialogVisible">
           <div>
@@ -176,13 +175,14 @@ export default {
               else {
                 for(let i of res.body)
                 {
+                  i.time = i.time.split('T')[0]
                   if(i.isPayed == false) {
                     this.ordersListNotPayed.push(i);
                   }
                   else if(i.isPayed == true && i.isUsed == false) {
                     this.ordersListIsPayedNotUsed.push(i);
                   }
-                  else if(i.isUsed == true) {
+                  else if(i.isUsed == true && i.evaluate == "") {
                     this.ordersListIsUsed.push(i);
                   }
                   if(i.isUsed == true && i.evaluate != "") {
@@ -198,13 +198,14 @@ export default {
       else {
         for(let i of res.body)
         {
+          i.time = i.time.split('T')[0]
           if(i.isPayed == false) {
             this.ordersListNotPayed.push(i);
           }
           else if(i.isPayed == true && i.isUsed == false) {
             this.ordersListIsPayedNotUsed.push(i);
           }
-          else if(i.isUsed == true) {
+          else if(i.isUsed == true && i.evaluate == "") {
             this.ordersListIsUsed.push(i);
           }
           if(i.isUsed == true && i.evaluate != "") {
@@ -278,13 +279,14 @@ export default {
                       
                       for(let i of res.body)
                       {
+                        i.time = i.time.split('T')[0]
                         if(i.isPayed == false) {
                           this.ordersListNotPayed.push(i);
                         }
                         else if(i.isPayed == true && i.isUsed == false) {
                           this.ordersListIsPayedNotUsed.push(i);
                         }
-                        else if(i.isUsed == true) {
+                        else if(i.isUsed == true && i.evaluate == "") {
                           this.ordersListIsUsed.push(i);
                         }
                         if(i.isUsed == true && i.evaluate != "") {
@@ -312,13 +314,14 @@ export default {
               
               for(let i of res.body)
               {
+                i.time = i.time.split('T')[0]
                 if(i.isPayed == false) {
                   this.ordersListNotPayed.push(i);
                 }
                 else if(i.isPayed == true && i.isUsed == false) {
                   this.ordersListIsPayedNotUsed.push(i);
                 }
-                else if(i.isUsed == true) {
+                else if(i.isUsed == true && i.evaluate == "") {
                   this.ordersListIsUsed.push(i);
                 }
                 if(i.isUsed == true && i.evaluate != "") {
@@ -354,13 +357,14 @@ export default {
                   
                   for(let i of res.body)
                   {
+                    i.time = i.time.split('T')[0]
                     if(i.isPayed == false) {
                       this.ordersListNotPayed.push(i);
                     }
                     else if(i.isPayed == true && i.isUsed == false) {
                       this.ordersListIsPayedNotUsed.push(i);
                     }
-                    else if(i.isUsed == true) {
+                    else if(i.isUsed == true && i.evaluate == "") {
                       this.ordersListIsUsed.push(i);
                     }
                     if(i.isUsed == true && i.evaluate != "") {
@@ -381,13 +385,14 @@ export default {
           
           for(let i of res.body)
           {
+            i.time = i.time.split('T')[0]
             if(i.isPayed == false) {
               this.ordersListNotPayed.push(i);
             }
             else if(i.isPayed == true && i.isUsed == false) {
               this.ordersListIsPayedNotUsed.push(i);
             }
-            else if(i.isUsed == true) {
+            else if(i.isUsed == true && i.evaluate == "") {
               this.ordersListIsUsed.push(i);
             }
             if(i.isUsed == true && i.evaluate != "") {
@@ -442,8 +447,7 @@ export default {
     },
     ensureEvaluate() {
       var date = new Date();
-      this.evaluate.Date = date.getFullYear() + '/' + date.getMonth() + '/' + date.getDate() + ' '
-                           + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+      this.evaluate.Date = date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate();
       commentApi.addUserComment(this.evaluate).then(res => {
         if(res.status == 401) {
           identityApi.GetTokenByRefreshToken(this.$store.getters.getRefreshToken).then(res => {
@@ -461,6 +465,7 @@ export default {
                     type: "success",
                     message: "评论成功"
                   });
+                  this.refresh();
                   this.evaluate = {}
                   this.evaluateDialogVisible = false;
                 }
@@ -475,6 +480,7 @@ export default {
             type: "success",
             message: "评论成功"
           });
+          this.refresh();
           this.evaluate = {}
           this.evaluateDialogVisible = false;
         }
@@ -500,13 +506,14 @@ export default {
                   
                   for(let i of res.body)
                   {
+                    i.time = i.time.split('T')[0]
                     if(i.isPayed == false) {
                       this.ordersListNotPayed.push(i);
                     }
                     else if(i.isPayed == true && i.isUsed == false) {
                       this.ordersListIsPayedNotUsed.push(i);
                     }
-                    else if(i.isUsed == true) {
+                    else if(i.isUsed == true && i.evaluate == "") {
                       this.ordersListIsUsed.push(i);
                     }
                     if(i.isUsed == true && i.evaluate != "") {
@@ -527,13 +534,14 @@ export default {
           
           for(let i of res.body)
           {
+            i.time = i.time.split('T')[0]
             if(i.isPayed == false) {
               this.ordersListNotPayed.push(i);
             }
             else if(i.isPayed == true && i.isUsed == false) {
               this.ordersListIsPayedNotUsed.push(i);
             }
-            else if(i.isUsed == true) {
+            else if(i.isUsed == true && i.evaluate == "") {
               this.ordersListIsUsed.push(i);
             }
             if(i.isUsed == true && i.evaluate != "") {

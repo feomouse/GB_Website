@@ -4,7 +4,7 @@ import store from '../store/index';
 
 Vue.use(Resource);
 
-//Vue.http.options.root = '/api'
+Vue.http.options.root = '/api'
 //Vue.resource('/api');
 
 Vue.http.interceptors.push(function (req) {

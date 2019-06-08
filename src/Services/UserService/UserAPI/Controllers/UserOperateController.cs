@@ -133,5 +133,12 @@ namespace GB_Project.Services.UserService.UserAPI.Controllers
     {
       return Ok(_query.GetUserImgs(usersName));
     }
+
+    [HttpGet]
+    [Route("GetUserNum")]
+    public ActionResult GetUserNum()
+    {
+      return Ok(_query.GetUserNum());
+    }
   }
 }
